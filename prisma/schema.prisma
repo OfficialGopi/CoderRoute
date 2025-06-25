@@ -1,0 +1,262 @@
+generator client {
+  provider               = "prisma-client"
+  output                 = "../src/app/prisma"
+  generatedFileExtension = "ts"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum USER_ROLE {
+  ADMIN
+  USER
+}
+
+enum DIFFICULTY {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum LANGUAGE {
+  C
+  CPP
+  JAVA
+  PYTHON
+  JAVASCRIPT
+}
+
+model User {
+  id       String    @id @default(uuid())
+  name     String
+  username String    @unique
+  email    String    @unique
+  avatar   String?
+  role     USER_ROLE @default(USER)
+  password String
+
+  isEmailVerified              Boolean   @default(false)
+  emailVerificationToken       String?   @unique
+  emailVerificationTokenExpiry DateTime?
+
+  forgotPasswordToken       String?   @unique
+  forgotPasswordTokenExpiry DateTime?
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  problems       Problem[]
+  submission     Submission[]
+  problemSolved  ProblemSolved[]
+  playlist       Playlist[]
+  dashboardStats DashboardStats[]
+  sessions       Session[]
+  discussion     Discussion[]
+
+}
+
+model Session {
+  id            String   @id @default(uuid())
+  userId        String
+  token         String   @unique
+  sessionExpiry DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model DashboardStats {
+  id               String   @id @default(uuid())
+  userId           String   @unique
+  totalSubmissions Int      @default(0)
+  problemsSolved   Int      @default(0)
+  easySolved       Int      @default(0)
+  mediumSolved     Int      @default(0)
+  hardSolved       Int      @default(0)
+  accuracy         Float    @default(0.0)
+  lastActive       DateTime?
+  updatedAt        DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Problem {
+  id          String     @id @default(uuid())
+  title       String
+  description String
+  difficulty  DIFFICULTY
+  tags        String[]   @default([]) // ["tag1", "tag2", "tag3"] 
+  userId      String
+  examples    Json
+  constraints String[]   @default([])
+  hints       String[]   @default([])
+  editorial   String?
+
+  testcases          Json[]
+  codeSnippets       Json
+  referenceSolutions Json
+  backgroundCode     Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  //  Relationship
+  user       User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  submission Submission[]
+  solvedBy   ProblemSolved[]
+  playlist   ProblemInPlaylist[]
+  discussion Discussion[]
+  contestProblem ContestProblem[]
+}
+
+
+// testcases:[
+// {
+// input:string,
+// output:string,
+// }
+// ]
+
+
+// codeSnippets:{
+// lanugage:code,
+// }
+
+
+// referenceSolutions:
+// {
+// language:code,
+// },
+
+
+// backgorundCode:{
+// language:{
+// code:string,
+// where to write code:string
+// }
+// }
+
+model Submission {
+  id            String  @id @default(uuid())
+  userId        String
+  problemId     String
+  sourceCode    Json
+  language      String
+  stdin         String?
+  stdout        String?
+  stderr        String?
+  compileOutput String?
+  status        String // Accepted , wrong answer
+  memory        String?
+  time          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  testCases TestCaseResult[]
+}
+
+model TestCaseResult {
+  id            String  @id @default(uuid())
+  submissionId  String
+  testCase      Int
+  passed        Boolean
+  stdout        String?
+  expected      String
+  stderr        String?
+  compileOutput String?
+  status        String
+  memory        String?
+  time          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId])
+}
+
+model ProblemSolved {
+  id        String   @id @default(uuid())
+  userId    String
+  problemId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, problemId])
+}
+
+
+//PLAYLIST
+model Playlist {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  userId      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  problems ProblemInPlaylist[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([name, userId]) // unique playlist names per user
+}
+
+model ProblemInPlaylist {
+  id         String   @id @default(uuid())
+  playlistId String
+  problemId  String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  playlist Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  problem  Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([playlistId, problemId])
+}
+
+//DISCUSSIONS
+model Discussion {
+  id        String   @id @default(uuid())
+  content   String
+  userId    String
+  problemId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+}
+
+//CONTEST
+model Contest {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  startTime   DateTime
+  endTime     DateTime
+
+  problems ContestProblem[]
+}
+
+model ContestProblem {
+  id        String   @id @default(uuid())
+  contestId String
+  problemId String
+
+  contest Contest @relation(fields: [contestId], references: [id])
+  problem Problem @relation(fields: [problemId], references: [id])
+}
+
