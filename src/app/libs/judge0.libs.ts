@@ -10,11 +10,6 @@ class Judge0 {
     JAVASCRIPT: 63,
     C: 50,
     CPP: 54,
-    // GO: 66,
-    // RUBY: 68,
-    // PHP: 55,
-    // RUST: 70,
-    // KOTLIN: 67,
   };
 
   private sleep = (ms: number) => {
@@ -24,9 +19,9 @@ class Judge0 {
   constructor() {
     this.api = axios.create({
       baseURL: env.JUDGE0_API_URL,
-      headers: {
-        Authorization: `Bearer ${env.JUDGE0_API_TOKEN}`,
-      },
+      // headers: {
+      //   Authorization: `Bearer ${env.JUDGE0_API_TOKEN}`,
+      // },
     });
   }
 
