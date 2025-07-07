@@ -32,17 +32,63 @@ class ExecuteCodeController {
       throw new ApiError(STATUS_CODE.NOT_FOUND, "Problem not found");
     }
 
-    const {
+    let isSubmit = false;
+
+    let {
+      contestId,
       sourceCode,
       language,
       stdin,
       expected_outputs,
     }: {
+      contestId: string | undefined;
       sourceCode: string;
       language: string;
-      stdin: string[];
-      expected_outputs: string[];
+      stdin: string[] | undefined;
+      expected_outputs: string[] | undefined;
     } = req.body;
+
+    if (!stdin || !expected_outputs) {
+      isSubmit = true;
+      expected_outputs = (problem.testcases as Array<{ output: string }>).map(
+        ({ output }) => output,
+      );
+      stdin = (problem.testcases as Array<{ input: string }>).map(
+        ({ input }) => input,
+      );
+    }
+
+    if (contestId) {
+      const contest = await db.contest.findUnique({
+        where: {
+          id: contestId,
+        },
+      });
+
+      if (!contest) {
+        throw new ApiError(STATUS_CODE.NOT_FOUND, "Contest not found");
+      }
+
+      if (
+        Date.now() < Date.parse(new Date(contest.startTime).toISOString()) ||
+        Date.now() > Date.parse(new Date(contest.endTime).toISOString())
+      ) {
+        throw new ApiError(STATUS_CODE.FORBIDDEN, "Contest is not active");
+      }
+      const contestParticipant = await db.contestParticipation.findFirst({
+        where: {
+          userId: req.user.id,
+          contestId,
+        },
+      });
+
+      if (!contestParticipant) {
+        throw new ApiError(
+          STATUS_CODE.FORBIDDEN,
+          "You are not participating in this contest",
+        );
+      }
+    }
 
     if (
       !sourceCode ||
@@ -128,6 +174,26 @@ class ExecuteCodeController {
       };
     });
 
+    if (!isSubmit) {
+      return res.status(STATUS_CODE.OK).json(
+        new ApiResponse(
+          STATUS_CODE.OK,
+          {
+            stdin: stdin.join("\n"),
+            stdout: JSON.stringify(detailedResults.map((r) => r.stdout)),
+            stderr: detailedResults.some((r) => r.stderr)
+              ? JSON.stringify(detailedResults.map((r) => r.stderr))
+              : null,
+            compileOutput: detailedResults.some((r) => r.compile_output)
+              ? JSON.stringify(detailedResults.map((r) => r.compile_output))
+              : null,
+            status: allPassed ? "Accepted" : "Wrong Answer",
+          },
+          "Code Executed Successfully",
+        ),
+      );
+    }
+
     // store submission summary
     const submission = await db.submission.create({
       data: {
@@ -150,6 +216,7 @@ class ExecuteCodeController {
         time: detailedResults.some((r) => r.time)
           ? JSON.stringify(detailedResults.map((r) => r.time))
           : null,
+        contestId: contestId ?? null,
       },
     });
 

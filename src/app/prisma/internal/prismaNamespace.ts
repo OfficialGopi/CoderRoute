@@ -405,7 +405,8 @@ export const ModelName = {
   ProblemInPlaylist: 'ProblemInPlaylist',
   Discussion: 'Discussion',
   Contest: 'Contest',
-  ContestProblem: 'ContestProblem'
+  ContestProblem: 'ContestProblem',
+  ContestParticipation: 'ContestParticipation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -421,7 +422,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "dashboardStats" | "problem" | "submission" | "testCaseResult" | "problemSolved" | "playlist" | "problemInPlaylist" | "discussion" | "contest" | "contestProblem"
+    modelProps: "user" | "session" | "dashboardStats" | "problem" | "submission" | "testCaseResult" | "problemSolved" | "playlist" | "problemInPlaylist" | "discussion" | "contest" | "contestProblem" | "contestParticipation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1313,6 +1314,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ContestParticipation: {
+      payload: Prisma.$ContestParticipationPayload<ExtArgs>
+      fields: Prisma.ContestParticipationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ContestParticipationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContestParticipationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ContestParticipationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContestParticipationPayload>
+        }
+        findFirst: {
+          args: Prisma.ContestParticipationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContestParticipationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ContestParticipationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContestParticipationPayload>
+        }
+        findMany: {
+          args: Prisma.ContestParticipationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContestParticipationPayload>[]
+        }
+        create: {
+          args: Prisma.ContestParticipationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContestParticipationPayload>
+        }
+        createMany: {
+          args: Prisma.ContestParticipationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ContestParticipationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContestParticipationPayload>[]
+        }
+        delete: {
+          args: Prisma.ContestParticipationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContestParticipationPayload>
+        }
+        update: {
+          args: Prisma.ContestParticipationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContestParticipationPayload>
+        }
+        deleteMany: {
+          args: Prisma.ContestParticipationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ContestParticipationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ContestParticipationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContestParticipationPayload>[]
+        }
+        upsert: {
+          args: Prisma.ContestParticipationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContestParticipationPayload>
+        }
+        aggregate: {
+          args: Prisma.ContestParticipationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateContestParticipation>
+        }
+        groupBy: {
+          args: Prisma.ContestParticipationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContestParticipationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ContestParticipationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContestParticipationCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1433,6 +1508,7 @@ export const SubmissionScalarFieldEnum = {
   status: 'status',
   memory: 'memory',
   time: 'time',
+  contestId: 'contestId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1498,7 +1574,10 @@ export const DiscussionScalarFieldEnum = {
   content: 'content',
   userId: 'userId',
   problemId: 'problemId',
-  createdAt: 'createdAt'
+  parentId: 'parentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deleted: 'deleted'
 } as const
 
 export type DiscussionScalarFieldEnum = (typeof DiscussionScalarFieldEnum)[keyof typeof DiscussionScalarFieldEnum]
@@ -1509,7 +1588,15 @@ export const ContestScalarFieldEnum = {
   name: 'name',
   description: 'description',
   startTime: 'startTime',
-  endTime: 'endTime'
+  endTime: 'endTime',
+  visibility: 'visibility',
+  isRated: 'isRated',
+  durationMinutes: 'durationMinutes',
+  rules: 'rules',
+  creatorId: 'creatorId',
+  deleted: 'deleted',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type ContestScalarFieldEnum = (typeof ContestScalarFieldEnum)[keyof typeof ContestScalarFieldEnum]
@@ -1518,10 +1605,25 @@ export type ContestScalarFieldEnum = (typeof ContestScalarFieldEnum)[keyof typeo
 export const ContestProblemScalarFieldEnum = {
   id: 'id',
   contestId: 'contestId',
-  problemId: 'problemId'
+  problemId: 'problemId',
+  order: 'order',
+  points: 'points'
 } as const
 
 export type ContestProblemScalarFieldEnum = (typeof ContestProblemScalarFieldEnum)[keyof typeof ContestProblemScalarFieldEnum]
+
+
+export const ContestParticipationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  contestId: 'contestId',
+  startedAt: 'startedAt',
+  submittedAt: 'submittedAt',
+  score: 'score',
+  submissionId: 'submissionId'
+} as const
+
+export type ContestParticipationScalarFieldEnum = (typeof ContestParticipationScalarFieldEnum)[keyof typeof ContestParticipationScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1768,6 +1870,7 @@ export type GlobalOmitConfig = {
   discussion?: Prisma.DiscussionOmit
   contest?: Prisma.ContestOmit
   contestProblem?: Prisma.ContestProblemOmit
+  contestParticipation?: Prisma.ContestParticipationOmit
 }
 
 /* Types for Logging */

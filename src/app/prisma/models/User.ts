@@ -260,6 +260,8 @@ export type UserWhereInput = {
   dashboardStats?: Prisma.DashboardStatsListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   discussion?: Prisma.DiscussionListRelationFilter
+  contest?: Prisma.ContestListRelationFilter
+  contestParticipation?: Prisma.ContestParticipationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -284,6 +286,8 @@ export type UserOrderByWithRelationInput = {
   dashboardStats?: Prisma.DashboardStatsOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   discussion?: Prisma.DiscussionOrderByRelationAggregateInput
+  contest?: Prisma.ContestOrderByRelationAggregateInput
+  contestParticipation?: Prisma.ContestParticipationOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -311,6 +315,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   dashboardStats?: Prisma.DashboardStatsListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   discussion?: Prisma.DiscussionListRelationFilter
+  contest?: Prisma.ContestListRelationFilter
+  contestParticipation?: Prisma.ContestParticipationListRelationFilter
 }, "id" | "username" | "email" | "emailVerificationToken" | "forgotPasswordToken">
 
 export type UserOrderByWithAggregationInput = {
@@ -375,6 +381,8 @@ export type UserCreateInput = {
   dashboardStats?: Prisma.DashboardStatsCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   discussion?: Prisma.DiscussionCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestCreateNestedManyWithoutCreatorInput
+  contestParticipation?: Prisma.ContestParticipationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -399,6 +407,8 @@ export type UserUncheckedCreateInput = {
   dashboardStats?: Prisma.DashboardStatsUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   discussion?: Prisma.DiscussionUncheckedCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestUncheckedCreateNestedManyWithoutCreatorInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -423,6 +433,8 @@ export type UserUpdateInput = {
   dashboardStats?: Prisma.DashboardStatsUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   discussion?: Prisma.DiscussionUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUpdateManyWithoutCreatorNestedInput
+  contestParticipation?: Prisma.ContestParticipationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -447,6 +459,8 @@ export type UserUncheckedUpdateInput = {
   dashboardStats?: Prisma.DashboardStatsUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   discussion?: Prisma.DiscussionUncheckedUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUncheckedUpdateManyWithoutCreatorNestedInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -678,6 +692,34 @@ export type UserUpdateOneRequiredWithoutDiscussionNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDiscussionInput, Prisma.UserUpdateWithoutDiscussionInput>, Prisma.UserUncheckedUpdateWithoutDiscussionInput>
 }
 
+export type UserCreateNestedOneWithoutContestInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutContestInput, Prisma.UserUncheckedCreateWithoutContestInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutContestInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutContestNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutContestInput, Prisma.UserUncheckedCreateWithoutContestInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutContestInput
+  upsert?: Prisma.UserUpsertWithoutContestInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutContestInput, Prisma.UserUpdateWithoutContestInput>, Prisma.UserUncheckedUpdateWithoutContestInput>
+}
+
+export type UserCreateNestedOneWithoutContestParticipationInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutContestParticipationInput, Prisma.UserUncheckedCreateWithoutContestParticipationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutContestParticipationInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutContestParticipationNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutContestParticipationInput, Prisma.UserUncheckedCreateWithoutContestParticipationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutContestParticipationInput
+  upsert?: Prisma.UserUpsertWithoutContestParticipationInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutContestParticipationInput, Prisma.UserUpdateWithoutContestParticipationInput>, Prisma.UserUncheckedUpdateWithoutContestParticipationInput>
+}
+
 export type UserCreateWithoutSessionsInput = {
   id?: string
   name: string
@@ -699,6 +741,8 @@ export type UserCreateWithoutSessionsInput = {
   playlist?: Prisma.PlaylistCreateNestedManyWithoutUserInput
   dashboardStats?: Prisma.DashboardStatsCreateNestedManyWithoutUserInput
   discussion?: Prisma.DiscussionCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestCreateNestedManyWithoutCreatorInput
+  contestParticipation?: Prisma.ContestParticipationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -722,6 +766,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   playlist?: Prisma.PlaylistUncheckedCreateNestedManyWithoutUserInput
   dashboardStats?: Prisma.DashboardStatsUncheckedCreateNestedManyWithoutUserInput
   discussion?: Prisma.DiscussionUncheckedCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestUncheckedCreateNestedManyWithoutCreatorInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -761,6 +807,8 @@ export type UserUpdateWithoutSessionsInput = {
   playlist?: Prisma.PlaylistUpdateManyWithoutUserNestedInput
   dashboardStats?: Prisma.DashboardStatsUpdateManyWithoutUserNestedInput
   discussion?: Prisma.DiscussionUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUpdateManyWithoutCreatorNestedInput
+  contestParticipation?: Prisma.ContestParticipationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -784,6 +832,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   playlist?: Prisma.PlaylistUncheckedUpdateManyWithoutUserNestedInput
   dashboardStats?: Prisma.DashboardStatsUncheckedUpdateManyWithoutUserNestedInput
   discussion?: Prisma.DiscussionUncheckedUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUncheckedUpdateManyWithoutCreatorNestedInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDashboardStatsInput = {
@@ -807,6 +857,8 @@ export type UserCreateWithoutDashboardStatsInput = {
   playlist?: Prisma.PlaylistCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   discussion?: Prisma.DiscussionCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestCreateNestedManyWithoutCreatorInput
+  contestParticipation?: Prisma.ContestParticipationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDashboardStatsInput = {
@@ -830,6 +882,8 @@ export type UserUncheckedCreateWithoutDashboardStatsInput = {
   playlist?: Prisma.PlaylistUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   discussion?: Prisma.DiscussionUncheckedCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestUncheckedCreateNestedManyWithoutCreatorInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDashboardStatsInput = {
@@ -869,6 +923,8 @@ export type UserUpdateWithoutDashboardStatsInput = {
   playlist?: Prisma.PlaylistUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   discussion?: Prisma.DiscussionUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUpdateManyWithoutCreatorNestedInput
+  contestParticipation?: Prisma.ContestParticipationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDashboardStatsInput = {
@@ -892,6 +948,8 @@ export type UserUncheckedUpdateWithoutDashboardStatsInput = {
   playlist?: Prisma.PlaylistUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   discussion?: Prisma.DiscussionUncheckedUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUncheckedUpdateManyWithoutCreatorNestedInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProblemsInput = {
@@ -915,6 +973,8 @@ export type UserCreateWithoutProblemsInput = {
   dashboardStats?: Prisma.DashboardStatsCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   discussion?: Prisma.DiscussionCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestCreateNestedManyWithoutCreatorInput
+  contestParticipation?: Prisma.ContestParticipationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProblemsInput = {
@@ -938,6 +998,8 @@ export type UserUncheckedCreateWithoutProblemsInput = {
   dashboardStats?: Prisma.DashboardStatsUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   discussion?: Prisma.DiscussionUncheckedCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestUncheckedCreateNestedManyWithoutCreatorInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProblemsInput = {
@@ -977,6 +1039,8 @@ export type UserUpdateWithoutProblemsInput = {
   dashboardStats?: Prisma.DashboardStatsUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   discussion?: Prisma.DiscussionUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUpdateManyWithoutCreatorNestedInput
+  contestParticipation?: Prisma.ContestParticipationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProblemsInput = {
@@ -1000,6 +1064,8 @@ export type UserUncheckedUpdateWithoutProblemsInput = {
   dashboardStats?: Prisma.DashboardStatsUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   discussion?: Prisma.DiscussionUncheckedUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUncheckedUpdateManyWithoutCreatorNestedInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSubmissionInput = {
@@ -1023,6 +1089,8 @@ export type UserCreateWithoutSubmissionInput = {
   dashboardStats?: Prisma.DashboardStatsCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   discussion?: Prisma.DiscussionCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestCreateNestedManyWithoutCreatorInput
+  contestParticipation?: Prisma.ContestParticipationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSubmissionInput = {
@@ -1046,6 +1114,8 @@ export type UserUncheckedCreateWithoutSubmissionInput = {
   dashboardStats?: Prisma.DashboardStatsUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   discussion?: Prisma.DiscussionUncheckedCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestUncheckedCreateNestedManyWithoutCreatorInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSubmissionInput = {
@@ -1085,6 +1155,8 @@ export type UserUpdateWithoutSubmissionInput = {
   dashboardStats?: Prisma.DashboardStatsUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   discussion?: Prisma.DiscussionUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUpdateManyWithoutCreatorNestedInput
+  contestParticipation?: Prisma.ContestParticipationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSubmissionInput = {
@@ -1108,6 +1180,8 @@ export type UserUncheckedUpdateWithoutSubmissionInput = {
   dashboardStats?: Prisma.DashboardStatsUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   discussion?: Prisma.DiscussionUncheckedUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUncheckedUpdateManyWithoutCreatorNestedInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProblemSolvedInput = {
@@ -1131,6 +1205,8 @@ export type UserCreateWithoutProblemSolvedInput = {
   dashboardStats?: Prisma.DashboardStatsCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   discussion?: Prisma.DiscussionCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestCreateNestedManyWithoutCreatorInput
+  contestParticipation?: Prisma.ContestParticipationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProblemSolvedInput = {
@@ -1154,6 +1230,8 @@ export type UserUncheckedCreateWithoutProblemSolvedInput = {
   dashboardStats?: Prisma.DashboardStatsUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   discussion?: Prisma.DiscussionUncheckedCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestUncheckedCreateNestedManyWithoutCreatorInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProblemSolvedInput = {
@@ -1193,6 +1271,8 @@ export type UserUpdateWithoutProblemSolvedInput = {
   dashboardStats?: Prisma.DashboardStatsUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   discussion?: Prisma.DiscussionUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUpdateManyWithoutCreatorNestedInput
+  contestParticipation?: Prisma.ContestParticipationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProblemSolvedInput = {
@@ -1216,6 +1296,8 @@ export type UserUncheckedUpdateWithoutProblemSolvedInput = {
   dashboardStats?: Prisma.DashboardStatsUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   discussion?: Prisma.DiscussionUncheckedUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUncheckedUpdateManyWithoutCreatorNestedInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPlaylistInput = {
@@ -1239,6 +1321,8 @@ export type UserCreateWithoutPlaylistInput = {
   dashboardStats?: Prisma.DashboardStatsCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   discussion?: Prisma.DiscussionCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestCreateNestedManyWithoutCreatorInput
+  contestParticipation?: Prisma.ContestParticipationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPlaylistInput = {
@@ -1262,6 +1346,8 @@ export type UserUncheckedCreateWithoutPlaylistInput = {
   dashboardStats?: Prisma.DashboardStatsUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   discussion?: Prisma.DiscussionUncheckedCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestUncheckedCreateNestedManyWithoutCreatorInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPlaylistInput = {
@@ -1301,6 +1387,8 @@ export type UserUpdateWithoutPlaylistInput = {
   dashboardStats?: Prisma.DashboardStatsUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   discussion?: Prisma.DiscussionUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUpdateManyWithoutCreatorNestedInput
+  contestParticipation?: Prisma.ContestParticipationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPlaylistInput = {
@@ -1324,6 +1412,8 @@ export type UserUncheckedUpdateWithoutPlaylistInput = {
   dashboardStats?: Prisma.DashboardStatsUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   discussion?: Prisma.DiscussionUncheckedUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUncheckedUpdateManyWithoutCreatorNestedInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDiscussionInput = {
@@ -1347,6 +1437,8 @@ export type UserCreateWithoutDiscussionInput = {
   playlist?: Prisma.PlaylistCreateNestedManyWithoutUserInput
   dashboardStats?: Prisma.DashboardStatsCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestCreateNestedManyWithoutCreatorInput
+  contestParticipation?: Prisma.ContestParticipationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDiscussionInput = {
@@ -1370,6 +1462,8 @@ export type UserUncheckedCreateWithoutDiscussionInput = {
   playlist?: Prisma.PlaylistUncheckedCreateNestedManyWithoutUserInput
   dashboardStats?: Prisma.DashboardStatsUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestUncheckedCreateNestedManyWithoutCreatorInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDiscussionInput = {
@@ -1409,6 +1503,8 @@ export type UserUpdateWithoutDiscussionInput = {
   playlist?: Prisma.PlaylistUpdateManyWithoutUserNestedInput
   dashboardStats?: Prisma.DashboardStatsUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUpdateManyWithoutCreatorNestedInput
+  contestParticipation?: Prisma.ContestParticipationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDiscussionInput = {
@@ -1432,6 +1528,240 @@ export type UserUncheckedUpdateWithoutDiscussionInput = {
   playlist?: Prisma.PlaylistUncheckedUpdateManyWithoutUserNestedInput
   dashboardStats?: Prisma.DashboardStatsUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUncheckedUpdateManyWithoutCreatorNestedInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutContestInput = {
+  id?: string
+  name: string
+  username: string
+  email: string
+  avatar?: string | null
+  role?: $Enums.USER_ROLE
+  password: string
+  isEmailVerified?: boolean
+  emailVerificationToken?: string | null
+  emailVerificationTokenExpiry?: Date | string | null
+  forgotPasswordToken?: string | null
+  forgotPasswordTokenExpiry?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  problems?: Prisma.ProblemCreateNestedManyWithoutUserInput
+  submission?: Prisma.SubmissionCreateNestedManyWithoutUserInput
+  problemSolved?: Prisma.ProblemSolvedCreateNestedManyWithoutUserInput
+  playlist?: Prisma.PlaylistCreateNestedManyWithoutUserInput
+  dashboardStats?: Prisma.DashboardStatsCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  discussion?: Prisma.DiscussionCreateNestedManyWithoutUserInput
+  contestParticipation?: Prisma.ContestParticipationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutContestInput = {
+  id?: string
+  name: string
+  username: string
+  email: string
+  avatar?: string | null
+  role?: $Enums.USER_ROLE
+  password: string
+  isEmailVerified?: boolean
+  emailVerificationToken?: string | null
+  emailVerificationTokenExpiry?: Date | string | null
+  forgotPasswordToken?: string | null
+  forgotPasswordTokenExpiry?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  problems?: Prisma.ProblemUncheckedCreateNestedManyWithoutUserInput
+  submission?: Prisma.SubmissionUncheckedCreateNestedManyWithoutUserInput
+  problemSolved?: Prisma.ProblemSolvedUncheckedCreateNestedManyWithoutUserInput
+  playlist?: Prisma.PlaylistUncheckedCreateNestedManyWithoutUserInput
+  dashboardStats?: Prisma.DashboardStatsUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  discussion?: Prisma.DiscussionUncheckedCreateNestedManyWithoutUserInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutContestInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutContestInput, Prisma.UserUncheckedCreateWithoutContestInput>
+}
+
+export type UserUpsertWithoutContestInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutContestInput, Prisma.UserUncheckedUpdateWithoutContestInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutContestInput, Prisma.UserUncheckedCreateWithoutContestInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutContestInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutContestInput, Prisma.UserUncheckedUpdateWithoutContestInput>
+}
+
+export type UserUpdateWithoutContestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUSER_ROLEFieldUpdateOperationsInput | $Enums.USER_ROLE
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerificationTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  forgotPasswordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  forgotPasswordTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  problems?: Prisma.ProblemUpdateManyWithoutUserNestedInput
+  submission?: Prisma.SubmissionUpdateManyWithoutUserNestedInput
+  problemSolved?: Prisma.ProblemSolvedUpdateManyWithoutUserNestedInput
+  playlist?: Prisma.PlaylistUpdateManyWithoutUserNestedInput
+  dashboardStats?: Prisma.DashboardStatsUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  discussion?: Prisma.DiscussionUpdateManyWithoutUserNestedInput
+  contestParticipation?: Prisma.ContestParticipationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutContestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUSER_ROLEFieldUpdateOperationsInput | $Enums.USER_ROLE
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerificationTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  forgotPasswordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  forgotPasswordTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  problems?: Prisma.ProblemUncheckedUpdateManyWithoutUserNestedInput
+  submission?: Prisma.SubmissionUncheckedUpdateManyWithoutUserNestedInput
+  problemSolved?: Prisma.ProblemSolvedUncheckedUpdateManyWithoutUserNestedInput
+  playlist?: Prisma.PlaylistUncheckedUpdateManyWithoutUserNestedInput
+  dashboardStats?: Prisma.DashboardStatsUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  discussion?: Prisma.DiscussionUncheckedUpdateManyWithoutUserNestedInput
+  contestParticipation?: Prisma.ContestParticipationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutContestParticipationInput = {
+  id?: string
+  name: string
+  username: string
+  email: string
+  avatar?: string | null
+  role?: $Enums.USER_ROLE
+  password: string
+  isEmailVerified?: boolean
+  emailVerificationToken?: string | null
+  emailVerificationTokenExpiry?: Date | string | null
+  forgotPasswordToken?: string | null
+  forgotPasswordTokenExpiry?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  problems?: Prisma.ProblemCreateNestedManyWithoutUserInput
+  submission?: Prisma.SubmissionCreateNestedManyWithoutUserInput
+  problemSolved?: Prisma.ProblemSolvedCreateNestedManyWithoutUserInput
+  playlist?: Prisma.PlaylistCreateNestedManyWithoutUserInput
+  dashboardStats?: Prisma.DashboardStatsCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  discussion?: Prisma.DiscussionCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestCreateNestedManyWithoutCreatorInput
+}
+
+export type UserUncheckedCreateWithoutContestParticipationInput = {
+  id?: string
+  name: string
+  username: string
+  email: string
+  avatar?: string | null
+  role?: $Enums.USER_ROLE
+  password: string
+  isEmailVerified?: boolean
+  emailVerificationToken?: string | null
+  emailVerificationTokenExpiry?: Date | string | null
+  forgotPasswordToken?: string | null
+  forgotPasswordTokenExpiry?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  problems?: Prisma.ProblemUncheckedCreateNestedManyWithoutUserInput
+  submission?: Prisma.SubmissionUncheckedCreateNestedManyWithoutUserInput
+  problemSolved?: Prisma.ProblemSolvedUncheckedCreateNestedManyWithoutUserInput
+  playlist?: Prisma.PlaylistUncheckedCreateNestedManyWithoutUserInput
+  dashboardStats?: Prisma.DashboardStatsUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  discussion?: Prisma.DiscussionUncheckedCreateNestedManyWithoutUserInput
+  contest?: Prisma.ContestUncheckedCreateNestedManyWithoutCreatorInput
+}
+
+export type UserCreateOrConnectWithoutContestParticipationInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutContestParticipationInput, Prisma.UserUncheckedCreateWithoutContestParticipationInput>
+}
+
+export type UserUpsertWithoutContestParticipationInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutContestParticipationInput, Prisma.UserUncheckedUpdateWithoutContestParticipationInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutContestParticipationInput, Prisma.UserUncheckedCreateWithoutContestParticipationInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutContestParticipationInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutContestParticipationInput, Prisma.UserUncheckedUpdateWithoutContestParticipationInput>
+}
+
+export type UserUpdateWithoutContestParticipationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUSER_ROLEFieldUpdateOperationsInput | $Enums.USER_ROLE
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerificationTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  forgotPasswordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  forgotPasswordTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  problems?: Prisma.ProblemUpdateManyWithoutUserNestedInput
+  submission?: Prisma.SubmissionUpdateManyWithoutUserNestedInput
+  problemSolved?: Prisma.ProblemSolvedUpdateManyWithoutUserNestedInput
+  playlist?: Prisma.PlaylistUpdateManyWithoutUserNestedInput
+  dashboardStats?: Prisma.DashboardStatsUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  discussion?: Prisma.DiscussionUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUpdateManyWithoutCreatorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutContestParticipationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUSER_ROLEFieldUpdateOperationsInput | $Enums.USER_ROLE
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerificationTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  forgotPasswordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  forgotPasswordTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  problems?: Prisma.ProblemUncheckedUpdateManyWithoutUserNestedInput
+  submission?: Prisma.SubmissionUncheckedUpdateManyWithoutUserNestedInput
+  problemSolved?: Prisma.ProblemSolvedUncheckedUpdateManyWithoutUserNestedInput
+  playlist?: Prisma.PlaylistUncheckedUpdateManyWithoutUserNestedInput
+  dashboardStats?: Prisma.DashboardStatsUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  discussion?: Prisma.DiscussionUncheckedUpdateManyWithoutUserNestedInput
+  contest?: Prisma.ContestUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 
@@ -1447,6 +1777,8 @@ export type UserCountOutputType = {
   dashboardStats: number
   sessions: number
   discussion: number
+  contest: number
+  contestParticipation: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1457,6 +1789,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   dashboardStats?: boolean | UserCountOutputTypeCountDashboardStatsArgs
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   discussion?: boolean | UserCountOutputTypeCountDiscussionArgs
+  contest?: boolean | UserCountOutputTypeCountContestArgs
+  contestParticipation?: boolean | UserCountOutputTypeCountContestParticipationArgs
 }
 
 /**
@@ -1518,6 +1852,20 @@ export type UserCountOutputTypeCountDiscussionArgs<ExtArgs extends runtime.Types
   where?: Prisma.DiscussionWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountContestArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContestWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountContestParticipationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContestParticipationWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1541,6 +1889,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   dashboardStats?: boolean | Prisma.User$dashboardStatsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   discussion?: boolean | Prisma.User$discussionArgs<ExtArgs>
+  contest?: boolean | Prisma.User$contestArgs<ExtArgs>
+  contestParticipation?: boolean | Prisma.User$contestParticipationArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1604,6 +1954,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   dashboardStats?: boolean | Prisma.User$dashboardStatsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   discussion?: boolean | Prisma.User$discussionArgs<ExtArgs>
+  contest?: boolean | Prisma.User$contestArgs<ExtArgs>
+  contestParticipation?: boolean | Prisma.User$contestParticipationArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1619,6 +1971,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     dashboardStats: Prisma.$DashboardStatsPayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     discussion: Prisma.$DiscussionPayload<ExtArgs>[]
+    contest: Prisma.$ContestPayload<ExtArgs>[]
+    contestParticipation: Prisma.$ContestParticipationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2036,6 +2390,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   dashboardStats<T extends Prisma.User$dashboardStatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$dashboardStatsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DashboardStatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   discussion<T extends Prisma.User$discussionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$discussionArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DiscussionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  contest<T extends Prisma.User$contestArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$contestArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  contestParticipation<T extends Prisma.User$contestParticipationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$contestParticipationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContestParticipationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2632,6 +2988,54 @@ export type User$discussionArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.DiscussionScalarFieldEnum | Prisma.DiscussionScalarFieldEnum[]
+}
+
+/**
+ * User.contest
+ */
+export type User$contestArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Contest
+   */
+  select?: Prisma.ContestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Contest
+   */
+  omit?: Prisma.ContestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContestInclude<ExtArgs> | null
+  where?: Prisma.ContestWhereInput
+  orderBy?: Prisma.ContestOrderByWithRelationInput | Prisma.ContestOrderByWithRelationInput[]
+  cursor?: Prisma.ContestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContestScalarFieldEnum | Prisma.ContestScalarFieldEnum[]
+}
+
+/**
+ * User.contestParticipation
+ */
+export type User$contestParticipationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ContestParticipation
+   */
+  select?: Prisma.ContestParticipationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ContestParticipation
+   */
+  omit?: Prisma.ContestParticipationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContestParticipationInclude<ExtArgs> | null
+  where?: Prisma.ContestParticipationWhereInput
+  orderBy?: Prisma.ContestParticipationOrderByWithRelationInput | Prisma.ContestParticipationOrderByWithRelationInput[]
+  cursor?: Prisma.ContestParticipationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContestParticipationScalarFieldEnum | Prisma.ContestParticipationScalarFieldEnum[]
 }
 
 /**

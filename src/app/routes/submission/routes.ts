@@ -21,14 +21,14 @@ function register(): Router {
       controllers.getAllSubmissions.bind(controllers),
     );
   router
-    .route("/get-submissions-for-problem/id/:projectId")
+    .route("/get-submissions-for-problem/id/:problemId")
     .get(
       verifyAccessToken,
       isEmailVerified,
       controllers.getAllSubmissionsForProblem.bind(controllers),
     );
   router
-    .route("/get-submissions-for-problem-count/id/:projectId")
+    .route("/get-submissions-for-problem-count/id/:problemId")
     .get(
       verifyAccessToken,
       isEmailVerified,

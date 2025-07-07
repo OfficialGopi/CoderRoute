@@ -99,6 +99,11 @@ export type Contest = Prisma.ContestModel
  * 
  */
 export type ContestProblem = Prisma.ContestProblemModel
+/**
+ * Model ContestParticipation
+ * 
+ */
+export type ContestParticipation = Prisma.ContestParticipationModel
 
 export type USER_ROLE = $Enums.USER_ROLE
 export const USER_ROLE = $Enums.USER_ROLE

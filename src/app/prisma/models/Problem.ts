@@ -573,6 +573,11 @@ export type ProblemScalarRelationFilter = {
   isNot?: Prisma.ProblemWhereInput
 }
 
+export type ProblemNullableScalarRelationFilter = {
+  is?: Prisma.ProblemWhereInput | null
+  isNot?: Prisma.ProblemWhereInput | null
+}
+
 export type ProblemCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.ProblemCreateWithoutUserInput, Prisma.ProblemUncheckedCreateWithoutUserInput> | Prisma.ProblemCreateWithoutUserInput[] | Prisma.ProblemUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.ProblemCreateOrConnectWithoutUserInput | Prisma.ProblemCreateOrConnectWithoutUserInput[]
@@ -703,10 +708,12 @@ export type ProblemCreateNestedOneWithoutDiscussionInput = {
   connect?: Prisma.ProblemWhereUniqueInput
 }
 
-export type ProblemUpdateOneRequiredWithoutDiscussionNestedInput = {
+export type ProblemUpdateOneWithoutDiscussionNestedInput = {
   create?: Prisma.XOR<Prisma.ProblemCreateWithoutDiscussionInput, Prisma.ProblemUncheckedCreateWithoutDiscussionInput>
   connectOrCreate?: Prisma.ProblemCreateOrConnectWithoutDiscussionInput
   upsert?: Prisma.ProblemUpsertWithoutDiscussionInput
+  disconnect?: Prisma.ProblemWhereInput | boolean
+  delete?: Prisma.ProblemWhereInput | boolean
   connect?: Prisma.ProblemWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProblemUpdateToOneWithWhereWithoutDiscussionInput, Prisma.ProblemUpdateWithoutDiscussionInput>, Prisma.ProblemUncheckedUpdateWithoutDiscussionInput>
 }

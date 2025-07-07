@@ -35,6 +35,7 @@ export type SubmissionMinAggregateOutputType = {
   status: string | null
   memory: string | null
   time: string | null
+  contestId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -51,6 +52,7 @@ export type SubmissionMaxAggregateOutputType = {
   status: string | null
   memory: string | null
   time: string | null
+  contestId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -68,6 +70,7 @@ export type SubmissionCountAggregateOutputType = {
   status: number
   memory: number
   time: number
+  contestId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -86,6 +89,7 @@ export type SubmissionMinAggregateInputType = {
   status?: true
   memory?: true
   time?: true
+  contestId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -102,6 +106,7 @@ export type SubmissionMaxAggregateInputType = {
   status?: true
   memory?: true
   time?: true
+  contestId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -119,6 +124,7 @@ export type SubmissionCountAggregateInputType = {
   status?: true
   memory?: true
   time?: true
+  contestId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -209,6 +215,7 @@ export type SubmissionGroupByOutputType = {
   status: string
   memory: string | null
   time: string | null
+  contestId: string | null
   createdAt: Date
   updatedAt: Date
   _count: SubmissionCountAggregateOutputType | null
@@ -247,8 +254,10 @@ export type SubmissionWhereInput = {
   status?: Prisma.StringFilter<"Submission"> | string
   memory?: Prisma.StringNullableFilter<"Submission"> | string | null
   time?: Prisma.StringNullableFilter<"Submission"> | string | null
+  contestId?: Prisma.StringNullableFilter<"Submission"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Submission"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Submission"> | Date | string
+  contest?: Prisma.XOR<Prisma.ContestNullableScalarRelationFilter, Prisma.ContestWhereInput> | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   problem?: Prisma.XOR<Prisma.ProblemScalarRelationFilter, Prisma.ProblemWhereInput>
   testCases?: Prisma.TestCaseResultListRelationFilter
@@ -267,8 +276,10 @@ export type SubmissionOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   memory?: Prisma.SortOrderInput | Prisma.SortOrder
   time?: Prisma.SortOrderInput | Prisma.SortOrder
+  contestId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  contest?: Prisma.ContestOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
   problem?: Prisma.ProblemOrderByWithRelationInput
   testCases?: Prisma.TestCaseResultOrderByRelationAggregateInput
@@ -290,8 +301,10 @@ export type SubmissionWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.StringFilter<"Submission"> | string
   memory?: Prisma.StringNullableFilter<"Submission"> | string | null
   time?: Prisma.StringNullableFilter<"Submission"> | string | null
+  contestId?: Prisma.StringNullableFilter<"Submission"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Submission"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Submission"> | Date | string
+  contest?: Prisma.XOR<Prisma.ContestNullableScalarRelationFilter, Prisma.ContestWhereInput> | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   problem?: Prisma.XOR<Prisma.ProblemScalarRelationFilter, Prisma.ProblemWhereInput>
   testCases?: Prisma.TestCaseResultListRelationFilter
@@ -310,6 +323,7 @@ export type SubmissionOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   memory?: Prisma.SortOrderInput | Prisma.SortOrder
   time?: Prisma.SortOrderInput | Prisma.SortOrder
+  contestId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.SubmissionCountOrderByAggregateInput
@@ -333,6 +347,7 @@ export type SubmissionScalarWhereWithAggregatesInput = {
   status?: Prisma.StringWithAggregatesFilter<"Submission"> | string
   memory?: Prisma.StringNullableWithAggregatesFilter<"Submission"> | string | null
   time?: Prisma.StringNullableWithAggregatesFilter<"Submission"> | string | null
+  contestId?: Prisma.StringNullableWithAggregatesFilter<"Submission"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Submission"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Submission"> | Date | string
 }
@@ -350,6 +365,7 @@ export type SubmissionCreateInput = {
   time?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  contest?: Prisma.ContestCreateNestedOneWithoutSubmissionInput
   user: Prisma.UserCreateNestedOneWithoutSubmissionInput
   problem: Prisma.ProblemCreateNestedOneWithoutSubmissionInput
   testCases?: Prisma.TestCaseResultCreateNestedManyWithoutSubmissionInput
@@ -368,6 +384,7 @@ export type SubmissionUncheckedCreateInput = {
   status: string
   memory?: string | null
   time?: string | null
+  contestId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   testCases?: Prisma.TestCaseResultUncheckedCreateNestedManyWithoutSubmissionInput
@@ -386,6 +403,7 @@ export type SubmissionUpdateInput = {
   time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contest?: Prisma.ContestUpdateOneWithoutSubmissionNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutSubmissionNestedInput
   problem?: Prisma.ProblemUpdateOneRequiredWithoutSubmissionNestedInput
   testCases?: Prisma.TestCaseResultUpdateManyWithoutSubmissionNestedInput
@@ -404,6 +422,7 @@ export type SubmissionUncheckedUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   memory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   testCases?: Prisma.TestCaseResultUncheckedUpdateManyWithoutSubmissionNestedInput
@@ -422,6 +441,7 @@ export type SubmissionCreateManyInput = {
   status: string
   memory?: string | null
   time?: string | null
+  contestId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -454,6 +474,7 @@ export type SubmissionUncheckedUpdateManyInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   memory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -481,6 +502,7 @@ export type SubmissionCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   memory?: Prisma.SortOrder
   time?: Prisma.SortOrder
+  contestId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -497,6 +519,7 @@ export type SubmissionMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   memory?: Prisma.SortOrder
   time?: Prisma.SortOrder
+  contestId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -513,6 +536,7 @@ export type SubmissionMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   memory?: Prisma.SortOrder
   time?: Prisma.SortOrder
+  contestId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -620,6 +644,48 @@ export type SubmissionUpdateOneRequiredWithoutTestCasesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SubmissionUpdateToOneWithWhereWithoutTestCasesInput, Prisma.SubmissionUpdateWithoutTestCasesInput>, Prisma.SubmissionUncheckedUpdateWithoutTestCasesInput>
 }
 
+export type SubmissionCreateNestedManyWithoutContestInput = {
+  create?: Prisma.XOR<Prisma.SubmissionCreateWithoutContestInput, Prisma.SubmissionUncheckedCreateWithoutContestInput> | Prisma.SubmissionCreateWithoutContestInput[] | Prisma.SubmissionUncheckedCreateWithoutContestInput[]
+  connectOrCreate?: Prisma.SubmissionCreateOrConnectWithoutContestInput | Prisma.SubmissionCreateOrConnectWithoutContestInput[]
+  createMany?: Prisma.SubmissionCreateManyContestInputEnvelope
+  connect?: Prisma.SubmissionWhereUniqueInput | Prisma.SubmissionWhereUniqueInput[]
+}
+
+export type SubmissionUncheckedCreateNestedManyWithoutContestInput = {
+  create?: Prisma.XOR<Prisma.SubmissionCreateWithoutContestInput, Prisma.SubmissionUncheckedCreateWithoutContestInput> | Prisma.SubmissionCreateWithoutContestInput[] | Prisma.SubmissionUncheckedCreateWithoutContestInput[]
+  connectOrCreate?: Prisma.SubmissionCreateOrConnectWithoutContestInput | Prisma.SubmissionCreateOrConnectWithoutContestInput[]
+  createMany?: Prisma.SubmissionCreateManyContestInputEnvelope
+  connect?: Prisma.SubmissionWhereUniqueInput | Prisma.SubmissionWhereUniqueInput[]
+}
+
+export type SubmissionUpdateManyWithoutContestNestedInput = {
+  create?: Prisma.XOR<Prisma.SubmissionCreateWithoutContestInput, Prisma.SubmissionUncheckedCreateWithoutContestInput> | Prisma.SubmissionCreateWithoutContestInput[] | Prisma.SubmissionUncheckedCreateWithoutContestInput[]
+  connectOrCreate?: Prisma.SubmissionCreateOrConnectWithoutContestInput | Prisma.SubmissionCreateOrConnectWithoutContestInput[]
+  upsert?: Prisma.SubmissionUpsertWithWhereUniqueWithoutContestInput | Prisma.SubmissionUpsertWithWhereUniqueWithoutContestInput[]
+  createMany?: Prisma.SubmissionCreateManyContestInputEnvelope
+  set?: Prisma.SubmissionWhereUniqueInput | Prisma.SubmissionWhereUniqueInput[]
+  disconnect?: Prisma.SubmissionWhereUniqueInput | Prisma.SubmissionWhereUniqueInput[]
+  delete?: Prisma.SubmissionWhereUniqueInput | Prisma.SubmissionWhereUniqueInput[]
+  connect?: Prisma.SubmissionWhereUniqueInput | Prisma.SubmissionWhereUniqueInput[]
+  update?: Prisma.SubmissionUpdateWithWhereUniqueWithoutContestInput | Prisma.SubmissionUpdateWithWhereUniqueWithoutContestInput[]
+  updateMany?: Prisma.SubmissionUpdateManyWithWhereWithoutContestInput | Prisma.SubmissionUpdateManyWithWhereWithoutContestInput[]
+  deleteMany?: Prisma.SubmissionScalarWhereInput | Prisma.SubmissionScalarWhereInput[]
+}
+
+export type SubmissionUncheckedUpdateManyWithoutContestNestedInput = {
+  create?: Prisma.XOR<Prisma.SubmissionCreateWithoutContestInput, Prisma.SubmissionUncheckedCreateWithoutContestInput> | Prisma.SubmissionCreateWithoutContestInput[] | Prisma.SubmissionUncheckedCreateWithoutContestInput[]
+  connectOrCreate?: Prisma.SubmissionCreateOrConnectWithoutContestInput | Prisma.SubmissionCreateOrConnectWithoutContestInput[]
+  upsert?: Prisma.SubmissionUpsertWithWhereUniqueWithoutContestInput | Prisma.SubmissionUpsertWithWhereUniqueWithoutContestInput[]
+  createMany?: Prisma.SubmissionCreateManyContestInputEnvelope
+  set?: Prisma.SubmissionWhereUniqueInput | Prisma.SubmissionWhereUniqueInput[]
+  disconnect?: Prisma.SubmissionWhereUniqueInput | Prisma.SubmissionWhereUniqueInput[]
+  delete?: Prisma.SubmissionWhereUniqueInput | Prisma.SubmissionWhereUniqueInput[]
+  connect?: Prisma.SubmissionWhereUniqueInput | Prisma.SubmissionWhereUniqueInput[]
+  update?: Prisma.SubmissionUpdateWithWhereUniqueWithoutContestInput | Prisma.SubmissionUpdateWithWhereUniqueWithoutContestInput[]
+  updateMany?: Prisma.SubmissionUpdateManyWithWhereWithoutContestInput | Prisma.SubmissionUpdateManyWithWhereWithoutContestInput[]
+  deleteMany?: Prisma.SubmissionScalarWhereInput | Prisma.SubmissionScalarWhereInput[]
+}
+
 export type SubmissionCreateWithoutUserInput = {
   id?: string
   sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -633,6 +699,7 @@ export type SubmissionCreateWithoutUserInput = {
   time?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  contest?: Prisma.ContestCreateNestedOneWithoutSubmissionInput
   problem: Prisma.ProblemCreateNestedOneWithoutSubmissionInput
   testCases?: Prisma.TestCaseResultCreateNestedManyWithoutSubmissionInput
 }
@@ -649,6 +716,7 @@ export type SubmissionUncheckedCreateWithoutUserInput = {
   status: string
   memory?: string | null
   time?: string | null
+  contestId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   testCases?: Prisma.TestCaseResultUncheckedCreateNestedManyWithoutSubmissionInput
@@ -696,6 +764,7 @@ export type SubmissionScalarWhereInput = {
   status?: Prisma.StringFilter<"Submission"> | string
   memory?: Prisma.StringNullableFilter<"Submission"> | string | null
   time?: Prisma.StringNullableFilter<"Submission"> | string | null
+  contestId?: Prisma.StringNullableFilter<"Submission"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Submission"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Submission"> | Date | string
 }
@@ -713,6 +782,7 @@ export type SubmissionCreateWithoutProblemInput = {
   time?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  contest?: Prisma.ContestCreateNestedOneWithoutSubmissionInput
   user: Prisma.UserCreateNestedOneWithoutSubmissionInput
   testCases?: Prisma.TestCaseResultCreateNestedManyWithoutSubmissionInput
 }
@@ -729,6 +799,7 @@ export type SubmissionUncheckedCreateWithoutProblemInput = {
   status: string
   memory?: string | null
   time?: string | null
+  contestId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   testCases?: Prisma.TestCaseResultUncheckedCreateNestedManyWithoutSubmissionInput
@@ -773,6 +844,7 @@ export type SubmissionCreateWithoutTestCasesInput = {
   time?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  contest?: Prisma.ContestCreateNestedOneWithoutSubmissionInput
   user: Prisma.UserCreateNestedOneWithoutSubmissionInput
   problem: Prisma.ProblemCreateNestedOneWithoutSubmissionInput
 }
@@ -790,6 +862,7 @@ export type SubmissionUncheckedCreateWithoutTestCasesInput = {
   status: string
   memory?: string | null
   time?: string | null
+  contestId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -823,6 +896,7 @@ export type SubmissionUpdateWithoutTestCasesInput = {
   time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contest?: Prisma.ContestUpdateOneWithoutSubmissionNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutSubmissionNestedInput
   problem?: Prisma.ProblemUpdateOneRequiredWithoutSubmissionNestedInput
 }
@@ -840,8 +914,71 @@ export type SubmissionUncheckedUpdateWithoutTestCasesInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   memory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SubmissionCreateWithoutContestInput = {
+  id?: string
+  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  language: string
+  stdin?: string | null
+  stdout?: string | null
+  stderr?: string | null
+  compileOutput?: string | null
+  status: string
+  memory?: string | null
+  time?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutSubmissionInput
+  problem: Prisma.ProblemCreateNestedOneWithoutSubmissionInput
+  testCases?: Prisma.TestCaseResultCreateNestedManyWithoutSubmissionInput
+}
+
+export type SubmissionUncheckedCreateWithoutContestInput = {
+  id?: string
+  userId: string
+  problemId: string
+  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  language: string
+  stdin?: string | null
+  stdout?: string | null
+  stderr?: string | null
+  compileOutput?: string | null
+  status: string
+  memory?: string | null
+  time?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  testCases?: Prisma.TestCaseResultUncheckedCreateNestedManyWithoutSubmissionInput
+}
+
+export type SubmissionCreateOrConnectWithoutContestInput = {
+  where: Prisma.SubmissionWhereUniqueInput
+  create: Prisma.XOR<Prisma.SubmissionCreateWithoutContestInput, Prisma.SubmissionUncheckedCreateWithoutContestInput>
+}
+
+export type SubmissionCreateManyContestInputEnvelope = {
+  data: Prisma.SubmissionCreateManyContestInput | Prisma.SubmissionCreateManyContestInput[]
+  skipDuplicates?: boolean
+}
+
+export type SubmissionUpsertWithWhereUniqueWithoutContestInput = {
+  where: Prisma.SubmissionWhereUniqueInput
+  update: Prisma.XOR<Prisma.SubmissionUpdateWithoutContestInput, Prisma.SubmissionUncheckedUpdateWithoutContestInput>
+  create: Prisma.XOR<Prisma.SubmissionCreateWithoutContestInput, Prisma.SubmissionUncheckedCreateWithoutContestInput>
+}
+
+export type SubmissionUpdateWithWhereUniqueWithoutContestInput = {
+  where: Prisma.SubmissionWhereUniqueInput
+  data: Prisma.XOR<Prisma.SubmissionUpdateWithoutContestInput, Prisma.SubmissionUncheckedUpdateWithoutContestInput>
+}
+
+export type SubmissionUpdateManyWithWhereWithoutContestInput = {
+  where: Prisma.SubmissionScalarWhereInput
+  data: Prisma.XOR<Prisma.SubmissionUpdateManyMutationInput, Prisma.SubmissionUncheckedUpdateManyWithoutContestInput>
 }
 
 export type SubmissionCreateManyUserInput = {
@@ -856,6 +993,7 @@ export type SubmissionCreateManyUserInput = {
   status: string
   memory?: string | null
   time?: string | null
+  contestId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -873,6 +1011,7 @@ export type SubmissionUpdateWithoutUserInput = {
   time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contest?: Prisma.ContestUpdateOneWithoutSubmissionNestedInput
   problem?: Prisma.ProblemUpdateOneRequiredWithoutSubmissionNestedInput
   testCases?: Prisma.TestCaseResultUpdateManyWithoutSubmissionNestedInput
 }
@@ -889,6 +1028,7 @@ export type SubmissionUncheckedUpdateWithoutUserInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   memory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   testCases?: Prisma.TestCaseResultUncheckedUpdateManyWithoutSubmissionNestedInput
@@ -906,6 +1046,7 @@ export type SubmissionUncheckedUpdateManyWithoutUserInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   memory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -922,6 +1063,7 @@ export type SubmissionCreateManyProblemInput = {
   status: string
   memory?: string | null
   time?: string | null
+  contestId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -939,6 +1081,7 @@ export type SubmissionUpdateWithoutProblemInput = {
   time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contest?: Prisma.ContestUpdateOneWithoutSubmissionNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutSubmissionNestedInput
   testCases?: Prisma.TestCaseResultUpdateManyWithoutSubmissionNestedInput
 }
@@ -955,6 +1098,7 @@ export type SubmissionUncheckedUpdateWithoutProblemInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   memory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   testCases?: Prisma.TestCaseResultUncheckedUpdateManyWithoutSubmissionNestedInput
@@ -963,6 +1107,77 @@ export type SubmissionUncheckedUpdateWithoutProblemInput = {
 export type SubmissionUncheckedUpdateManyWithoutProblemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  compileOutput?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  memory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SubmissionCreateManyContestInput = {
+  id?: string
+  userId: string
+  problemId: string
+  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  language: string
+  stdin?: string | null
+  stdout?: string | null
+  stderr?: string | null
+  compileOutput?: string | null
+  status: string
+  memory?: string | null
+  time?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SubmissionUpdateWithoutContestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  compileOutput?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  memory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutSubmissionNestedInput
+  problem?: Prisma.ProblemUpdateOneRequiredWithoutSubmissionNestedInput
+  testCases?: Prisma.TestCaseResultUpdateManyWithoutSubmissionNestedInput
+}
+
+export type SubmissionUncheckedUpdateWithoutContestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  problemId?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  compileOutput?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  memory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  testCases?: Prisma.TestCaseResultUncheckedUpdateManyWithoutSubmissionNestedInput
+}
+
+export type SubmissionUncheckedUpdateManyWithoutContestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  problemId?: Prisma.StringFieldUpdateOperationsInput | string
   sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   language?: Prisma.StringFieldUpdateOperationsInput | string
   stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1020,8 +1235,10 @@ export type SubmissionSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   status?: boolean
   memory?: boolean
   time?: boolean
+  contestId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  contest?: boolean | Prisma.Submission$contestArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   problem?: boolean | Prisma.ProblemDefaultArgs<ExtArgs>
   testCases?: boolean | Prisma.Submission$testCasesArgs<ExtArgs>
@@ -1041,8 +1258,10 @@ export type SubmissionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   status?: boolean
   memory?: boolean
   time?: boolean
+  contestId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  contest?: boolean | Prisma.Submission$contestArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   problem?: boolean | Prisma.ProblemDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["submission"]>
@@ -1060,8 +1279,10 @@ export type SubmissionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   status?: boolean
   memory?: boolean
   time?: boolean
+  contestId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  contest?: boolean | Prisma.Submission$contestArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   problem?: boolean | Prisma.ProblemDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["submission"]>
@@ -1079,22 +1300,26 @@ export type SubmissionSelectScalar = {
   status?: boolean
   memory?: boolean
   time?: boolean
+  contestId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SubmissionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "problemId" | "sourceCode" | "language" | "stdin" | "stdout" | "stderr" | "compileOutput" | "status" | "memory" | "time" | "createdAt" | "updatedAt", ExtArgs["result"]["submission"]>
+export type SubmissionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "problemId" | "sourceCode" | "language" | "stdin" | "stdout" | "stderr" | "compileOutput" | "status" | "memory" | "time" | "contestId" | "createdAt" | "updatedAt", ExtArgs["result"]["submission"]>
 export type SubmissionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  contest?: boolean | Prisma.Submission$contestArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   problem?: boolean | Prisma.ProblemDefaultArgs<ExtArgs>
   testCases?: boolean | Prisma.Submission$testCasesArgs<ExtArgs>
   _count?: boolean | Prisma.SubmissionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SubmissionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  contest?: boolean | Prisma.Submission$contestArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   problem?: boolean | Prisma.ProblemDefaultArgs<ExtArgs>
 }
 export type SubmissionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  contest?: boolean | Prisma.Submission$contestArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   problem?: boolean | Prisma.ProblemDefaultArgs<ExtArgs>
 }
@@ -1102,6 +1327,7 @@ export type SubmissionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.E
 export type $SubmissionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Submission"
   objects: {
+    contest: Prisma.$ContestPayload<ExtArgs> | null
     user: Prisma.$UserPayload<ExtArgs>
     problem: Prisma.$ProblemPayload<ExtArgs>
     testCases: Prisma.$TestCaseResultPayload<ExtArgs>[]
@@ -1119,6 +1345,7 @@ export type $SubmissionPayload<ExtArgs extends runtime.Types.Extensions.Internal
     status: string
     memory: string | null
     time: string | null
+    contestId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["submission"]>
@@ -1515,6 +1742,7 @@ readonly fields: SubmissionFieldRefs;
  */
 export interface Prisma__SubmissionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  contest<T extends Prisma.Submission$contestArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Submission$contestArgs<ExtArgs>>): Prisma.Prisma__ContestClient<runtime.Types.Result.GetResult<Prisma.$ContestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   problem<T extends Prisma.ProblemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProblemDefaultArgs<ExtArgs>>): Prisma.Prisma__ProblemClient<runtime.Types.Result.GetResult<Prisma.$ProblemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   testCases<T extends Prisma.Submission$testCasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Submission$testCasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TestCaseResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1559,6 +1787,7 @@ export interface SubmissionFieldRefs {
   readonly status: Prisma.FieldRef<"Submission", 'String'>
   readonly memory: Prisma.FieldRef<"Submission", 'String'>
   readonly time: Prisma.FieldRef<"Submission", 'String'>
+  readonly contestId: Prisma.FieldRef<"Submission", 'String'>
   readonly createdAt: Prisma.FieldRef<"Submission", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Submission", 'DateTime'>
 }
@@ -1954,6 +2183,25 @@ export type SubmissionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Limit how many Submissions to delete.
    */
   limit?: number
+}
+
+/**
+ * Submission.contest
+ */
+export type Submission$contestArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Contest
+   */
+  select?: Prisma.ContestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Contest
+   */
+  omit?: Prisma.ContestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContestInclude<ExtArgs> | null
+  where?: Prisma.ContestWhereInput
 }
 
 /**

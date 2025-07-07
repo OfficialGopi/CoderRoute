@@ -28,7 +28,10 @@ export type DiscussionMinAggregateOutputType = {
   content: string | null
   userId: string | null
   problemId: string | null
+  parentId: string | null
   createdAt: Date | null
+  updatedAt: Date | null
+  deleted: boolean | null
 }
 
 export type DiscussionMaxAggregateOutputType = {
@@ -36,7 +39,10 @@ export type DiscussionMaxAggregateOutputType = {
   content: string | null
   userId: string | null
   problemId: string | null
+  parentId: string | null
   createdAt: Date | null
+  updatedAt: Date | null
+  deleted: boolean | null
 }
 
 export type DiscussionCountAggregateOutputType = {
@@ -44,7 +50,10 @@ export type DiscussionCountAggregateOutputType = {
   content: number
   userId: number
   problemId: number
+  parentId: number
   createdAt: number
+  updatedAt: number
+  deleted: number
   _all: number
 }
 
@@ -54,7 +63,10 @@ export type DiscussionMinAggregateInputType = {
   content?: true
   userId?: true
   problemId?: true
+  parentId?: true
   createdAt?: true
+  updatedAt?: true
+  deleted?: true
 }
 
 export type DiscussionMaxAggregateInputType = {
@@ -62,7 +74,10 @@ export type DiscussionMaxAggregateInputType = {
   content?: true
   userId?: true
   problemId?: true
+  parentId?: true
   createdAt?: true
+  updatedAt?: true
+  deleted?: true
 }
 
 export type DiscussionCountAggregateInputType = {
@@ -70,7 +85,10 @@ export type DiscussionCountAggregateInputType = {
   content?: true
   userId?: true
   problemId?: true
+  parentId?: true
   createdAt?: true
+  updatedAt?: true
+  deleted?: true
   _all?: true
 }
 
@@ -150,8 +168,11 @@ export type DiscussionGroupByOutputType = {
   id: string
   content: string
   userId: string
-  problemId: string
+  problemId: string | null
+  parentId: string | null
   createdAt: Date
+  updatedAt: Date
+  deleted: boolean
   _count: DiscussionCountAggregateOutputType | null
   _min: DiscussionMinAggregateOutputType | null
   _max: DiscussionMaxAggregateOutputType | null
@@ -179,20 +200,30 @@ export type DiscussionWhereInput = {
   id?: Prisma.StringFilter<"Discussion"> | string
   content?: Prisma.StringFilter<"Discussion"> | string
   userId?: Prisma.StringFilter<"Discussion"> | string
-  problemId?: Prisma.StringFilter<"Discussion"> | string
+  problemId?: Prisma.StringNullableFilter<"Discussion"> | string | null
+  parentId?: Prisma.StringNullableFilter<"Discussion"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Discussion"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Discussion"> | Date | string
+  deleted?: Prisma.BoolFilter<"Discussion"> | boolean
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  problem?: Prisma.XOR<Prisma.ProblemScalarRelationFilter, Prisma.ProblemWhereInput>
+  problem?: Prisma.XOR<Prisma.ProblemNullableScalarRelationFilter, Prisma.ProblemWhereInput> | null
+  parent?: Prisma.XOR<Prisma.DiscussionNullableScalarRelationFilter, Prisma.DiscussionWhereInput> | null
+  replies?: Prisma.DiscussionListRelationFilter
 }
 
 export type DiscussionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   content?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  problemId?: Prisma.SortOrder
+  problemId?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deleted?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   problem?: Prisma.ProblemOrderByWithRelationInput
+  parent?: Prisma.DiscussionOrderByWithRelationInput
+  replies?: Prisma.DiscussionOrderByRelationAggregateInput
 }
 
 export type DiscussionWhereUniqueInput = Prisma.AtLeast<{
@@ -202,18 +233,26 @@ export type DiscussionWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.DiscussionWhereInput | Prisma.DiscussionWhereInput[]
   content?: Prisma.StringFilter<"Discussion"> | string
   userId?: Prisma.StringFilter<"Discussion"> | string
-  problemId?: Prisma.StringFilter<"Discussion"> | string
+  problemId?: Prisma.StringNullableFilter<"Discussion"> | string | null
+  parentId?: Prisma.StringNullableFilter<"Discussion"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Discussion"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Discussion"> | Date | string
+  deleted?: Prisma.BoolFilter<"Discussion"> | boolean
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  problem?: Prisma.XOR<Prisma.ProblemScalarRelationFilter, Prisma.ProblemWhereInput>
+  problem?: Prisma.XOR<Prisma.ProblemNullableScalarRelationFilter, Prisma.ProblemWhereInput> | null
+  parent?: Prisma.XOR<Prisma.DiscussionNullableScalarRelationFilter, Prisma.DiscussionWhereInput> | null
+  replies?: Prisma.DiscussionListRelationFilter
 }, "id">
 
 export type DiscussionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   content?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  problemId?: Prisma.SortOrder
+  problemId?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deleted?: Prisma.SortOrder
   _count?: Prisma.DiscussionCountOrderByAggregateInput
   _max?: Prisma.DiscussionMaxOrderByAggregateInput
   _min?: Prisma.DiscussionMinOrderByAggregateInput
@@ -226,62 +265,89 @@ export type DiscussionScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Discussion"> | string
   content?: Prisma.StringWithAggregatesFilter<"Discussion"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Discussion"> | string
-  problemId?: Prisma.StringWithAggregatesFilter<"Discussion"> | string
+  problemId?: Prisma.StringNullableWithAggregatesFilter<"Discussion"> | string | null
+  parentId?: Prisma.StringNullableWithAggregatesFilter<"Discussion"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Discussion"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Discussion"> | Date | string
+  deleted?: Prisma.BoolWithAggregatesFilter<"Discussion"> | boolean
 }
 
 export type DiscussionCreateInput = {
   id?: string
   content: string
   createdAt?: Date | string
+  updatedAt?: Date | string
+  deleted?: boolean
   user: Prisma.UserCreateNestedOneWithoutDiscussionInput
-  problem: Prisma.ProblemCreateNestedOneWithoutDiscussionInput
+  problem?: Prisma.ProblemCreateNestedOneWithoutDiscussionInput
+  parent?: Prisma.DiscussionCreateNestedOneWithoutRepliesInput
+  replies?: Prisma.DiscussionCreateNestedManyWithoutParentInput
 }
 
 export type DiscussionUncheckedCreateInput = {
   id?: string
   content: string
   userId: string
-  problemId: string
+  problemId?: string | null
+  parentId?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  deleted?: boolean
+  replies?: Prisma.DiscussionUncheckedCreateNestedManyWithoutParentInput
 }
 
 export type DiscussionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutDiscussionNestedInput
-  problem?: Prisma.ProblemUpdateOneRequiredWithoutDiscussionNestedInput
+  problem?: Prisma.ProblemUpdateOneWithoutDiscussionNestedInput
+  parent?: Prisma.DiscussionUpdateOneWithoutRepliesNestedInput
+  replies?: Prisma.DiscussionUpdateManyWithoutParentNestedInput
 }
 
 export type DiscussionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  problemId?: Prisma.StringFieldUpdateOperationsInput | string
+  problemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replies?: Prisma.DiscussionUncheckedUpdateManyWithoutParentNestedInput
 }
 
 export type DiscussionCreateManyInput = {
   id?: string
   content: string
   userId: string
-  problemId: string
+  problemId?: string | null
+  parentId?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  deleted?: boolean
 }
 
 export type DiscussionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type DiscussionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  problemId?: Prisma.StringFieldUpdateOperationsInput | string
+  problemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type DiscussionListRelationFilter = {
@@ -294,12 +360,20 @@ export type DiscussionOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type DiscussionNullableScalarRelationFilter = {
+  is?: Prisma.DiscussionWhereInput | null
+  isNot?: Prisma.DiscussionWhereInput | null
+}
+
 export type DiscussionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   content?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   problemId?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deleted?: Prisma.SortOrder
 }
 
 export type DiscussionMaxOrderByAggregateInput = {
@@ -307,7 +381,10 @@ export type DiscussionMaxOrderByAggregateInput = {
   content?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   problemId?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deleted?: Prisma.SortOrder
 }
 
 export type DiscussionMinOrderByAggregateInput = {
@@ -315,7 +392,10 @@ export type DiscussionMinOrderByAggregateInput = {
   content?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   problemId?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deleted?: Prisma.SortOrder
 }
 
 export type DiscussionCreateNestedManyWithoutUserInput = {
@@ -402,18 +482,84 @@ export type DiscussionUncheckedUpdateManyWithoutProblemNestedInput = {
   deleteMany?: Prisma.DiscussionScalarWhereInput | Prisma.DiscussionScalarWhereInput[]
 }
 
+export type DiscussionCreateNestedOneWithoutRepliesInput = {
+  create?: Prisma.XOR<Prisma.DiscussionCreateWithoutRepliesInput, Prisma.DiscussionUncheckedCreateWithoutRepliesInput>
+  connectOrCreate?: Prisma.DiscussionCreateOrConnectWithoutRepliesInput
+  connect?: Prisma.DiscussionWhereUniqueInput
+}
+
+export type DiscussionCreateNestedManyWithoutParentInput = {
+  create?: Prisma.XOR<Prisma.DiscussionCreateWithoutParentInput, Prisma.DiscussionUncheckedCreateWithoutParentInput> | Prisma.DiscussionCreateWithoutParentInput[] | Prisma.DiscussionUncheckedCreateWithoutParentInput[]
+  connectOrCreate?: Prisma.DiscussionCreateOrConnectWithoutParentInput | Prisma.DiscussionCreateOrConnectWithoutParentInput[]
+  createMany?: Prisma.DiscussionCreateManyParentInputEnvelope
+  connect?: Prisma.DiscussionWhereUniqueInput | Prisma.DiscussionWhereUniqueInput[]
+}
+
+export type DiscussionUncheckedCreateNestedManyWithoutParentInput = {
+  create?: Prisma.XOR<Prisma.DiscussionCreateWithoutParentInput, Prisma.DiscussionUncheckedCreateWithoutParentInput> | Prisma.DiscussionCreateWithoutParentInput[] | Prisma.DiscussionUncheckedCreateWithoutParentInput[]
+  connectOrCreate?: Prisma.DiscussionCreateOrConnectWithoutParentInput | Prisma.DiscussionCreateOrConnectWithoutParentInput[]
+  createMany?: Prisma.DiscussionCreateManyParentInputEnvelope
+  connect?: Prisma.DiscussionWhereUniqueInput | Prisma.DiscussionWhereUniqueInput[]
+}
+
+export type DiscussionUpdateOneWithoutRepliesNestedInput = {
+  create?: Prisma.XOR<Prisma.DiscussionCreateWithoutRepliesInput, Prisma.DiscussionUncheckedCreateWithoutRepliesInput>
+  connectOrCreate?: Prisma.DiscussionCreateOrConnectWithoutRepliesInput
+  upsert?: Prisma.DiscussionUpsertWithoutRepliesInput
+  disconnect?: Prisma.DiscussionWhereInput | boolean
+  delete?: Prisma.DiscussionWhereInput | boolean
+  connect?: Prisma.DiscussionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DiscussionUpdateToOneWithWhereWithoutRepliesInput, Prisma.DiscussionUpdateWithoutRepliesInput>, Prisma.DiscussionUncheckedUpdateWithoutRepliesInput>
+}
+
+export type DiscussionUpdateManyWithoutParentNestedInput = {
+  create?: Prisma.XOR<Prisma.DiscussionCreateWithoutParentInput, Prisma.DiscussionUncheckedCreateWithoutParentInput> | Prisma.DiscussionCreateWithoutParentInput[] | Prisma.DiscussionUncheckedCreateWithoutParentInput[]
+  connectOrCreate?: Prisma.DiscussionCreateOrConnectWithoutParentInput | Prisma.DiscussionCreateOrConnectWithoutParentInput[]
+  upsert?: Prisma.DiscussionUpsertWithWhereUniqueWithoutParentInput | Prisma.DiscussionUpsertWithWhereUniqueWithoutParentInput[]
+  createMany?: Prisma.DiscussionCreateManyParentInputEnvelope
+  set?: Prisma.DiscussionWhereUniqueInput | Prisma.DiscussionWhereUniqueInput[]
+  disconnect?: Prisma.DiscussionWhereUniqueInput | Prisma.DiscussionWhereUniqueInput[]
+  delete?: Prisma.DiscussionWhereUniqueInput | Prisma.DiscussionWhereUniqueInput[]
+  connect?: Prisma.DiscussionWhereUniqueInput | Prisma.DiscussionWhereUniqueInput[]
+  update?: Prisma.DiscussionUpdateWithWhereUniqueWithoutParentInput | Prisma.DiscussionUpdateWithWhereUniqueWithoutParentInput[]
+  updateMany?: Prisma.DiscussionUpdateManyWithWhereWithoutParentInput | Prisma.DiscussionUpdateManyWithWhereWithoutParentInput[]
+  deleteMany?: Prisma.DiscussionScalarWhereInput | Prisma.DiscussionScalarWhereInput[]
+}
+
+export type DiscussionUncheckedUpdateManyWithoutParentNestedInput = {
+  create?: Prisma.XOR<Prisma.DiscussionCreateWithoutParentInput, Prisma.DiscussionUncheckedCreateWithoutParentInput> | Prisma.DiscussionCreateWithoutParentInput[] | Prisma.DiscussionUncheckedCreateWithoutParentInput[]
+  connectOrCreate?: Prisma.DiscussionCreateOrConnectWithoutParentInput | Prisma.DiscussionCreateOrConnectWithoutParentInput[]
+  upsert?: Prisma.DiscussionUpsertWithWhereUniqueWithoutParentInput | Prisma.DiscussionUpsertWithWhereUniqueWithoutParentInput[]
+  createMany?: Prisma.DiscussionCreateManyParentInputEnvelope
+  set?: Prisma.DiscussionWhereUniqueInput | Prisma.DiscussionWhereUniqueInput[]
+  disconnect?: Prisma.DiscussionWhereUniqueInput | Prisma.DiscussionWhereUniqueInput[]
+  delete?: Prisma.DiscussionWhereUniqueInput | Prisma.DiscussionWhereUniqueInput[]
+  connect?: Prisma.DiscussionWhereUniqueInput | Prisma.DiscussionWhereUniqueInput[]
+  update?: Prisma.DiscussionUpdateWithWhereUniqueWithoutParentInput | Prisma.DiscussionUpdateWithWhereUniqueWithoutParentInput[]
+  updateMany?: Prisma.DiscussionUpdateManyWithWhereWithoutParentInput | Prisma.DiscussionUpdateManyWithWhereWithoutParentInput[]
+  deleteMany?: Prisma.DiscussionScalarWhereInput | Prisma.DiscussionScalarWhereInput[]
+}
+
 export type DiscussionCreateWithoutUserInput = {
   id?: string
   content: string
   createdAt?: Date | string
-  problem: Prisma.ProblemCreateNestedOneWithoutDiscussionInput
+  updatedAt?: Date | string
+  deleted?: boolean
+  problem?: Prisma.ProblemCreateNestedOneWithoutDiscussionInput
+  parent?: Prisma.DiscussionCreateNestedOneWithoutRepliesInput
+  replies?: Prisma.DiscussionCreateNestedManyWithoutParentInput
 }
 
 export type DiscussionUncheckedCreateWithoutUserInput = {
   id?: string
   content: string
-  problemId: string
+  problemId?: string | null
+  parentId?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  deleted?: boolean
+  replies?: Prisma.DiscussionUncheckedCreateNestedManyWithoutParentInput
 }
 
 export type DiscussionCreateOrConnectWithoutUserInput = {
@@ -449,22 +595,33 @@ export type DiscussionScalarWhereInput = {
   id?: Prisma.StringFilter<"Discussion"> | string
   content?: Prisma.StringFilter<"Discussion"> | string
   userId?: Prisma.StringFilter<"Discussion"> | string
-  problemId?: Prisma.StringFilter<"Discussion"> | string
+  problemId?: Prisma.StringNullableFilter<"Discussion"> | string | null
+  parentId?: Prisma.StringNullableFilter<"Discussion"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Discussion"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Discussion"> | Date | string
+  deleted?: Prisma.BoolFilter<"Discussion"> | boolean
 }
 
 export type DiscussionCreateWithoutProblemInput = {
   id?: string
   content: string
   createdAt?: Date | string
+  updatedAt?: Date | string
+  deleted?: boolean
   user: Prisma.UserCreateNestedOneWithoutDiscussionInput
+  parent?: Prisma.DiscussionCreateNestedOneWithoutRepliesInput
+  replies?: Prisma.DiscussionCreateNestedManyWithoutParentInput
 }
 
 export type DiscussionUncheckedCreateWithoutProblemInput = {
   id?: string
   content: string
   userId: string
+  parentId?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  deleted?: boolean
+  replies?: Prisma.DiscussionUncheckedCreateNestedManyWithoutParentInput
 }
 
 export type DiscussionCreateOrConnectWithoutProblemInput = {
@@ -493,62 +650,269 @@ export type DiscussionUpdateManyWithWhereWithoutProblemInput = {
   data: Prisma.XOR<Prisma.DiscussionUpdateManyMutationInput, Prisma.DiscussionUncheckedUpdateManyWithoutProblemInput>
 }
 
+export type DiscussionCreateWithoutRepliesInput = {
+  id?: string
+  content: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deleted?: boolean
+  user: Prisma.UserCreateNestedOneWithoutDiscussionInput
+  problem?: Prisma.ProblemCreateNestedOneWithoutDiscussionInput
+  parent?: Prisma.DiscussionCreateNestedOneWithoutRepliesInput
+}
+
+export type DiscussionUncheckedCreateWithoutRepliesInput = {
+  id?: string
+  content: string
+  userId: string
+  problemId?: string | null
+  parentId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deleted?: boolean
+}
+
+export type DiscussionCreateOrConnectWithoutRepliesInput = {
+  where: Prisma.DiscussionWhereUniqueInput
+  create: Prisma.XOR<Prisma.DiscussionCreateWithoutRepliesInput, Prisma.DiscussionUncheckedCreateWithoutRepliesInput>
+}
+
+export type DiscussionCreateWithoutParentInput = {
+  id?: string
+  content: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deleted?: boolean
+  user: Prisma.UserCreateNestedOneWithoutDiscussionInput
+  problem?: Prisma.ProblemCreateNestedOneWithoutDiscussionInput
+  replies?: Prisma.DiscussionCreateNestedManyWithoutParentInput
+}
+
+export type DiscussionUncheckedCreateWithoutParentInput = {
+  id?: string
+  content: string
+  userId: string
+  problemId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deleted?: boolean
+  replies?: Prisma.DiscussionUncheckedCreateNestedManyWithoutParentInput
+}
+
+export type DiscussionCreateOrConnectWithoutParentInput = {
+  where: Prisma.DiscussionWhereUniqueInput
+  create: Prisma.XOR<Prisma.DiscussionCreateWithoutParentInput, Prisma.DiscussionUncheckedCreateWithoutParentInput>
+}
+
+export type DiscussionCreateManyParentInputEnvelope = {
+  data: Prisma.DiscussionCreateManyParentInput | Prisma.DiscussionCreateManyParentInput[]
+  skipDuplicates?: boolean
+}
+
+export type DiscussionUpsertWithoutRepliesInput = {
+  update: Prisma.XOR<Prisma.DiscussionUpdateWithoutRepliesInput, Prisma.DiscussionUncheckedUpdateWithoutRepliesInput>
+  create: Prisma.XOR<Prisma.DiscussionCreateWithoutRepliesInput, Prisma.DiscussionUncheckedCreateWithoutRepliesInput>
+  where?: Prisma.DiscussionWhereInput
+}
+
+export type DiscussionUpdateToOneWithWhereWithoutRepliesInput = {
+  where?: Prisma.DiscussionWhereInput
+  data: Prisma.XOR<Prisma.DiscussionUpdateWithoutRepliesInput, Prisma.DiscussionUncheckedUpdateWithoutRepliesInput>
+}
+
+export type DiscussionUpdateWithoutRepliesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  user?: Prisma.UserUpdateOneRequiredWithoutDiscussionNestedInput
+  problem?: Prisma.ProblemUpdateOneWithoutDiscussionNestedInput
+  parent?: Prisma.DiscussionUpdateOneWithoutRepliesNestedInput
+}
+
+export type DiscussionUncheckedUpdateWithoutRepliesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  problemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+export type DiscussionUpsertWithWhereUniqueWithoutParentInput = {
+  where: Prisma.DiscussionWhereUniqueInput
+  update: Prisma.XOR<Prisma.DiscussionUpdateWithoutParentInput, Prisma.DiscussionUncheckedUpdateWithoutParentInput>
+  create: Prisma.XOR<Prisma.DiscussionCreateWithoutParentInput, Prisma.DiscussionUncheckedCreateWithoutParentInput>
+}
+
+export type DiscussionUpdateWithWhereUniqueWithoutParentInput = {
+  where: Prisma.DiscussionWhereUniqueInput
+  data: Prisma.XOR<Prisma.DiscussionUpdateWithoutParentInput, Prisma.DiscussionUncheckedUpdateWithoutParentInput>
+}
+
+export type DiscussionUpdateManyWithWhereWithoutParentInput = {
+  where: Prisma.DiscussionScalarWhereInput
+  data: Prisma.XOR<Prisma.DiscussionUpdateManyMutationInput, Prisma.DiscussionUncheckedUpdateManyWithoutParentInput>
+}
+
 export type DiscussionCreateManyUserInput = {
   id?: string
   content: string
-  problemId: string
+  problemId?: string | null
+  parentId?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  deleted?: boolean
 }
 
 export type DiscussionUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  problem?: Prisma.ProblemUpdateOneRequiredWithoutDiscussionNestedInput
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  problem?: Prisma.ProblemUpdateOneWithoutDiscussionNestedInput
+  parent?: Prisma.DiscussionUpdateOneWithoutRepliesNestedInput
+  replies?: Prisma.DiscussionUpdateManyWithoutParentNestedInput
 }
 
 export type DiscussionUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  problemId?: Prisma.StringFieldUpdateOperationsInput | string
+  problemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replies?: Prisma.DiscussionUncheckedUpdateManyWithoutParentNestedInput
 }
 
 export type DiscussionUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  problemId?: Prisma.StringFieldUpdateOperationsInput | string
+  problemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type DiscussionCreateManyProblemInput = {
   id?: string
   content: string
   userId: string
+  parentId?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  deleted?: boolean
 }
 
 export type DiscussionUpdateWithoutProblemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutDiscussionNestedInput
+  parent?: Prisma.DiscussionUpdateOneWithoutRepliesNestedInput
+  replies?: Prisma.DiscussionUpdateManyWithoutParentNestedInput
 }
 
 export type DiscussionUncheckedUpdateWithoutProblemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replies?: Prisma.DiscussionUncheckedUpdateManyWithoutParentNestedInput
 }
 
 export type DiscussionUncheckedUpdateManyWithoutProblemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
+export type DiscussionCreateManyParentInput = {
+  id?: string
+  content: string
+  userId: string
+  problemId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deleted?: boolean
+}
+
+export type DiscussionUpdateWithoutParentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  user?: Prisma.UserUpdateOneRequiredWithoutDiscussionNestedInput
+  problem?: Prisma.ProblemUpdateOneWithoutDiscussionNestedInput
+  replies?: Prisma.DiscussionUpdateManyWithoutParentNestedInput
+}
+
+export type DiscussionUncheckedUpdateWithoutParentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  problemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replies?: Prisma.DiscussionUncheckedUpdateManyWithoutParentNestedInput
+}
+
+export type DiscussionUncheckedUpdateManyWithoutParentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  problemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+
+/**
+ * Count Type DiscussionCountOutputType
+ */
+
+export type DiscussionCountOutputType = {
+  replies: number
+}
+
+export type DiscussionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  replies?: boolean | DiscussionCountOutputTypeCountRepliesArgs
+}
+
+/**
+ * DiscussionCountOutputType without action
+ */
+export type DiscussionCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DiscussionCountOutputType
+   */
+  select?: Prisma.DiscussionCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * DiscussionCountOutputType without action
+ */
+export type DiscussionCountOutputTypeCountRepliesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DiscussionWhereInput
+}
 
 
 export type DiscussionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -556,9 +920,15 @@ export type DiscussionSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   content?: boolean
   userId?: boolean
   problemId?: boolean
+  parentId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  deleted?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  problem?: boolean | Prisma.ProblemDefaultArgs<ExtArgs>
+  problem?: boolean | Prisma.Discussion$problemArgs<ExtArgs>
+  parent?: boolean | Prisma.Discussion$parentArgs<ExtArgs>
+  replies?: boolean | Prisma.Discussion$repliesArgs<ExtArgs>
+  _count?: boolean | Prisma.DiscussionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["discussion"]>
 
 export type DiscussionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -566,9 +936,13 @@ export type DiscussionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   content?: boolean
   userId?: boolean
   problemId?: boolean
+  parentId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  deleted?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  problem?: boolean | Prisma.ProblemDefaultArgs<ExtArgs>
+  problem?: boolean | Prisma.Discussion$problemArgs<ExtArgs>
+  parent?: boolean | Prisma.Discussion$parentArgs<ExtArgs>
 }, ExtArgs["result"]["discussion"]>
 
 export type DiscussionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -576,9 +950,13 @@ export type DiscussionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   content?: boolean
   userId?: boolean
   problemId?: boolean
+  parentId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  deleted?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  problem?: boolean | Prisma.ProblemDefaultArgs<ExtArgs>
+  problem?: boolean | Prisma.Discussion$problemArgs<ExtArgs>
+  parent?: boolean | Prisma.Discussion$parentArgs<ExtArgs>
 }, ExtArgs["result"]["discussion"]>
 
 export type DiscussionSelectScalar = {
@@ -586,35 +964,48 @@ export type DiscussionSelectScalar = {
   content?: boolean
   userId?: boolean
   problemId?: boolean
+  parentId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  deleted?: boolean
 }
 
-export type DiscussionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "content" | "userId" | "problemId" | "createdAt", ExtArgs["result"]["discussion"]>
+export type DiscussionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "content" | "userId" | "problemId" | "parentId" | "createdAt" | "updatedAt" | "deleted", ExtArgs["result"]["discussion"]>
 export type DiscussionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  problem?: boolean | Prisma.ProblemDefaultArgs<ExtArgs>
+  problem?: boolean | Prisma.Discussion$problemArgs<ExtArgs>
+  parent?: boolean | Prisma.Discussion$parentArgs<ExtArgs>
+  replies?: boolean | Prisma.Discussion$repliesArgs<ExtArgs>
+  _count?: boolean | Prisma.DiscussionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type DiscussionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  problem?: boolean | Prisma.ProblemDefaultArgs<ExtArgs>
+  problem?: boolean | Prisma.Discussion$problemArgs<ExtArgs>
+  parent?: boolean | Prisma.Discussion$parentArgs<ExtArgs>
 }
 export type DiscussionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  problem?: boolean | Prisma.ProblemDefaultArgs<ExtArgs>
+  problem?: boolean | Prisma.Discussion$problemArgs<ExtArgs>
+  parent?: boolean | Prisma.Discussion$parentArgs<ExtArgs>
 }
 
 export type $DiscussionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Discussion"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
-    problem: Prisma.$ProblemPayload<ExtArgs>
+    problem: Prisma.$ProblemPayload<ExtArgs> | null
+    parent: Prisma.$DiscussionPayload<ExtArgs> | null
+    replies: Prisma.$DiscussionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     content: string
     userId: string
-    problemId: string
+    problemId: string | null
+    parentId: string | null
     createdAt: Date
+    updatedAt: Date
+    deleted: boolean
   }, ExtArgs["result"]["discussion"]>
   composites: {}
 }
@@ -1010,7 +1401,9 @@ readonly fields: DiscussionFieldRefs;
 export interface Prisma__DiscussionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  problem<T extends Prisma.ProblemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProblemDefaultArgs<ExtArgs>>): Prisma.Prisma__ProblemClient<runtime.Types.Result.GetResult<Prisma.$ProblemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  problem<T extends Prisma.Discussion$problemArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Discussion$problemArgs<ExtArgs>>): Prisma.Prisma__ProblemClient<runtime.Types.Result.GetResult<Prisma.$ProblemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  parent<T extends Prisma.Discussion$parentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Discussion$parentArgs<ExtArgs>>): Prisma.Prisma__DiscussionClient<runtime.Types.Result.GetResult<Prisma.$DiscussionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  replies<T extends Prisma.Discussion$repliesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Discussion$repliesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DiscussionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1044,7 +1437,10 @@ export interface DiscussionFieldRefs {
   readonly content: Prisma.FieldRef<"Discussion", 'String'>
   readonly userId: Prisma.FieldRef<"Discussion", 'String'>
   readonly problemId: Prisma.FieldRef<"Discussion", 'String'>
+  readonly parentId: Prisma.FieldRef<"Discussion", 'String'>
   readonly createdAt: Prisma.FieldRef<"Discussion", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Discussion", 'DateTime'>
+  readonly deleted: Prisma.FieldRef<"Discussion", 'Boolean'>
 }
     
 
@@ -1438,6 +1834,68 @@ export type DiscussionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Limit how many Discussions to delete.
    */
   limit?: number
+}
+
+/**
+ * Discussion.problem
+ */
+export type Discussion$problemArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Problem
+   */
+  select?: Prisma.ProblemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Problem
+   */
+  omit?: Prisma.ProblemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProblemInclude<ExtArgs> | null
+  where?: Prisma.ProblemWhereInput
+}
+
+/**
+ * Discussion.parent
+ */
+export type Discussion$parentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Discussion
+   */
+  select?: Prisma.DiscussionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Discussion
+   */
+  omit?: Prisma.DiscussionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DiscussionInclude<ExtArgs> | null
+  where?: Prisma.DiscussionWhereInput
+}
+
+/**
+ * Discussion.replies
+ */
+export type Discussion$repliesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Discussion
+   */
+  select?: Prisma.DiscussionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Discussion
+   */
+  omit?: Prisma.DiscussionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DiscussionInclude<ExtArgs> | null
+  where?: Prisma.DiscussionWhereInput
+  orderBy?: Prisma.DiscussionOrderByWithRelationInput | Prisma.DiscussionOrderByWithRelationInput[]
+  cursor?: Prisma.DiscussionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DiscussionScalarFieldEnum | Prisma.DiscussionScalarFieldEnum[]
 }
 
 /**

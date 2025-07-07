@@ -2,7 +2,7 @@ class ApiResponse {
   public statusCode: number;
   public data: {
     [key: string]: any;
-  };
+  } | null;
   public success: boolean;
   public message: string;
 
@@ -10,7 +10,7 @@ class ApiResponse {
     statusCode: number,
     data: {
       [key: string]: any;
-    },
+    } | null,
     message: string = "Success",
   ) {
     this.statusCode = statusCode;

@@ -19,46 +19,80 @@ export type ContestProblemModel = runtime.Types.Result.DefaultSelection<Prisma.$
 
 export type AggregateContestProblem = {
   _count: ContestProblemCountAggregateOutputType | null
+  _avg: ContestProblemAvgAggregateOutputType | null
+  _sum: ContestProblemSumAggregateOutputType | null
   _min: ContestProblemMinAggregateOutputType | null
   _max: ContestProblemMaxAggregateOutputType | null
+}
+
+export type ContestProblemAvgAggregateOutputType = {
+  order: number | null
+  points: number | null
+}
+
+export type ContestProblemSumAggregateOutputType = {
+  order: number | null
+  points: number | null
 }
 
 export type ContestProblemMinAggregateOutputType = {
   id: string | null
   contestId: string | null
   problemId: string | null
+  order: number | null
+  points: number | null
 }
 
 export type ContestProblemMaxAggregateOutputType = {
   id: string | null
   contestId: string | null
   problemId: string | null
+  order: number | null
+  points: number | null
 }
 
 export type ContestProblemCountAggregateOutputType = {
   id: number
   contestId: number
   problemId: number
+  order: number
+  points: number
   _all: number
 }
 
+
+export type ContestProblemAvgAggregateInputType = {
+  order?: true
+  points?: true
+}
+
+export type ContestProblemSumAggregateInputType = {
+  order?: true
+  points?: true
+}
 
 export type ContestProblemMinAggregateInputType = {
   id?: true
   contestId?: true
   problemId?: true
+  order?: true
+  points?: true
 }
 
 export type ContestProblemMaxAggregateInputType = {
   id?: true
   contestId?: true
   problemId?: true
+  order?: true
+  points?: true
 }
 
 export type ContestProblemCountAggregateInputType = {
   id?: true
   contestId?: true
   problemId?: true
+  order?: true
+  points?: true
   _all?: true
 }
 
@@ -100,6 +134,18 @@ export type ContestProblemAggregateArgs<ExtArgs extends runtime.Types.Extensions
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ContestProblemAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ContestProblemSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ContestProblemMinAggregateInputType
@@ -130,6 +176,8 @@ export type ContestProblemGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   _count?: ContestProblemCountAggregateInputType | true
+  _avg?: ContestProblemAvgAggregateInputType
+  _sum?: ContestProblemSumAggregateInputType
   _min?: ContestProblemMinAggregateInputType
   _max?: ContestProblemMaxAggregateInputType
 }
@@ -138,7 +186,11 @@ export type ContestProblemGroupByOutputType = {
   id: string
   contestId: string
   problemId: string
+  order: number | null
+  points: number
   _count: ContestProblemCountAggregateOutputType | null
+  _avg: ContestProblemAvgAggregateOutputType | null
+  _sum: ContestProblemSumAggregateOutputType | null
   _min: ContestProblemMinAggregateOutputType | null
   _max: ContestProblemMaxAggregateOutputType | null
 }
@@ -165,6 +217,8 @@ export type ContestProblemWhereInput = {
   id?: Prisma.StringFilter<"ContestProblem"> | string
   contestId?: Prisma.StringFilter<"ContestProblem"> | string
   problemId?: Prisma.StringFilter<"ContestProblem"> | string
+  order?: Prisma.IntNullableFilter<"ContestProblem"> | number | null
+  points?: Prisma.IntFilter<"ContestProblem"> | number
   contest?: Prisma.XOR<Prisma.ContestScalarRelationFilter, Prisma.ContestWhereInput>
   problem?: Prisma.XOR<Prisma.ProblemScalarRelationFilter, Prisma.ProblemWhereInput>
 }
@@ -173,28 +227,37 @@ export type ContestProblemOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   contestId?: Prisma.SortOrder
   problemId?: Prisma.SortOrder
+  order?: Prisma.SortOrderInput | Prisma.SortOrder
+  points?: Prisma.SortOrder
   contest?: Prisma.ContestOrderByWithRelationInput
   problem?: Prisma.ProblemOrderByWithRelationInput
 }
 
 export type ContestProblemWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  contestId_problemId?: Prisma.ContestProblemContestIdProblemIdCompoundUniqueInput
   AND?: Prisma.ContestProblemWhereInput | Prisma.ContestProblemWhereInput[]
   OR?: Prisma.ContestProblemWhereInput[]
   NOT?: Prisma.ContestProblemWhereInput | Prisma.ContestProblemWhereInput[]
   contestId?: Prisma.StringFilter<"ContestProblem"> | string
   problemId?: Prisma.StringFilter<"ContestProblem"> | string
+  order?: Prisma.IntNullableFilter<"ContestProblem"> | number | null
+  points?: Prisma.IntFilter<"ContestProblem"> | number
   contest?: Prisma.XOR<Prisma.ContestScalarRelationFilter, Prisma.ContestWhereInput>
   problem?: Prisma.XOR<Prisma.ProblemScalarRelationFilter, Prisma.ProblemWhereInput>
-}, "id">
+}, "id" | "contestId_problemId">
 
 export type ContestProblemOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   contestId?: Prisma.SortOrder
   problemId?: Prisma.SortOrder
+  order?: Prisma.SortOrderInput | Prisma.SortOrder
+  points?: Prisma.SortOrder
   _count?: Prisma.ContestProblemCountOrderByAggregateInput
+  _avg?: Prisma.ContestProblemAvgOrderByAggregateInput
   _max?: Prisma.ContestProblemMaxOrderByAggregateInput
   _min?: Prisma.ContestProblemMinOrderByAggregateInput
+  _sum?: Prisma.ContestProblemSumOrderByAggregateInput
 }
 
 export type ContestProblemScalarWhereWithAggregatesInput = {
@@ -204,10 +267,14 @@ export type ContestProblemScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"ContestProblem"> | string
   contestId?: Prisma.StringWithAggregatesFilter<"ContestProblem"> | string
   problemId?: Prisma.StringWithAggregatesFilter<"ContestProblem"> | string
+  order?: Prisma.IntNullableWithAggregatesFilter<"ContestProblem"> | number | null
+  points?: Prisma.IntWithAggregatesFilter<"ContestProblem"> | number
 }
 
 export type ContestProblemCreateInput = {
   id?: string
+  order?: number | null
+  points?: number
   contest: Prisma.ContestCreateNestedOneWithoutProblemsInput
   problem: Prisma.ProblemCreateNestedOneWithoutContestProblemInput
 }
@@ -216,10 +283,14 @@ export type ContestProblemUncheckedCreateInput = {
   id?: string
   contestId: string
   problemId: string
+  order?: number | null
+  points?: number
 }
 
 export type ContestProblemUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  points?: Prisma.IntFieldUpdateOperationsInput | number
   contest?: Prisma.ContestUpdateOneRequiredWithoutProblemsNestedInput
   problem?: Prisma.ProblemUpdateOneRequiredWithoutContestProblemNestedInput
 }
@@ -228,22 +299,30 @@ export type ContestProblemUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contestId?: Prisma.StringFieldUpdateOperationsInput | string
   problemId?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  points?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ContestProblemCreateManyInput = {
   id?: string
   contestId: string
   problemId: string
+  order?: number | null
+  points?: number
 }
 
 export type ContestProblemUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  points?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ContestProblemUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contestId?: Prisma.StringFieldUpdateOperationsInput | string
   problemId?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  points?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ContestProblemListRelationFilter = {
@@ -256,22 +335,43 @@ export type ContestProblemOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type ContestProblemContestIdProblemIdCompoundUniqueInput = {
+  contestId: string
+  problemId: string
+}
+
 export type ContestProblemCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   contestId?: Prisma.SortOrder
   problemId?: Prisma.SortOrder
+  order?: Prisma.SortOrder
+  points?: Prisma.SortOrder
+}
+
+export type ContestProblemAvgOrderByAggregateInput = {
+  order?: Prisma.SortOrder
+  points?: Prisma.SortOrder
 }
 
 export type ContestProblemMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   contestId?: Prisma.SortOrder
   problemId?: Prisma.SortOrder
+  order?: Prisma.SortOrder
+  points?: Prisma.SortOrder
 }
 
 export type ContestProblemMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   contestId?: Prisma.SortOrder
   problemId?: Prisma.SortOrder
+  order?: Prisma.SortOrder
+  points?: Prisma.SortOrder
+}
+
+export type ContestProblemSumOrderByAggregateInput = {
+  order?: Prisma.SortOrder
+  points?: Prisma.SortOrder
 }
 
 export type ContestProblemCreateNestedManyWithoutProblemInput = {
@@ -360,12 +460,16 @@ export type ContestProblemUncheckedUpdateManyWithoutContestNestedInput = {
 
 export type ContestProblemCreateWithoutProblemInput = {
   id?: string
+  order?: number | null
+  points?: number
   contest: Prisma.ContestCreateNestedOneWithoutProblemsInput
 }
 
 export type ContestProblemUncheckedCreateWithoutProblemInput = {
   id?: string
   contestId: string
+  order?: number | null
+  points?: number
 }
 
 export type ContestProblemCreateOrConnectWithoutProblemInput = {
@@ -401,16 +505,22 @@ export type ContestProblemScalarWhereInput = {
   id?: Prisma.StringFilter<"ContestProblem"> | string
   contestId?: Prisma.StringFilter<"ContestProblem"> | string
   problemId?: Prisma.StringFilter<"ContestProblem"> | string
+  order?: Prisma.IntNullableFilter<"ContestProblem"> | number | null
+  points?: Prisma.IntFilter<"ContestProblem"> | number
 }
 
 export type ContestProblemCreateWithoutContestInput = {
   id?: string
+  order?: number | null
+  points?: number
   problem: Prisma.ProblemCreateNestedOneWithoutContestProblemInput
 }
 
 export type ContestProblemUncheckedCreateWithoutContestInput = {
   id?: string
   problemId: string
+  order?: number | null
+  points?: number
 }
 
 export type ContestProblemCreateOrConnectWithoutContestInput = {
@@ -442,41 +552,57 @@ export type ContestProblemUpdateManyWithWhereWithoutContestInput = {
 export type ContestProblemCreateManyProblemInput = {
   id?: string
   contestId: string
+  order?: number | null
+  points?: number
 }
 
 export type ContestProblemUpdateWithoutProblemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  points?: Prisma.IntFieldUpdateOperationsInput | number
   contest?: Prisma.ContestUpdateOneRequiredWithoutProblemsNestedInput
 }
 
 export type ContestProblemUncheckedUpdateWithoutProblemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contestId?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  points?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ContestProblemUncheckedUpdateManyWithoutProblemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contestId?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  points?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ContestProblemCreateManyContestInput = {
   id?: string
   problemId: string
+  order?: number | null
+  points?: number
 }
 
 export type ContestProblemUpdateWithoutContestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  points?: Prisma.IntFieldUpdateOperationsInput | number
   problem?: Prisma.ProblemUpdateOneRequiredWithoutContestProblemNestedInput
 }
 
 export type ContestProblemUncheckedUpdateWithoutContestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   problemId?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  points?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ContestProblemUncheckedUpdateManyWithoutContestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   problemId?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  points?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -485,6 +611,8 @@ export type ContestProblemSelect<ExtArgs extends runtime.Types.Extensions.Intern
   id?: boolean
   contestId?: boolean
   problemId?: boolean
+  order?: boolean
+  points?: boolean
   contest?: boolean | Prisma.ContestDefaultArgs<ExtArgs>
   problem?: boolean | Prisma.ProblemDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contestProblem"]>
@@ -493,6 +621,8 @@ export type ContestProblemSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   contestId?: boolean
   problemId?: boolean
+  order?: boolean
+  points?: boolean
   contest?: boolean | Prisma.ContestDefaultArgs<ExtArgs>
   problem?: boolean | Prisma.ProblemDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contestProblem"]>
@@ -501,6 +631,8 @@ export type ContestProblemSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   contestId?: boolean
   problemId?: boolean
+  order?: boolean
+  points?: boolean
   contest?: boolean | Prisma.ContestDefaultArgs<ExtArgs>
   problem?: boolean | Prisma.ProblemDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contestProblem"]>
@@ -509,9 +641,11 @@ export type ContestProblemSelectScalar = {
   id?: boolean
   contestId?: boolean
   problemId?: boolean
+  order?: boolean
+  points?: boolean
 }
 
-export type ContestProblemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contestId" | "problemId", ExtArgs["result"]["contestProblem"]>
+export type ContestProblemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contestId" | "problemId" | "order" | "points", ExtArgs["result"]["contestProblem"]>
 export type ContestProblemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contest?: boolean | Prisma.ContestDefaultArgs<ExtArgs>
   problem?: boolean | Prisma.ProblemDefaultArgs<ExtArgs>
@@ -535,6 +669,8 @@ export type $ContestProblemPayload<ExtArgs extends runtime.Types.Extensions.Inte
     id: string
     contestId: string
     problemId: string
+    order: number | null
+    points: number
   }, ExtArgs["result"]["contestProblem"]>
   composites: {}
 }
@@ -963,6 +1099,8 @@ export interface ContestProblemFieldRefs {
   readonly id: Prisma.FieldRef<"ContestProblem", 'String'>
   readonly contestId: Prisma.FieldRef<"ContestProblem", 'String'>
   readonly problemId: Prisma.FieldRef<"ContestProblem", 'String'>
+  readonly order: Prisma.FieldRef<"ContestProblem", 'Int'>
+  readonly points: Prisma.FieldRef<"ContestProblem", 'Int'>
 }
     
 
