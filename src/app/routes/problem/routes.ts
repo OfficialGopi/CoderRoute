@@ -3,7 +3,7 @@ import type { Router } from "express";
 import { ProblemController } from "./controllers";
 import { verifyAccessToken } from "../../middlewares/auth.middleware";
 import { checkRole } from "../../middlewares/role-based-access.middleware";
-import { USER_ROLE } from "../../generated/prisma";
+import { USER_ROLE } from "../../prisma/client";
 function register(): Router {
   const router = express.Router();
 

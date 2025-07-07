@@ -15,10 +15,18 @@ class ProblemController {
   // THIS FUNCTION WILL CHECK IF THE TEST CASES ARE VALID OR NOT
   private async checkTestCasesWithRespectToReferenceSolutions(
     backgroundCode: {
-      [language: string]: { code: string; whereToWriteCode: string };
+      [language: string]: {
+        code: string;
+        whereToWriteCode: string;
+      };
     },
-    referenceSolutions: { [key: string]: string },
-    testcases: { input: string; output: string }[],
+    referenceSolutions: {
+      [key: string]: string;
+    },
+    testcases: {
+      input: string;
+      output: string;
+    }[],
   ) {
     if (
       !referenceSolutions ||
@@ -70,6 +78,13 @@ class ProblemController {
         );
       }
 
+      if (referenceSolutions[language] === undefined) {
+        throw new ApiError(
+          STATUS_CODE.BAD_REQUEST,
+          `Reference solution for ${language} is required`,
+        );
+      }
+
       const solutionCode = code.code.replace(
         code.whereToWriteCode,
         referenceSolutions[language],
@@ -82,6 +97,7 @@ class ProblemController {
         );
       }
 
+      // CREATE SUBMISSION FORMAT DATA
       const submissions: {
         language_id: number;
         source_code: string;
@@ -105,6 +121,7 @@ class ProblemController {
         },
       );
 
+      //CREATE SUBMISSION BATCH
       const submissionResults = await createSubmissionBatch(submissions);
 
       if (!submissionResults.success) {
@@ -140,7 +157,7 @@ class ProblemController {
           "Failed to pool batch results",
         );
       }
-
+      console.dir(results, { depth: null });
       if (!results.data) {
         throw new ApiError(
           STATUS_CODE.INTERNAL_SERVER_ERROR,
@@ -459,9 +476,13 @@ class ProblemController {
     });
 
     return res
-      .status(STATUS_CODE.OK)
+      .status(STATUS_CODE.NO_CONTENT)
       .json(
-        new ApiResponse(STATUS_CODE.OK, {}, `Problem deleted successfully`),
+        new ApiResponse(
+          STATUS_CODE.NO_CONTENT,
+          {},
+          `Problem deleted successfully`,
+        ),
       );
   });
 

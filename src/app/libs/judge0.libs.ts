@@ -19,9 +19,10 @@ class Judge0 {
   constructor() {
     this.api = axios.create({
       baseURL: env.JUDGE0_API_URL,
-      // headers: {
-      //   Authorization: `Bearer ${env.JUDGE0_API_TOKEN}`,
-      // },
+      headers: {
+        Authorization: `Bearer ${env.JUDGE0_API_TOKEN}`,
+        "Content-Type": "application/json",
+      },
     });
   }
 
@@ -45,16 +46,22 @@ class Judge0 {
     submissions: {
       language_id: number;
       source_code: string;
+      stdin: string;
+      expected_output?: string;
     }[],
   ) {
     try {
       const response = await this.api.post(
-        "/submissions/batch?base64_encoded=false",
+        "/submissions/batch",
         {
           submissions,
         },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
       );
-
       return {
         success: true,
         data: response.data as {
@@ -91,7 +98,10 @@ class Judge0 {
         } = await this.api.get("/submissions/batch", {
           params: {
             tokens: tokens.join(","),
-            base64_encoded: false,
+          },
+
+          headers: {
+            "Content-Type": "application/json",
           },
         });
 
