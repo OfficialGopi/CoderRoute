@@ -60,6 +60,26 @@ export type DashboardStats = Prisma.DashboardStatsModel
  */
 export type Problem = Prisma.ProblemModel
 /**
+ * Model TestCases
+ * 
+ */
+export type TestCases = Prisma.TestCasesModel
+/**
+ * Model ProblemCodeSnippets
+ * 
+ */
+export type ProblemCodeSnippets = Prisma.ProblemCodeSnippetsModel
+/**
+ * Model ProblemReferenceSolutions
+ * 
+ */
+export type ProblemReferenceSolutions = Prisma.ProblemReferenceSolutionsModel
+/**
+ * Model ProblemBackgroundCode
+ * 
+ */
+export type ProblemBackgroundCode = Prisma.ProblemBackgroundCodeModel
+/**
  * Model Submission
  * 
  */

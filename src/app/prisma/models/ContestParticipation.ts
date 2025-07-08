@@ -297,7 +297,7 @@ export type ContestParticipationCreateInput = {
   submittedAt?: Date | string | null
   score?: number
   submissionId?: string | null
-  user: Prisma.UserCreateNestedOneWithoutContestParticipationInput
+  user: Prisma.UserCreateNestedOneWithoutContestParticipationsInput
   contest: Prisma.ContestCreateNestedOneWithoutParticipationsInput
 }
 
@@ -317,7 +317,7 @@ export type ContestParticipationUpdateInput = {
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
   submissionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  user?: Prisma.UserUpdateOneRequiredWithoutContestParticipationNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutContestParticipationsNestedInput
   contest?: Prisma.ContestUpdateOneRequiredWithoutParticipationsNestedInput
 }
 
@@ -559,7 +559,7 @@ export type ContestParticipationCreateWithoutContestInput = {
   submittedAt?: Date | string | null
   score?: number
   submissionId?: string | null
-  user: Prisma.UserCreateNestedOneWithoutContestParticipationInput
+  user: Prisma.UserCreateNestedOneWithoutContestParticipationsInput
 }
 
 export type ContestParticipationUncheckedCreateWithoutContestInput = {
@@ -648,7 +648,7 @@ export type ContestParticipationUpdateWithoutContestInput = {
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
   submissionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  user?: Prisma.UserUpdateOneRequiredWithoutContestParticipationNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutContestParticipationsNestedInput
 }
 
 export type ContestParticipationUncheckedUpdateWithoutContestInput = {

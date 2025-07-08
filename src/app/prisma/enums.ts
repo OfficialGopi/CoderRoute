@@ -25,9 +25,6 @@ export type DIFFICULTY = (typeof DIFFICULTY)[keyof typeof DIFFICULTY]
 
 
 export const LANGUAGE = {
-  C: 'C',
-  CPP: 'CPP',
-  JAVA: 'JAVA',
   PYTHON: 'PYTHON',
   JAVASCRIPT: 'JAVASCRIPT'
 } as const

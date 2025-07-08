@@ -282,7 +282,7 @@ export type ContestWhereInput = {
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   problems?: Prisma.ContestProblemListRelationFilter
   participations?: Prisma.ContestParticipationListRelationFilter
-  submission?: Prisma.SubmissionListRelationFilter
+  submissions?: Prisma.SubmissionListRelationFilter
 }
 
 export type ContestOrderByWithRelationInput = {
@@ -302,7 +302,7 @@ export type ContestOrderByWithRelationInput = {
   creator?: Prisma.UserOrderByWithRelationInput
   problems?: Prisma.ContestProblemOrderByRelationAggregateInput
   participations?: Prisma.ContestParticipationOrderByRelationAggregateInput
-  submission?: Prisma.SubmissionOrderByRelationAggregateInput
+  submissions?: Prisma.SubmissionOrderByRelationAggregateInput
 }
 
 export type ContestWhereUniqueInput = Prisma.AtLeast<{
@@ -325,7 +325,7 @@ export type ContestWhereUniqueInput = Prisma.AtLeast<{
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   problems?: Prisma.ContestProblemListRelationFilter
   participations?: Prisma.ContestParticipationListRelationFilter
-  submission?: Prisma.SubmissionListRelationFilter
+  submissions?: Prisma.SubmissionListRelationFilter
 }, "id">
 
 export type ContestOrderByWithAggregationInput = {
@@ -381,10 +381,10 @@ export type ContestCreateInput = {
   deleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  creator: Prisma.UserCreateNestedOneWithoutContestInput
+  creator: Prisma.UserCreateNestedOneWithoutContestsInput
   problems?: Prisma.ContestProblemCreateNestedManyWithoutContestInput
   participations?: Prisma.ContestParticipationCreateNestedManyWithoutContestInput
-  submission?: Prisma.SubmissionCreateNestedManyWithoutContestInput
+  submissions?: Prisma.SubmissionCreateNestedManyWithoutContestInput
 }
 
 export type ContestUncheckedCreateInput = {
@@ -403,7 +403,7 @@ export type ContestUncheckedCreateInput = {
   updatedAt?: Date | string
   problems?: Prisma.ContestProblemUncheckedCreateNestedManyWithoutContestInput
   participations?: Prisma.ContestParticipationUncheckedCreateNestedManyWithoutContestInput
-  submission?: Prisma.SubmissionUncheckedCreateNestedManyWithoutContestInput
+  submissions?: Prisma.SubmissionUncheckedCreateNestedManyWithoutContestInput
 }
 
 export type ContestUpdateInput = {
@@ -419,10 +419,10 @@ export type ContestUpdateInput = {
   deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  creator?: Prisma.UserUpdateOneRequiredWithoutContestNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutContestsNestedInput
   problems?: Prisma.ContestProblemUpdateManyWithoutContestNestedInput
   participations?: Prisma.ContestParticipationUpdateManyWithoutContestNestedInput
-  submission?: Prisma.SubmissionUpdateManyWithoutContestNestedInput
+  submissions?: Prisma.SubmissionUpdateManyWithoutContestNestedInput
 }
 
 export type ContestUncheckedUpdateInput = {
@@ -441,7 +441,7 @@ export type ContestUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   problems?: Prisma.ContestProblemUncheckedUpdateManyWithoutContestNestedInput
   participations?: Prisma.ContestParticipationUncheckedUpdateManyWithoutContestNestedInput
-  submission?: Prisma.SubmissionUncheckedUpdateManyWithoutContestNestedInput
+  submissions?: Prisma.SubmissionUncheckedUpdateManyWithoutContestNestedInput
 }
 
 export type ContestCreateManyInput = {
@@ -609,20 +609,20 @@ export type ContestUncheckedUpdateManyWithoutCreatorNestedInput = {
   deleteMany?: Prisma.ContestScalarWhereInput | Prisma.ContestScalarWhereInput[]
 }
 
-export type ContestCreateNestedOneWithoutSubmissionInput = {
-  create?: Prisma.XOR<Prisma.ContestCreateWithoutSubmissionInput, Prisma.ContestUncheckedCreateWithoutSubmissionInput>
-  connectOrCreate?: Prisma.ContestCreateOrConnectWithoutSubmissionInput
+export type ContestCreateNestedOneWithoutSubmissionsInput = {
+  create?: Prisma.XOR<Prisma.ContestCreateWithoutSubmissionsInput, Prisma.ContestUncheckedCreateWithoutSubmissionsInput>
+  connectOrCreate?: Prisma.ContestCreateOrConnectWithoutSubmissionsInput
   connect?: Prisma.ContestWhereUniqueInput
 }
 
-export type ContestUpdateOneWithoutSubmissionNestedInput = {
-  create?: Prisma.XOR<Prisma.ContestCreateWithoutSubmissionInput, Prisma.ContestUncheckedCreateWithoutSubmissionInput>
-  connectOrCreate?: Prisma.ContestCreateOrConnectWithoutSubmissionInput
-  upsert?: Prisma.ContestUpsertWithoutSubmissionInput
+export type ContestUpdateOneWithoutSubmissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.ContestCreateWithoutSubmissionsInput, Prisma.ContestUncheckedCreateWithoutSubmissionsInput>
+  connectOrCreate?: Prisma.ContestCreateOrConnectWithoutSubmissionsInput
+  upsert?: Prisma.ContestUpsertWithoutSubmissionsInput
   disconnect?: Prisma.ContestWhereInput | boolean
   delete?: Prisma.ContestWhereInput | boolean
   connect?: Prisma.ContestWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ContestUpdateToOneWithWhereWithoutSubmissionInput, Prisma.ContestUpdateWithoutSubmissionInput>, Prisma.ContestUncheckedUpdateWithoutSubmissionInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContestUpdateToOneWithWhereWithoutSubmissionsInput, Prisma.ContestUpdateWithoutSubmissionsInput>, Prisma.ContestUncheckedUpdateWithoutSubmissionsInput>
 }
 
 export type NullableIntFieldUpdateOperationsInput = {
@@ -676,7 +676,7 @@ export type ContestCreateWithoutCreatorInput = {
   updatedAt?: Date | string
   problems?: Prisma.ContestProblemCreateNestedManyWithoutContestInput
   participations?: Prisma.ContestParticipationCreateNestedManyWithoutContestInput
-  submission?: Prisma.SubmissionCreateNestedManyWithoutContestInput
+  submissions?: Prisma.SubmissionCreateNestedManyWithoutContestInput
 }
 
 export type ContestUncheckedCreateWithoutCreatorInput = {
@@ -694,7 +694,7 @@ export type ContestUncheckedCreateWithoutCreatorInput = {
   updatedAt?: Date | string
   problems?: Prisma.ContestProblemUncheckedCreateNestedManyWithoutContestInput
   participations?: Prisma.ContestParticipationUncheckedCreateNestedManyWithoutContestInput
-  submission?: Prisma.SubmissionUncheckedCreateNestedManyWithoutContestInput
+  submissions?: Prisma.SubmissionUncheckedCreateNestedManyWithoutContestInput
 }
 
 export type ContestCreateOrConnectWithoutCreatorInput = {
@@ -742,7 +742,7 @@ export type ContestScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Contest"> | Date | string
 }
 
-export type ContestCreateWithoutSubmissionInput = {
+export type ContestCreateWithoutSubmissionsInput = {
   id?: string
   name: string
   description?: string | null
@@ -755,12 +755,12 @@ export type ContestCreateWithoutSubmissionInput = {
   deleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  creator: Prisma.UserCreateNestedOneWithoutContestInput
+  creator: Prisma.UserCreateNestedOneWithoutContestsInput
   problems?: Prisma.ContestProblemCreateNestedManyWithoutContestInput
   participations?: Prisma.ContestParticipationCreateNestedManyWithoutContestInput
 }
 
-export type ContestUncheckedCreateWithoutSubmissionInput = {
+export type ContestUncheckedCreateWithoutSubmissionsInput = {
   id?: string
   name: string
   description?: string | null
@@ -778,23 +778,23 @@ export type ContestUncheckedCreateWithoutSubmissionInput = {
   participations?: Prisma.ContestParticipationUncheckedCreateNestedManyWithoutContestInput
 }
 
-export type ContestCreateOrConnectWithoutSubmissionInput = {
+export type ContestCreateOrConnectWithoutSubmissionsInput = {
   where: Prisma.ContestWhereUniqueInput
-  create: Prisma.XOR<Prisma.ContestCreateWithoutSubmissionInput, Prisma.ContestUncheckedCreateWithoutSubmissionInput>
+  create: Prisma.XOR<Prisma.ContestCreateWithoutSubmissionsInput, Prisma.ContestUncheckedCreateWithoutSubmissionsInput>
 }
 
-export type ContestUpsertWithoutSubmissionInput = {
-  update: Prisma.XOR<Prisma.ContestUpdateWithoutSubmissionInput, Prisma.ContestUncheckedUpdateWithoutSubmissionInput>
-  create: Prisma.XOR<Prisma.ContestCreateWithoutSubmissionInput, Prisma.ContestUncheckedCreateWithoutSubmissionInput>
+export type ContestUpsertWithoutSubmissionsInput = {
+  update: Prisma.XOR<Prisma.ContestUpdateWithoutSubmissionsInput, Prisma.ContestUncheckedUpdateWithoutSubmissionsInput>
+  create: Prisma.XOR<Prisma.ContestCreateWithoutSubmissionsInput, Prisma.ContestUncheckedCreateWithoutSubmissionsInput>
   where?: Prisma.ContestWhereInput
 }
 
-export type ContestUpdateToOneWithWhereWithoutSubmissionInput = {
+export type ContestUpdateToOneWithWhereWithoutSubmissionsInput = {
   where?: Prisma.ContestWhereInput
-  data: Prisma.XOR<Prisma.ContestUpdateWithoutSubmissionInput, Prisma.ContestUncheckedUpdateWithoutSubmissionInput>
+  data: Prisma.XOR<Prisma.ContestUpdateWithoutSubmissionsInput, Prisma.ContestUncheckedUpdateWithoutSubmissionsInput>
 }
 
-export type ContestUpdateWithoutSubmissionInput = {
+export type ContestUpdateWithoutSubmissionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -807,12 +807,12 @@ export type ContestUpdateWithoutSubmissionInput = {
   deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  creator?: Prisma.UserUpdateOneRequiredWithoutContestNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutContestsNestedInput
   problems?: Prisma.ContestProblemUpdateManyWithoutContestNestedInput
   participations?: Prisma.ContestParticipationUpdateManyWithoutContestNestedInput
 }
 
-export type ContestUncheckedUpdateWithoutSubmissionInput = {
+export type ContestUncheckedUpdateWithoutSubmissionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -843,9 +843,9 @@ export type ContestCreateWithoutProblemsInput = {
   deleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  creator: Prisma.UserCreateNestedOneWithoutContestInput
+  creator: Prisma.UserCreateNestedOneWithoutContestsInput
   participations?: Prisma.ContestParticipationCreateNestedManyWithoutContestInput
-  submission?: Prisma.SubmissionCreateNestedManyWithoutContestInput
+  submissions?: Prisma.SubmissionCreateNestedManyWithoutContestInput
 }
 
 export type ContestUncheckedCreateWithoutProblemsInput = {
@@ -863,7 +863,7 @@ export type ContestUncheckedCreateWithoutProblemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   participations?: Prisma.ContestParticipationUncheckedCreateNestedManyWithoutContestInput
-  submission?: Prisma.SubmissionUncheckedCreateNestedManyWithoutContestInput
+  submissions?: Prisma.SubmissionUncheckedCreateNestedManyWithoutContestInput
 }
 
 export type ContestCreateOrConnectWithoutProblemsInput = {
@@ -895,9 +895,9 @@ export type ContestUpdateWithoutProblemsInput = {
   deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  creator?: Prisma.UserUpdateOneRequiredWithoutContestNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutContestsNestedInput
   participations?: Prisma.ContestParticipationUpdateManyWithoutContestNestedInput
-  submission?: Prisma.SubmissionUpdateManyWithoutContestNestedInput
+  submissions?: Prisma.SubmissionUpdateManyWithoutContestNestedInput
 }
 
 export type ContestUncheckedUpdateWithoutProblemsInput = {
@@ -915,7 +915,7 @@ export type ContestUncheckedUpdateWithoutProblemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   participations?: Prisma.ContestParticipationUncheckedUpdateManyWithoutContestNestedInput
-  submission?: Prisma.SubmissionUncheckedUpdateManyWithoutContestNestedInput
+  submissions?: Prisma.SubmissionUncheckedUpdateManyWithoutContestNestedInput
 }
 
 export type ContestCreateWithoutParticipationsInput = {
@@ -931,9 +931,9 @@ export type ContestCreateWithoutParticipationsInput = {
   deleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  creator: Prisma.UserCreateNestedOneWithoutContestInput
+  creator: Prisma.UserCreateNestedOneWithoutContestsInput
   problems?: Prisma.ContestProblemCreateNestedManyWithoutContestInput
-  submission?: Prisma.SubmissionCreateNestedManyWithoutContestInput
+  submissions?: Prisma.SubmissionCreateNestedManyWithoutContestInput
 }
 
 export type ContestUncheckedCreateWithoutParticipationsInput = {
@@ -951,7 +951,7 @@ export type ContestUncheckedCreateWithoutParticipationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   problems?: Prisma.ContestProblemUncheckedCreateNestedManyWithoutContestInput
-  submission?: Prisma.SubmissionUncheckedCreateNestedManyWithoutContestInput
+  submissions?: Prisma.SubmissionUncheckedCreateNestedManyWithoutContestInput
 }
 
 export type ContestCreateOrConnectWithoutParticipationsInput = {
@@ -983,9 +983,9 @@ export type ContestUpdateWithoutParticipationsInput = {
   deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  creator?: Prisma.UserUpdateOneRequiredWithoutContestNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutContestsNestedInput
   problems?: Prisma.ContestProblemUpdateManyWithoutContestNestedInput
-  submission?: Prisma.SubmissionUpdateManyWithoutContestNestedInput
+  submissions?: Prisma.SubmissionUpdateManyWithoutContestNestedInput
 }
 
 export type ContestUncheckedUpdateWithoutParticipationsInput = {
@@ -1003,7 +1003,7 @@ export type ContestUncheckedUpdateWithoutParticipationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   problems?: Prisma.ContestProblemUncheckedUpdateManyWithoutContestNestedInput
-  submission?: Prisma.SubmissionUncheckedUpdateManyWithoutContestNestedInput
+  submissions?: Prisma.SubmissionUncheckedUpdateManyWithoutContestNestedInput
 }
 
 export type ContestCreateManyCreatorInput = {
@@ -1036,7 +1036,7 @@ export type ContestUpdateWithoutCreatorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   problems?: Prisma.ContestProblemUpdateManyWithoutContestNestedInput
   participations?: Prisma.ContestParticipationUpdateManyWithoutContestNestedInput
-  submission?: Prisma.SubmissionUpdateManyWithoutContestNestedInput
+  submissions?: Prisma.SubmissionUpdateManyWithoutContestNestedInput
 }
 
 export type ContestUncheckedUpdateWithoutCreatorInput = {
@@ -1054,7 +1054,7 @@ export type ContestUncheckedUpdateWithoutCreatorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   problems?: Prisma.ContestProblemUncheckedUpdateManyWithoutContestNestedInput
   participations?: Prisma.ContestParticipationUncheckedUpdateManyWithoutContestNestedInput
-  submission?: Prisma.SubmissionUncheckedUpdateManyWithoutContestNestedInput
+  submissions?: Prisma.SubmissionUncheckedUpdateManyWithoutContestNestedInput
 }
 
 export type ContestUncheckedUpdateManyWithoutCreatorInput = {
@@ -1080,13 +1080,13 @@ export type ContestUncheckedUpdateManyWithoutCreatorInput = {
 export type ContestCountOutputType = {
   problems: number
   participations: number
-  submission: number
+  submissions: number
 }
 
 export type ContestCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   problems?: boolean | ContestCountOutputTypeCountProblemsArgs
   participations?: boolean | ContestCountOutputTypeCountParticipationsArgs
-  submission?: boolean | ContestCountOutputTypeCountSubmissionArgs
+  submissions?: boolean | ContestCountOutputTypeCountSubmissionsArgs
 }
 
 /**
@@ -1116,7 +1116,7 @@ export type ContestCountOutputTypeCountParticipationsArgs<ExtArgs extends runtim
 /**
  * ContestCountOutputType without action
  */
-export type ContestCountOutputTypeCountSubmissionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ContestCountOutputTypeCountSubmissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.SubmissionWhereInput
 }
 
@@ -1138,7 +1138,7 @@ export type ContestSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   problems?: boolean | Prisma.Contest$problemsArgs<ExtArgs>
   participations?: boolean | Prisma.Contest$participationsArgs<ExtArgs>
-  submission?: boolean | Prisma.Contest$submissionArgs<ExtArgs>
+  submissions?: boolean | Prisma.Contest$submissionsArgs<ExtArgs>
   _count?: boolean | Prisma.ContestCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contest"]>
 
@@ -1197,7 +1197,7 @@ export type ContestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   problems?: boolean | Prisma.Contest$problemsArgs<ExtArgs>
   participations?: boolean | Prisma.Contest$participationsArgs<ExtArgs>
-  submission?: boolean | Prisma.Contest$submissionArgs<ExtArgs>
+  submissions?: boolean | Prisma.Contest$submissionsArgs<ExtArgs>
   _count?: boolean | Prisma.ContestCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ContestIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1213,7 +1213,7 @@ export type $ContestPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     creator: Prisma.$UserPayload<ExtArgs>
     problems: Prisma.$ContestProblemPayload<ExtArgs>[]
     participations: Prisma.$ContestParticipationPayload<ExtArgs>[]
-    submission: Prisma.$SubmissionPayload<ExtArgs>[]
+    submissions: Prisma.$SubmissionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1626,7 +1626,7 @@ export interface Prisma__ContestClient<T, Null = never, ExtArgs extends runtime.
   creator<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   problems<T extends Prisma.Contest$problemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contest$problemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContestProblemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   participations<T extends Prisma.Contest$participationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contest$participationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContestParticipationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  submission<T extends Prisma.Contest$submissionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contest$submissionArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  submissions<T extends Prisma.Contest$submissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contest$submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2113,9 +2113,9 @@ export type Contest$participationsArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 /**
- * Contest.submission
+ * Contest.submissions
  */
-export type Contest$submissionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Contest$submissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Submission
    */

@@ -189,8 +189,8 @@ export type PlaylistWhereInput = {
   userId?: Prisma.StringFilter<"Playlist"> | string
   createdAt?: Prisma.DateTimeFilter<"Playlist"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Playlist"> | Date | string
-  problems?: Prisma.ProblemInPlaylistListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  problems?: Prisma.ProblemInPlaylistListRelationFilter
 }
 
 export type PlaylistOrderByWithRelationInput = {
@@ -200,8 +200,8 @@ export type PlaylistOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  problems?: Prisma.ProblemInPlaylistOrderByRelationAggregateInput
   user?: Prisma.UserOrderByWithRelationInput
+  problems?: Prisma.ProblemInPlaylistOrderByRelationAggregateInput
 }
 
 export type PlaylistWhereUniqueInput = Prisma.AtLeast<{
@@ -215,8 +215,8 @@ export type PlaylistWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.StringFilter<"Playlist"> | string
   createdAt?: Prisma.DateTimeFilter<"Playlist"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Playlist"> | Date | string
-  problems?: Prisma.ProblemInPlaylistListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  problems?: Prisma.ProblemInPlaylistListRelationFilter
 }, "id" | "name_userId">
 
 export type PlaylistOrderByWithAggregationInput = {
@@ -249,8 +249,8 @@ export type PlaylistCreateInput = {
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutPlaylistsInput
   problems?: Prisma.ProblemInPlaylistCreateNestedManyWithoutPlaylistInput
-  user: Prisma.UserCreateNestedOneWithoutPlaylistInput
 }
 
 export type PlaylistUncheckedCreateInput = {
@@ -269,8 +269,8 @@ export type PlaylistUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutPlaylistsNestedInput
   problems?: Prisma.ProblemInPlaylistUpdateManyWithoutPlaylistNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutPlaylistNestedInput
 }
 
 export type PlaylistUncheckedUpdateInput = {
@@ -474,7 +474,7 @@ export type PlaylistCreateWithoutProblemsInput = {
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutPlaylistInput
+  user: Prisma.UserCreateNestedOneWithoutPlaylistsInput
 }
 
 export type PlaylistUncheckedCreateWithoutProblemsInput = {
@@ -508,7 +508,7 @@ export type PlaylistUpdateWithoutProblemsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutPlaylistNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutPlaylistsNestedInput
 }
 
 export type PlaylistUncheckedUpdateWithoutProblemsInput = {
@@ -592,8 +592,8 @@ export type PlaylistSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  problems?: boolean | Prisma.Playlist$problemsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  problems?: boolean | Prisma.Playlist$problemsArgs<ExtArgs>
   _count?: boolean | Prisma.PlaylistCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["playlist"]>
 
@@ -628,8 +628,8 @@ export type PlaylistSelectScalar = {
 
 export type PlaylistOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["playlist"]>
 export type PlaylistInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  problems?: boolean | Prisma.Playlist$problemsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  problems?: boolean | Prisma.Playlist$problemsArgs<ExtArgs>
   _count?: boolean | Prisma.PlaylistCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PlaylistIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -642,8 +642,8 @@ export type PlaylistIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type $PlaylistPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Playlist"
   objects: {
-    problems: Prisma.$ProblemInPlaylistPayload<ExtArgs>[]
     user: Prisma.$UserPayload<ExtArgs>
+    problems: Prisma.$ProblemInPlaylistPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1046,8 +1046,8 @@ readonly fields: PlaylistFieldRefs;
  */
 export interface Prisma__PlaylistClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  problems<T extends Prisma.Playlist$problemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Playlist$problemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProblemInPlaylistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  problems<T extends Prisma.Playlist$problemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Playlist$problemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProblemInPlaylistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Notebook, Plus } from "lucide-react";
 import { useRef, useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
-import { testProblems } from "../../../seeds/ProblemsSeeds";
+import { testProblems } from "../../../seeds/MockProblems";
 
 const ProblemsLayout = () => {
   const [search, setSearch] = useState<string>("");

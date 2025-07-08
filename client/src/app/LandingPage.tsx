@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, CheckCircle, Triangle } from "lucide-react";
 import { useState } from "react";
+import CurvySvg from "../assets/svgs/CurvyBGSvg";
 
 const LandingPage = () => {
   const [isUser, setIsUser] = useState<boolean>(true);

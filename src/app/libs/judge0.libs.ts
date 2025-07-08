@@ -5,11 +5,11 @@ class Judge0 {
   private api: Axios;
 
   private languageMap = {
+    // C: 50,
+    // CPP: 54,
+    // JAVA: 62,
     PYTHON: 71,
-    JAVA: 62,
     JAVASCRIPT: 63,
-    C: 50,
-    CPP: 54,
   };
 
   private sleep = (ms: number) => {

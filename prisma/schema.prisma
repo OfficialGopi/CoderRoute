@@ -21,41 +21,40 @@ enum DIFFICULTY {
 }
 
 enum LANGUAGE {
-  C
-  CPP
-  JAVA
   PYTHON
   JAVASCRIPT
 }
 
 model User {
-  id       String    @id @default(uuid())
-  name     String
-  username String    @unique
-  email    String    @unique
-  avatar   String?
-  role     USER_ROLE @default(USER)
-  password String 
-
+  id                           String    @id @default(uuid())
+  name                         String
+  username                     String    @unique
+  email                        String    @unique
+  avatar                       String?
+  role                         USER_ROLE @default(USER)
+  password                     String
   isEmailVerified              Boolean   @default(false)
   emailVerificationToken       String?   @unique
   emailVerificationTokenExpiry DateTime?
+  forgotPasswordToken          String?   @unique
+  forgotPasswordTokenExpiry    DateTime?
+  createdAt                    DateTime  @default(now())
+  updatedAt                    DateTime  @updatedAt
 
-  forgotPasswordToken       String?   @unique
-  forgotPasswordTokenExpiry DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  //RELATIONSHIPS
   problems             Problem[]
-  submission           Submission[]
-  problemSolved        ProblemSolved[]
-  playlist             Playlist[]
+  submissions          Submission[]
+  problemsSolved       ProblemSolved[]
+  playlists            Playlist[]
   dashboardStats       DashboardStats[]
   sessions             Session[]
-  discussion           Discussion[]
-  contest              Contest[]
-  contestParticipation ContestParticipation[]
+  discussions          Discussion[]
+  contests             Contest[]
+  contestParticipations ContestParticipation[]
+
+  //INDEXES
+  @@index([username])
+  @@index([email])
 }
 
 model Session {
@@ -63,10 +62,16 @@ model Session {
   userId        String
   token         String   @unique
   sessionExpiry DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
+  //RELATIONSHIPS
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  //INDEXES
   @@index([userId])
+  @@index([token])
+  @@index([token,userId])
 }
 
 model DashboardStats {
@@ -81,67 +86,123 @@ model DashboardStats {
   lastActive       DateTime?
   updatedAt        DateTime  @updatedAt
 
+  //RELATIONSHIPS
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  //INDEXES
+  @@index([userId])
 }
 
 model Problem {
   id          String     @id @default(uuid())
+  userId      String
   title       String
   description String
   difficulty  DIFFICULTY
   tags        String[]   @default([]) // ["tag1", "tag2", "tag3"] 
-  userId      String
-  examples    Json
   constraints String[]   @default([])
   hints       String[]   @default([])
   editorial   String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
-  testcases          Json[]
-  codeSnippets       Json
-  referenceSolutions Json
-  backgroundCode     Json
+  //RELATIONSHIPS
+  user               User                        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  //RELATIONSHIPS
+  testcases          TestCases[]
+  codeSnippets       ProblemCodeSnippets[]
+  referenceSolutions ProblemReferenceSolutions[]
+  backgroundCodes    ProblemBackgroundCode[]
+  submissions        Submission[]
+  solvedBy           ProblemSolved[]
+  playlist           ProblemInPlaylist[]
+  discussions        Discussion[]
+  contestProblem     ContestProblem[]
+
+  //INDEXES
+  @@index([userId])
+  @@index([title])
+  @@index([difficulty])
+  @@index([tags])
+}
+
+model TestCases {
+  id        Int      @id @default(autoincrement())
+  problemId String
+  input     String
+  output    String
+  explanation String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  //  Relationship
-  user           User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  submission     Submission[]
-  solvedBy       ProblemSolved[]
-  playlist       ProblemInPlaylist[]
-  discussion     Discussion[]
-  contestProblem ContestProblem[]
+  //RELATIONSHIPS
+  problem Problem @relation(fields: [problemId], references: [id])
+
+  //INDEXES
+  @@index([problemId])
 }
 
-// testcases:[
-// {
-// input:string,
-// output:string,
-// }
-// ]
 
-// codeSnippets:{
-// lanugage:code,
-// }
 
-// referenceSolutions:
-// {
-// language:code,
-// },
+model ProblemCodeSnippets {
+  id        Int      @id @default(autoincrement())
+  problemId String
+  language  LANGUAGE
+  code      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-// backgorundCode:{
-// language:{
-// code:string,
-// where to write code:string
-// }
-// }
+  //RELATIONSHIPS
+  problem Problem @relation(fields: [problemId], references: [id])
+
+  //INDEXES
+  @@unique([problemId, language])
+  @@index([problemId])
+  @@index([language])
+}
+
+model ProblemReferenceSolutions {
+  id        Int      @id @default(autoincrement())
+  problemId String
+  language  LANGUAGE
+  code      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  //RELATIONSHIPS
+  problem Problem @relation(fields: [problemId], references: [id])
+
+  //INDEXES
+  @@unique([problemId, language])
+  @@index([language])
+  @@index([problemId])
+}
+
+model ProblemBackgroundCode {
+  id               Int      @id @default(autoincrement())
+  problemId        String
+  language         LANGUAGE
+  code             String
+  whereToWriteCode String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  //RELATIONSHIPS
+  problem Problem @relation(fields: [problemId], references: [id])
+
+  //INDEXES
+  @@unique([problemId, language])
+  @@index([language])
+  @@index([problemId])
+}
 
 model Submission {
-  id            String  @id @default(uuid())
+  id            String   @id @default(uuid())
   userId        String
   problemId     String
-  sourceCode    Json
-  language      String
+  sourceCode    String
+  language      LANGUAGE
   stdin         String?
   stdout        String?
   stderr        String?
@@ -149,20 +210,31 @@ model Submission {
   status        String // Accepted , wrong answer
   memory        String?
   time          String?
-  contestId     String?   // <- Add this
+  contestId     String? // <- Add this
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  //RELATIONSHIPS
+  contest Contest? @relation(fields: [contestId], references: [id])
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
-  contest     Contest?  @relation(fields: [contestId], references: [id])
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
-
+  //RELATIONSHIPS
   testCases TestCaseResult[]
+
+  //INDEXES
+  @@index([problemId, contestId, userId])
+  @@index([contestId, userId])
+  @@index([problemId, userId])
+  @@index([problemId, contestId])
+  @@index([problemId])
+  @@index([contestId])
+  @@index([userId])
+  @@index([status])
 }
 
 model TestCaseResult {
-  id            String  @id @default(uuid())
+  id            String   @id @default(uuid())
   submissionId  String
   testCase      Int
   passed        Boolean
@@ -173,12 +245,13 @@ model TestCaseResult {
   status        String
   memory        String?
   time          String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  //RELATIONSHIPS
   submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
 
+  //INDEXES
   @@index([submissionId])
 }
 
@@ -189,26 +262,30 @@ model ProblemSolved {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  //RELATIONSHIPS
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
+  //INDEXES
   @@unique([userId, problemId])
+  @@index([userId])
 }
 
-//PLAYLIST
 model Playlist {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   name        String
   description String?
   userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  problems ProblemInPlaylist[]
-
+  //RELATIONSHIPS
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  //RELATIONSHIPS
+  problems ProblemInPlaylist[]
+
+  //INDEXES
   @@unique([name, userId]) // unique playlist names per user
 }
 
@@ -219,13 +296,14 @@ model ProblemInPlaylist {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
+  //RELATIONSHIPS
   playlist Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
   problem  Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
+  //INDEXES
   @@unique([playlistId, problemId])
 }
 
-//DISCUSSIONS
 model Discussion {
   id        String   @id @default(uuid())
   content   String
@@ -236,11 +314,13 @@ model Discussion {
   updatedAt DateTime @updatedAt
   deleted   Boolean  @default(false) // Soft delete support
 
+  //RELATIONSHIPS
   user    User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   problem Problem?     @relation(fields: [problemId], references: [id], onDelete: Cascade)
   parent  Discussion?  @relation("ReplyRelation", fields: [parentId], references: [id])
   replies Discussion[] @relation("ReplyRelation")
 
+  //INDEXES
   @@index([problemId])
   @@index([parentId])
   @@index([userId])
@@ -261,11 +341,18 @@ model Contest {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
+  //RELATIONSHIPS
   creator User @relation(fields: [creatorId], references: [id])
 
+  //RELATIONSHIPS
   problems       ContestProblem[]
   participations ContestParticipation[]
-  submission Submission[]
+  submissions    Submission[]
+
+  //INDEXES
+  @@index([name])
+  @@index([visibility])
+  @@index([isRated])
 }
 
 model ContestProblem {
@@ -275,26 +362,28 @@ model ContestProblem {
   order     Int?
   points    Int    @default(100)
 
-
+  //RELATIONSHIPS
   contest Contest @relation(fields: [contestId], references: [id])
   problem Problem @relation(fields: [problemId], references: [id])
 
+  //INDEXES
   @@unique([contestId, problemId])
 }
 
 model ContestParticipation {
-  id          String    @id @default(uuid())
-  userId      String
-  contestId   String
-  startedAt   DateTime
-  submittedAt DateTime?
-  score       Float     @default(0.0)
+  id           String    @id @default(uuid())
+  userId       String
+  contestId    String
+  startedAt    DateTime
+  submittedAt  DateTime?
+  score        Float     @default(0.0)
   submissionId String?
 
-  
+  //RELATIONSHIPS
   user    User    @relation(fields: [userId], references: [id])
   contest Contest @relation(fields: [contestId], references: [id])
 
+  //INDEXES
   @@unique([userId, contestId])
   @@index([contestId])
   @@index([userId])

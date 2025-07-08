@@ -398,6 +398,10 @@ export const ModelName = {
   Session: 'Session',
   DashboardStats: 'DashboardStats',
   Problem: 'Problem',
+  TestCases: 'TestCases',
+  ProblemCodeSnippets: 'ProblemCodeSnippets',
+  ProblemReferenceSolutions: 'ProblemReferenceSolutions',
+  ProblemBackgroundCode: 'ProblemBackgroundCode',
   Submission: 'Submission',
   TestCaseResult: 'TestCaseResult',
   ProblemSolved: 'ProblemSolved',
@@ -422,7 +426,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "dashboardStats" | "problem" | "submission" | "testCaseResult" | "problemSolved" | "playlist" | "problemInPlaylist" | "discussion" | "contest" | "contestProblem" | "contestParticipation"
+    modelProps: "user" | "session" | "dashboardStats" | "problem" | "testCases" | "problemCodeSnippets" | "problemReferenceSolutions" | "problemBackgroundCode" | "submission" | "testCaseResult" | "problemSolved" | "playlist" | "problemInPlaylist" | "discussion" | "contest" | "contestProblem" | "contestParticipation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -719,6 +723,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ProblemCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ProblemCountAggregateOutputType> | number
+        }
+      }
+    }
+    TestCases: {
+      payload: Prisma.$TestCasesPayload<ExtArgs>
+      fields: Prisma.TestCasesFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TestCasesFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestCasesPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TestCasesFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestCasesPayload>
+        }
+        findFirst: {
+          args: Prisma.TestCasesFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestCasesPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TestCasesFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestCasesPayload>
+        }
+        findMany: {
+          args: Prisma.TestCasesFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestCasesPayload>[]
+        }
+        create: {
+          args: Prisma.TestCasesCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestCasesPayload>
+        }
+        createMany: {
+          args: Prisma.TestCasesCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TestCasesCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestCasesPayload>[]
+        }
+        delete: {
+          args: Prisma.TestCasesDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestCasesPayload>
+        }
+        update: {
+          args: Prisma.TestCasesUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestCasesPayload>
+        }
+        deleteMany: {
+          args: Prisma.TestCasesDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TestCasesUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TestCasesUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestCasesPayload>[]
+        }
+        upsert: {
+          args: Prisma.TestCasesUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestCasesPayload>
+        }
+        aggregate: {
+          args: Prisma.TestCasesAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTestCases>
+        }
+        groupBy: {
+          args: Prisma.TestCasesGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TestCasesGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TestCasesCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TestCasesCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProblemCodeSnippets: {
+      payload: Prisma.$ProblemCodeSnippetsPayload<ExtArgs>
+      fields: Prisma.ProblemCodeSnippetsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProblemCodeSnippetsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemCodeSnippetsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProblemCodeSnippetsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemCodeSnippetsPayload>
+        }
+        findFirst: {
+          args: Prisma.ProblemCodeSnippetsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemCodeSnippetsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProblemCodeSnippetsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemCodeSnippetsPayload>
+        }
+        findMany: {
+          args: Prisma.ProblemCodeSnippetsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemCodeSnippetsPayload>[]
+        }
+        create: {
+          args: Prisma.ProblemCodeSnippetsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemCodeSnippetsPayload>
+        }
+        createMany: {
+          args: Prisma.ProblemCodeSnippetsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProblemCodeSnippetsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemCodeSnippetsPayload>[]
+        }
+        delete: {
+          args: Prisma.ProblemCodeSnippetsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemCodeSnippetsPayload>
+        }
+        update: {
+          args: Prisma.ProblemCodeSnippetsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemCodeSnippetsPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProblemCodeSnippetsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProblemCodeSnippetsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProblemCodeSnippetsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemCodeSnippetsPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProblemCodeSnippetsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemCodeSnippetsPayload>
+        }
+        aggregate: {
+          args: Prisma.ProblemCodeSnippetsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProblemCodeSnippets>
+        }
+        groupBy: {
+          args: Prisma.ProblemCodeSnippetsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProblemCodeSnippetsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProblemCodeSnippetsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProblemCodeSnippetsCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProblemReferenceSolutions: {
+      payload: Prisma.$ProblemReferenceSolutionsPayload<ExtArgs>
+      fields: Prisma.ProblemReferenceSolutionsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProblemReferenceSolutionsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemReferenceSolutionsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProblemReferenceSolutionsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemReferenceSolutionsPayload>
+        }
+        findFirst: {
+          args: Prisma.ProblemReferenceSolutionsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemReferenceSolutionsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProblemReferenceSolutionsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemReferenceSolutionsPayload>
+        }
+        findMany: {
+          args: Prisma.ProblemReferenceSolutionsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemReferenceSolutionsPayload>[]
+        }
+        create: {
+          args: Prisma.ProblemReferenceSolutionsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemReferenceSolutionsPayload>
+        }
+        createMany: {
+          args: Prisma.ProblemReferenceSolutionsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProblemReferenceSolutionsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemReferenceSolutionsPayload>[]
+        }
+        delete: {
+          args: Prisma.ProblemReferenceSolutionsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemReferenceSolutionsPayload>
+        }
+        update: {
+          args: Prisma.ProblemReferenceSolutionsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemReferenceSolutionsPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProblemReferenceSolutionsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProblemReferenceSolutionsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProblemReferenceSolutionsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemReferenceSolutionsPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProblemReferenceSolutionsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemReferenceSolutionsPayload>
+        }
+        aggregate: {
+          args: Prisma.ProblemReferenceSolutionsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProblemReferenceSolutions>
+        }
+        groupBy: {
+          args: Prisma.ProblemReferenceSolutionsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProblemReferenceSolutionsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProblemReferenceSolutionsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProblemReferenceSolutionsCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProblemBackgroundCode: {
+      payload: Prisma.$ProblemBackgroundCodePayload<ExtArgs>
+      fields: Prisma.ProblemBackgroundCodeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProblemBackgroundCodeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemBackgroundCodePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProblemBackgroundCodeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemBackgroundCodePayload>
+        }
+        findFirst: {
+          args: Prisma.ProblemBackgroundCodeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemBackgroundCodePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProblemBackgroundCodeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemBackgroundCodePayload>
+        }
+        findMany: {
+          args: Prisma.ProblemBackgroundCodeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemBackgroundCodePayload>[]
+        }
+        create: {
+          args: Prisma.ProblemBackgroundCodeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemBackgroundCodePayload>
+        }
+        createMany: {
+          args: Prisma.ProblemBackgroundCodeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProblemBackgroundCodeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemBackgroundCodePayload>[]
+        }
+        delete: {
+          args: Prisma.ProblemBackgroundCodeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemBackgroundCodePayload>
+        }
+        update: {
+          args: Prisma.ProblemBackgroundCodeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemBackgroundCodePayload>
+        }
+        deleteMany: {
+          args: Prisma.ProblemBackgroundCodeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProblemBackgroundCodeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProblemBackgroundCodeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemBackgroundCodePayload>[]
+        }
+        upsert: {
+          args: Prisma.ProblemBackgroundCodeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProblemBackgroundCodePayload>
+        }
+        aggregate: {
+          args: Prisma.ProblemBackgroundCodeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProblemBackgroundCode>
+        }
+        groupBy: {
+          args: Prisma.ProblemBackgroundCodeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProblemBackgroundCodeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProblemBackgroundCodeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProblemBackgroundCodeCountAggregateOutputType> | number
         }
       }
     }
@@ -1451,7 +1751,9 @@ export const SessionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   token: 'token',
-  sessionExpiry: 'sessionExpiry'
+  sessionExpiry: 'sessionExpiry',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
@@ -1475,24 +1777,69 @@ export type DashboardStatsScalarFieldEnum = (typeof DashboardStatsScalarFieldEnu
 
 export const ProblemScalarFieldEnum = {
   id: 'id',
+  userId: 'userId',
   title: 'title',
   description: 'description',
   difficulty: 'difficulty',
   tags: 'tags',
-  userId: 'userId',
-  examples: 'examples',
   constraints: 'constraints',
   hints: 'hints',
   editorial: 'editorial',
-  testcases: 'testcases',
-  codeSnippets: 'codeSnippets',
-  referenceSolutions: 'referenceSolutions',
-  backgroundCode: 'backgroundCode',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type ProblemScalarFieldEnum = (typeof ProblemScalarFieldEnum)[keyof typeof ProblemScalarFieldEnum]
+
+
+export const TestCasesScalarFieldEnum = {
+  id: 'id',
+  problemId: 'problemId',
+  input: 'input',
+  output: 'output',
+  explanation: 'explanation',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TestCasesScalarFieldEnum = (typeof TestCasesScalarFieldEnum)[keyof typeof TestCasesScalarFieldEnum]
+
+
+export const ProblemCodeSnippetsScalarFieldEnum = {
+  id: 'id',
+  problemId: 'problemId',
+  language: 'language',
+  code: 'code',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProblemCodeSnippetsScalarFieldEnum = (typeof ProblemCodeSnippetsScalarFieldEnum)[keyof typeof ProblemCodeSnippetsScalarFieldEnum]
+
+
+export const ProblemReferenceSolutionsScalarFieldEnum = {
+  id: 'id',
+  problemId: 'problemId',
+  language: 'language',
+  code: 'code',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProblemReferenceSolutionsScalarFieldEnum = (typeof ProblemReferenceSolutionsScalarFieldEnum)[keyof typeof ProblemReferenceSolutionsScalarFieldEnum]
+
+
+export const ProblemBackgroundCodeScalarFieldEnum = {
+  id: 'id',
+  problemId: 'problemId',
+  language: 'language',
+  code: 'code',
+  whereToWriteCode: 'whereToWriteCode',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProblemBackgroundCodeScalarFieldEnum = (typeof ProblemBackgroundCodeScalarFieldEnum)[keyof typeof ProblemBackgroundCodeScalarFieldEnum]
 
 
 export const SubmissionScalarFieldEnum = {
@@ -1634,13 +1981,6 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -1655,15 +1995,6 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
-
-
-export const JsonNullValueFilter = {
-  DbNull: DbNull,
-  JsonNull: JsonNull,
-  AnyNull: AnyNull
-} as const
-
-export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -1764,23 +2095,16 @@ export type ListEnumDIFFICULTYFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
- * Reference to a field of type 'Json'
+ * Reference to a field of type 'LANGUAGE'
  */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+export type EnumLANGUAGEFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LANGUAGE'>
     
 
 
 /**
- * Reference to a field of type 'QueryMode'
+ * Reference to a field of type 'LANGUAGE[]'
  */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-/**
- * Reference to a field of type 'Json[]'
- */
-export type ListJsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json[]'>
+export type ListEnumLANGUAGEFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LANGUAGE[]'>
     
 
 /**
@@ -1862,6 +2186,10 @@ export type GlobalOmitConfig = {
   session?: Prisma.SessionOmit
   dashboardStats?: Prisma.DashboardStatsOmit
   problem?: Prisma.ProblemOmit
+  testCases?: Prisma.TestCasesOmit
+  problemCodeSnippets?: Prisma.ProblemCodeSnippetsOmit
+  problemReferenceSolutions?: Prisma.ProblemReferenceSolutionsOmit
+  problemBackgroundCode?: Prisma.ProblemBackgroundCodeOmit
   submission?: Prisma.SubmissionOmit
   testCaseResult?: Prisma.TestCaseResultOmit
   problemSolved?: Prisma.ProblemSolvedOmit

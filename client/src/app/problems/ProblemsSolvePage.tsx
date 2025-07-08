@@ -4,15 +4,17 @@ import MonacoEditor from "@monaco-editor/react";
 import { LANGUAGES } from "../../constants/languageOptions";
 import { Button } from "./../../components/ui/Button";
 import { Skeleton } from "./../../components/ui/Skeleton";
-import { dummyProblem, dummyTestResults } from "../../seeds/DummyProblem.tsx";
+import { MockSingleProblem } from "../../seeds/MockSingleProblem.tsx";
 
 const ProblemsSolvePage = () => {
   const { problemId } = useParams();
   const [language, setLanguage] = useState("javascript");
-  const [problem, setProblem] = useState<typeof dummyProblem>(dummyProblem);
+  const [problem, setProblem] =
+    useState<typeof MockSingleProblem>(MockSingleProblem);
   const [code, setCode] = useState(
-    (dummyProblem.backgroundCode as Record<string, { code: string }>)[language]
-      ?.code || "",
+    (MockSingleProblem.backgroundCode as Record<string, { code: string }>)[
+      language
+    ]?.code || "",
   );
   const [isLoading, setIsLoading] = useState(true);
   const [testResults, setTestResults] =

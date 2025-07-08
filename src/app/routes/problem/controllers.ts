@@ -9,20 +9,20 @@ import {
 import { ApiError } from "../../utils/api-error";
 import { ApiResponse } from "../../utils/api-response";
 import { AsyncHandler } from "../../utils/async-handler";
+import { LANGUAGE } from "../../prisma/enums";
+import { any } from "zod";
 
-class ProblemController {
-  // UTILITY FUNCTION TO CHECK TEST CASES WITH RESPECT TO REFERENCE SOLUTIONS
-  // THIS FUNCTION WILL CHECK IF THE TEST CASES ARE VALID OR NOT
-  private async checkTestCasesWithRespectToReferenceSolutions(
-    backgroundCode: {
-      [language: string]: {
-        code: string;
-        whereToWriteCode: string;
-      };
-    },
+class ProblemServices {
+  public async checkTestCasesWithRespectToReferenceSolutions(
+    backgroundCodes: {
+      language: LANGUAGE;
+      code: string;
+      whereToWriteCode: string;
+    }[],
     referenceSolutions: {
-      [key: string]: string;
-    },
+      language: LANGUAGE;
+      code: string;
+    }[],
     testcases: {
       input: string;
       output: string;
@@ -32,7 +32,7 @@ class ProblemController {
       !referenceSolutions ||
       !testcases ||
       testcases.length === 0 ||
-      !backgroundCode
+      !backgroundCodes
     ) {
       throw new ApiError(
         STATUS_CODE.BAD_REQUEST,
@@ -41,20 +41,43 @@ class ProblemController {
     }
     if (
       Object.keys(referenceSolutions).length === 0 ||
-      Object.keys(backgroundCode).length === 0 ||
-      Object.keys(backgroundCode).length !==
-        Object.keys(referenceSolutions).length
+      backgroundCodes.length !== Object.values(LANGUAGE).length ||
+      referenceSolutions.length !== Object.values(LANGUAGE).length
     ) {
       throw new ApiError(
         STATUS_CODE.BAD_REQUEST,
         " All Reference solutions and background codes are required",
       );
     }
+
     if (!testcases || testcases.length === 0) {
       throw new ApiError(STATUS_CODE.BAD_REQUEST, "Test cases are required");
     }
 
-    for (const [language, code] of Object.entries(backgroundCode)) {
+    for (const bgCodesObj of backgroundCodes) {
+      const { language, code, whereToWriteCode } = bgCodesObj;
+
+      if (!language) {
+        throw new ApiError(
+          STATUS_CODE.BAD_REQUEST,
+          `Language for background code is required`,
+        );
+      }
+
+      if (!code) {
+        throw new ApiError(
+          STATUS_CODE.BAD_REQUEST,
+          `Code for background code is required`,
+        );
+      }
+
+      if (!whereToWriteCode) {
+        throw new ApiError(
+          STATUS_CODE.BAD_REQUEST,
+          `Where to write code for background code is required`,
+        );
+      }
+
       const languageId = getJudge0LanguageId(language);
 
       if (!languageId) {
@@ -64,30 +87,27 @@ class ProblemController {
         );
       }
 
-      if (!code.code) {
+      if (!languageId) {
         throw new ApiError(
           STATUS_CODE.BAD_REQUEST,
-          `Code for ${language} is required`,
+          `Language ${language} is not supported`,
         );
       }
 
-      if (!code.whereToWriteCode) {
-        throw new ApiError(
-          STATUS_CODE.BAD_REQUEST,
-          `Where to write code for ${language} is required`,
-        );
-      }
+      const referenceSolution = referenceSolutions.find(
+        (e) => e.language === language,
+      );
 
-      if (referenceSolutions[language] === undefined) {
+      if (!referenceSolution) {
         throw new ApiError(
           STATUS_CODE.BAD_REQUEST,
           `Reference solution for ${language} is required`,
         );
       }
 
-      const solutionCode = code.code.replace(
-        code.whereToWriteCode,
-        referenceSolutions[language],
+      const solutionCode = code.replace(
+        whereToWriteCode,
+        referenceSolution.code,
       );
 
       if (!solutionCode) {
@@ -164,6 +184,7 @@ class ProblemController {
           "No results found",
         );
       }
+
       for (let i = 0; i < results.data.length; i++) {
         const result = results.data[i];
 
@@ -176,6 +197,17 @@ class ProblemController {
         }
       }
     }
+  }
+}
+
+class ProblemController {
+  // UTILITY FUNCTION TO CHECK TEST CASES WITH RESPECT TO REFERENCE SOLUTIONS
+  // THIS FUNCTION WILL CHECK IF THE TEST CASES ARE VALID OR NOT
+  private checkTestCasesWithRespectToReferenceSolutions;
+  constructor() {
+    const services = new ProblemServices();
+    this.checkTestCasesWithRespectToReferenceSolutions =
+      services.checkTestCasesWithRespectToReferenceSolutions.bind(services);
   }
   // CONTROLLERS
   public getAllProblems = AsyncHandler(async (req, res) => {
@@ -229,35 +261,38 @@ class ProblemController {
       description,
       difficulty,
       tags,
-      examples,
       constraints,
       hints,
       testcases,
       codeSnippets,
       referenceSolutions,
       editorial,
-      backgroundCode,
+      backgroundCodes,
     }: {
       title: string;
       description: string;
       difficulty: DIFFICULTY;
       tags: string[];
-      examples: any[];
       constraints: string[];
       hints: string[];
+      codeSnippets: {
+        language: LANGUAGE;
+        code: string;
+      }[];
+      editorial: string;
+      backgroundCodes: {
+        language: LANGUAGE;
+        code: string;
+        whereToWriteCode: string;
+      }[];
+      referenceSolutions: {
+        language: LANGUAGE;
+        code: string;
+      }[];
       testcases: {
         input: string;
         output: string;
       }[];
-      codeSnippets: { [language: string]: string };
-      referenceSolutions: { [language: string]: string };
-      editorial: string;
-      backgroundCode: {
-        [lanuguage: string]: {
-          code: string;
-          whereToWriteCode: string;
-        };
-      };
     } = req.body;
 
     if (
@@ -267,7 +302,7 @@ class ProblemController {
       !testcases ||
       !referenceSolutions ||
       !codeSnippets ||
-      !backgroundCode
+      !backgroundCodes
     ) {
       throw new ApiError(
         STATUS_CODE.BAD_REQUEST,
@@ -276,7 +311,7 @@ class ProblemController {
     }
 
     await this.checkTestCasesWithRespectToReferenceSolutions(
-      backgroundCode,
+      backgroundCodes,
       referenceSolutions,
       testcases,
     );
@@ -288,15 +323,22 @@ class ProblemController {
         description,
         difficulty,
         tags,
-        examples,
         constraints,
         hints,
-        testcases,
-        codeSnippets,
-        referenceSolutions,
         editorial,
-        backgroundCode,
-        userId: user.id as string,
+        testcases: {
+          create: testcases,
+        },
+        codeSnippets: {
+          create: codeSnippets,
+        },
+        referenceSolutions: {
+          create: referenceSolutions,
+        },
+        backgroundCodes: {
+          create: backgroundCodes,
+        },
+        userId: user.id,
       },
     });
 
@@ -322,6 +364,13 @@ class ProblemController {
       where: {
         id: problemId,
       },
+      include: {
+        testcases: true,
+        codeSnippets: true,
+        referenceSolutions: true,
+        backgroundCodes: true,
+        submissions: true,
+      },
     });
 
     if (!problem) {
@@ -339,7 +388,7 @@ class ProblemController {
       );
   });
 
-  public updateProblem = AsyncHandler(async (req, res) => {
+  public updateProblemDetails = AsyncHandler(async (req, res) => {
     const { problemId } = req.params;
 
     if (req.user?.role !== USER_ROLE.ADMIN) {
@@ -368,51 +417,18 @@ class ProblemController {
       description,
       difficulty,
       tags,
-      examples,
       constraints,
       hints,
-      testcases,
-      codeSnippets,
-      referenceSolutions,
-      isTestCasesChanged,
-      isReferenceSolutionsChanged,
       editorial,
-      isBackgroundCodeChanged,
-      backgroundCode,
     }: {
       title: string;
       description: string;
       difficulty: DIFFICULTY;
       tags: string[];
-      examples: any[];
       constraints: string[];
       hints: string[];
-      testcases: { input: string; output: string }[];
-      codeSnippets: { language: string; code: string }[];
-      referenceSolutions: { [key: string]: string };
       editorial: string;
-      isTestCasesChanged: boolean;
-      isReferenceSolutionsChanged: boolean;
-      isBackgroundCodeChanged: boolean;
-      backgroundCode: {
-        [lanuguage: string]: {
-          code: string;
-          whereToWriteCode: string;
-        };
-      };
     } = req.body;
-
-    if (
-      isTestCasesChanged ||
-      isBackgroundCodeChanged ||
-      isReferenceSolutionsChanged
-    ) {
-      await this.checkTestCasesWithRespectToReferenceSolutions(
-        backgroundCode,
-        referenceSolutions,
-        testcases,
-      );
-    }
 
     const updatedProblem = await db.problem.update({
       where: { id: problemId },
@@ -421,16 +437,9 @@ class ProblemController {
         description,
         difficulty,
         tags,
-        examples: examples ?? undefined,
         constraints,
         hints,
-        testcases: isTestCasesChanged ? testcases : undefined,
-        codeSnippets,
-        referenceSolutions: isReferenceSolutionsChanged
-          ? referenceSolutions
-          : undefined,
         editorial,
-        backgroundCode,
       },
     });
 
@@ -441,6 +450,493 @@ class ProblemController {
           STATUS_CODE.OK,
           updatedProblem,
           "Problem updated successfully",
+        ),
+      );
+  });
+
+  public updateProblemCodeSnippet = AsyncHandler(async (req, res) => {
+    const { problemId, codeSnippetId } = req.params;
+
+    if (req.user?.role !== USER_ROLE.ADMIN) {
+      throw new ApiError(
+        STATUS_CODE.FORBIDDEN,
+        "Forbidden: Only admins can delete problems",
+      );
+    }
+
+    if (!problemId) {
+      throw new ApiError(STATUS_CODE.BAD_REQUEST, "Problem ID is required");
+    }
+
+    if (!codeSnippetId) {
+      throw new ApiError(
+        STATUS_CODE.BAD_REQUEST,
+        "Code Snippet ID is required",
+      );
+    }
+
+    if (isNaN(parseInt(codeSnippetId))) {
+      throw new ApiError(
+        STATUS_CODE.BAD_REQUEST,
+        "Code Snippet ID is not a number",
+      );
+    }
+
+    const {
+      language,
+      code,
+    }: {
+      language: LANGUAGE;
+      code: string;
+    } = req.body;
+
+    if (!language || !code) {
+      throw new ApiError(
+        STATUS_CODE.BAD_REQUEST,
+        "Language and code are required",
+      );
+    }
+
+    const codeSnippets = await db.problemCodeSnippets.findUnique({
+      where: {
+        id: parseInt(codeSnippetId),
+      },
+    });
+
+    if (!codeSnippets) {
+      throw new ApiError(STATUS_CODE.NOT_FOUND, "Problem not found");
+    }
+
+    const updatedCodeSnippets = await db.problemCodeSnippets.update({
+      where: { id: codeSnippets.id },
+      data: {
+        code,
+      },
+    });
+
+    return res
+      .status(STATUS_CODE.OK)
+      .json(
+        new ApiResponse(
+          STATUS_CODE.OK,
+          updatedCodeSnippets,
+          "Code Snippet updated successfully",
+        ),
+      );
+  });
+
+  public updateProblemReferenceSolution = AsyncHandler(async (req, res) => {
+    const { problemId, referenceSolutionId } = req.params;
+
+    if (req.user?.role !== USER_ROLE.ADMIN) {
+      throw new ApiError(
+        STATUS_CODE.FORBIDDEN,
+        "Forbidden: Only admins can delete problems",
+      );
+    }
+
+    if (!problemId) {
+      throw new ApiError(STATUS_CODE.BAD_REQUEST, "Problem ID is required");
+    }
+
+    if (!referenceSolutionId) {
+      throw new ApiError(
+        STATUS_CODE.BAD_REQUEST,
+        "Reference Solution ID is required",
+      );
+    }
+
+    if (isNaN(parseInt(referenceSolutionId))) {
+      throw new ApiError(
+        STATUS_CODE.BAD_REQUEST,
+        "Code Snippet ID is not a number",
+      );
+    }
+
+    const {
+      language,
+      code,
+    }: {
+      language: LANGUAGE;
+      code: string;
+    } = req.body;
+
+    if (!language || !code) {
+      throw new ApiError(
+        STATUS_CODE.BAD_REQUEST,
+        "Language and code are required",
+      );
+    }
+
+    const problemReferenceSolution =
+      await db.problemReferenceSolutions.findUnique({
+        where: {
+          id: parseInt(referenceSolutionId),
+        },
+      });
+
+    if (!problemReferenceSolution) {
+      throw new ApiError(STATUS_CODE.NOT_FOUND, "Problem not found");
+    }
+
+    const backgroundCode = await db.problemBackgroundCode.findUnique({
+      where: {
+        problemId_language: {
+          problemId: problemId,
+          language,
+        },
+      },
+    });
+
+    if (!backgroundCode) {
+      throw new ApiError(STATUS_CODE.NOT_FOUND, "Problem not found");
+    }
+
+    const testcases = await db.testCases.findMany({
+      where: {
+        problemId: problemId,
+      },
+    });
+
+    await this.checkTestCasesWithRespectToReferenceSolutions(
+      [backgroundCode],
+      [
+        {
+          language,
+          code,
+        },
+      ],
+      testcases,
+    );
+
+    const updatedProblemReferenceSoln =
+      await db.problemReferenceSolutions.update({
+        where: { id: problemReferenceSolution.id },
+        data: {
+          code,
+        },
+      });
+
+    return res
+      .status(STATUS_CODE.OK)
+      .json(
+        new ApiResponse(
+          STATUS_CODE.OK,
+          updatedProblemReferenceSoln,
+          "Problem Reference Solution updated successfully",
+        ),
+      );
+  });
+
+  public updateProblemBackgroundCode = AsyncHandler(async (req, res) => {
+    const { problemId, backgroundCodeId } = req.params;
+
+    if (req.user?.role !== USER_ROLE.ADMIN) {
+      throw new ApiError(
+        STATUS_CODE.FORBIDDEN,
+        "Forbidden: Only admins can delete problems",
+      );
+    }
+
+    if (!problemId) {
+      throw new ApiError(STATUS_CODE.BAD_REQUEST, "Problem ID is required");
+    }
+
+    if (!backgroundCodeId) {
+      throw new ApiError(
+        STATUS_CODE.BAD_REQUEST,
+        "Code Snippet ID is required",
+      );
+    }
+
+    if (isNaN(parseInt(backgroundCodeId))) {
+      throw new ApiError(
+        STATUS_CODE.BAD_REQUEST,
+        "Code Snippet ID is not a number",
+      );
+    }
+
+    const {
+      language,
+      code,
+      whereToWriteCode,
+    }: {
+      language: LANGUAGE;
+      code: string;
+      whereToWriteCode: string;
+    } = req.body;
+
+    if (!language || !code || !whereToWriteCode) {
+      throw new ApiError(
+        STATUS_CODE.BAD_REQUEST,
+        "Language, code and where to write code are required",
+      );
+    }
+
+    const problemReferenceSolution =
+      await db.problemReferenceSolutions.findUnique({
+        where: {
+          problemId_language: {
+            problemId,
+            language,
+          },
+        },
+      });
+
+    if (!problemReferenceSolution) {
+      throw new ApiError(STATUS_CODE.NOT_FOUND, "Problem not found");
+    }
+
+    const backgroundCode = await db.problemBackgroundCode.findUnique({
+      where: {
+        id: parseInt(backgroundCodeId),
+      },
+    });
+
+    if (!backgroundCode) {
+      throw new ApiError(STATUS_CODE.NOT_FOUND, "Problem not found");
+    }
+
+    const testcases = await db.testCases.findMany({
+      where: {
+        problemId: problemId,
+      },
+    });
+
+    await this.checkTestCasesWithRespectToReferenceSolutions(
+      [
+        {
+          language,
+          code,
+          whereToWriteCode,
+        },
+      ],
+      [problemReferenceSolution],
+      testcases,
+    );
+
+    const updatedProblemReferenceSoln = await db.problemBackgroundCode.update({
+      where: { id: backgroundCode.id },
+      data: {
+        code,
+        whereToWriteCode,
+      },
+    });
+
+    return res
+      .status(STATUS_CODE.OK)
+      .json(
+        new ApiResponse(
+          STATUS_CODE.OK,
+          updatedProblemReferenceSoln,
+          "Problem Background Code updated successfully",
+        ),
+      );
+  });
+
+  public updateProblemTestCases = AsyncHandler(async (req, res) => {
+    const { problemId, testcaseId } = req.params;
+
+    if (req.user?.role !== USER_ROLE.ADMIN) {
+      throw new ApiError(
+        STATUS_CODE.FORBIDDEN,
+        "Forbidden: Only admins can delete problems",
+      );
+    }
+
+    if (!problemId) {
+      throw new ApiError(STATUS_CODE.BAD_REQUEST, "Problem ID is required");
+    }
+
+    if (!testcaseId) {
+      throw new ApiError(STATUS_CODE.BAD_REQUEST, "Testcase ID is required");
+    }
+    if (isNaN(parseInt(testcaseId))) {
+      throw new ApiError(
+        STATUS_CODE.BAD_REQUEST,
+        "Testcase ID is not a number",
+      );
+    }
+
+    const testcase = await db.testCases.findUnique({
+      where: {
+        id: parseInt(testcaseId),
+      },
+    });
+
+    if (!testcase) {
+      throw new ApiError(STATUS_CODE.NOT_FOUND, "Testcase not found");
+    }
+
+    const {
+      input,
+      output,
+    }: {
+      input: string;
+      output: string;
+    } = req.body;
+
+    if (!problemId) {
+      throw new ApiError(STATUS_CODE.NOT_FOUND, "Problem not found");
+    }
+
+    const referenceSolutions = await db.problemReferenceSolutions.findMany({
+      where: {
+        problemId: problemId,
+      },
+    });
+
+    const backgroundCodes = await db.problemBackgroundCode.findMany({
+      where: {
+        problemId: problemId,
+      },
+    });
+
+    await this.checkTestCasesWithRespectToReferenceSolutions(
+      backgroundCodes,
+      referenceSolutions,
+      [
+        {
+          input,
+          output,
+        },
+      ],
+    );
+
+    const updatedProblem = await db.testCases.update({
+      where: { id: testcase.id },
+      data: {
+        input,
+        output,
+      },
+    });
+
+    return res
+      .status(STATUS_CODE.OK)
+      .json(
+        new ApiResponse(
+          STATUS_CODE.OK,
+          updatedProblem,
+          "Problem updated successfully",
+        ),
+      );
+  });
+
+  public addProblemTestCase = AsyncHandler(async (req, res) => {
+    const { problemId } = req.params;
+
+    if (req.user?.role !== USER_ROLE.ADMIN) {
+      throw new ApiError(
+        STATUS_CODE.FORBIDDEN,
+        "Forbidden: Only admins can delete problems",
+      );
+    }
+
+    if (!problemId) {
+      throw new ApiError(STATUS_CODE.BAD_REQUEST, "Problem ID is required");
+    }
+
+    const {
+      input,
+      output,
+    }: {
+      input: string;
+      output: string;
+    } = req.body;
+
+    if (!problemId) {
+      throw new ApiError(STATUS_CODE.NOT_FOUND, "Problem not found");
+    }
+
+    const referenceSolutions = await db.problemReferenceSolutions.findMany({
+      where: {
+        problemId: problemId,
+      },
+    });
+
+    const backgroundCodes = await db.problemBackgroundCode.findMany({
+      where: {
+        problemId: problemId,
+      },
+    });
+
+    await this.checkTestCasesWithRespectToReferenceSolutions(
+      backgroundCodes,
+      referenceSolutions,
+      [
+        {
+          input,
+          output,
+        },
+      ],
+    );
+
+    const newTestCase = await db.testCases.create({
+      data: {
+        problemId: problemId,
+        input,
+        output,
+      },
+    });
+
+    return res
+      .status(STATUS_CODE.OK)
+      .json(
+        new ApiResponse(
+          STATUS_CODE.OK,
+          newTestCase,
+          "Problem updated successfully",
+        ),
+      );
+  });
+
+  public deleteTestCase = AsyncHandler(async (req, res) => {
+    const { problemId, testcaseId } = req.params;
+
+    if (req.user?.role !== USER_ROLE.ADMIN) {
+      throw new ApiError(
+        STATUS_CODE.FORBIDDEN,
+        "Forbidden: Only admins can delete problems",
+      );
+    }
+
+    if (!problemId) {
+      throw new ApiError(STATUS_CODE.BAD_REQUEST, "Problem ID is required");
+    }
+
+    if (!testcaseId) {
+      throw new ApiError(STATUS_CODE.BAD_REQUEST, "Testcase ID is required");
+    }
+    if (isNaN(parseInt(testcaseId))) {
+      throw new ApiError(
+        STATUS_CODE.BAD_REQUEST,
+        "Testcase ID is not a number",
+      );
+    }
+
+    const testcase = await db.testCases.findUnique({
+      where: {
+        id: parseInt(testcaseId),
+      },
+    });
+
+    if (!testcase) {
+      throw new ApiError(STATUS_CODE.NOT_FOUND, "Testcase not found");
+    }
+
+    await db.testCases.delete({
+      where: {
+        id: testcase.id,
+      },
+    });
+
+    return res
+      .status(STATUS_CODE.NO_CONTENT)
+      .json(
+        new ApiResponse(
+          STATUS_CODE.NO_CONTENT,
+          {},
+          `Testcase deleted successfully`,
         ),
       );
   });
@@ -507,7 +1003,7 @@ class ProblemController {
         },
       },
       include: {
-        submission: true,
+        submissions: true,
       },
       skip: (page - 1) * 20,
       take: 20,

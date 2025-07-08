@@ -27,7 +27,8 @@ export type SubmissionMinAggregateOutputType = {
   id: string | null
   userId: string | null
   problemId: string | null
-  language: string | null
+  sourceCode: string | null
+  language: $Enums.LANGUAGE | null
   stdin: string | null
   stdout: string | null
   stderr: string | null
@@ -44,7 +45,8 @@ export type SubmissionMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   problemId: string | null
-  language: string | null
+  sourceCode: string | null
+  language: $Enums.LANGUAGE | null
   stdin: string | null
   stdout: string | null
   stderr: string | null
@@ -81,6 +83,7 @@ export type SubmissionMinAggregateInputType = {
   id?: true
   userId?: true
   problemId?: true
+  sourceCode?: true
   language?: true
   stdin?: true
   stdout?: true
@@ -98,6 +101,7 @@ export type SubmissionMaxAggregateInputType = {
   id?: true
   userId?: true
   problemId?: true
+  sourceCode?: true
   language?: true
   stdin?: true
   stdout?: true
@@ -206,8 +210,8 @@ export type SubmissionGroupByOutputType = {
   id: string
   userId: string
   problemId: string
-  sourceCode: runtime.JsonValue
-  language: string
+  sourceCode: string
+  language: $Enums.LANGUAGE
   stdin: string | null
   stdout: string | null
   stderr: string | null
@@ -245,8 +249,8 @@ export type SubmissionWhereInput = {
   id?: Prisma.StringFilter<"Submission"> | string
   userId?: Prisma.StringFilter<"Submission"> | string
   problemId?: Prisma.StringFilter<"Submission"> | string
-  sourceCode?: Prisma.JsonFilter<"Submission">
-  language?: Prisma.StringFilter<"Submission"> | string
+  sourceCode?: Prisma.StringFilter<"Submission"> | string
+  language?: Prisma.EnumLANGUAGEFilter<"Submission"> | $Enums.LANGUAGE
   stdin?: Prisma.StringNullableFilter<"Submission"> | string | null
   stdout?: Prisma.StringNullableFilter<"Submission"> | string | null
   stderr?: Prisma.StringNullableFilter<"Submission"> | string | null
@@ -292,8 +296,8 @@ export type SubmissionWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.SubmissionWhereInput | Prisma.SubmissionWhereInput[]
   userId?: Prisma.StringFilter<"Submission"> | string
   problemId?: Prisma.StringFilter<"Submission"> | string
-  sourceCode?: Prisma.JsonFilter<"Submission">
-  language?: Prisma.StringFilter<"Submission"> | string
+  sourceCode?: Prisma.StringFilter<"Submission"> | string
+  language?: Prisma.EnumLANGUAGEFilter<"Submission"> | $Enums.LANGUAGE
   stdin?: Prisma.StringNullableFilter<"Submission"> | string | null
   stdout?: Prisma.StringNullableFilter<"Submission"> | string | null
   stderr?: Prisma.StringNullableFilter<"Submission"> | string | null
@@ -338,8 +342,8 @@ export type SubmissionScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Submission"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Submission"> | string
   problemId?: Prisma.StringWithAggregatesFilter<"Submission"> | string
-  sourceCode?: Prisma.JsonWithAggregatesFilter<"Submission">
-  language?: Prisma.StringWithAggregatesFilter<"Submission"> | string
+  sourceCode?: Prisma.StringWithAggregatesFilter<"Submission"> | string
+  language?: Prisma.EnumLANGUAGEWithAggregatesFilter<"Submission"> | $Enums.LANGUAGE
   stdin?: Prisma.StringNullableWithAggregatesFilter<"Submission"> | string | null
   stdout?: Prisma.StringNullableWithAggregatesFilter<"Submission"> | string | null
   stderr?: Prisma.StringNullableWithAggregatesFilter<"Submission"> | string | null
@@ -354,8 +358,8 @@ export type SubmissionScalarWhereWithAggregatesInput = {
 
 export type SubmissionCreateInput = {
   id?: string
-  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language: string
+  sourceCode: string
+  language: $Enums.LANGUAGE
   stdin?: string | null
   stdout?: string | null
   stderr?: string | null
@@ -365,9 +369,9 @@ export type SubmissionCreateInput = {
   time?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  contest?: Prisma.ContestCreateNestedOneWithoutSubmissionInput
-  user: Prisma.UserCreateNestedOneWithoutSubmissionInput
-  problem: Prisma.ProblemCreateNestedOneWithoutSubmissionInput
+  contest?: Prisma.ContestCreateNestedOneWithoutSubmissionsInput
+  user: Prisma.UserCreateNestedOneWithoutSubmissionsInput
+  problem: Prisma.ProblemCreateNestedOneWithoutSubmissionsInput
   testCases?: Prisma.TestCaseResultCreateNestedManyWithoutSubmissionInput
 }
 
@@ -375,8 +379,8 @@ export type SubmissionUncheckedCreateInput = {
   id?: string
   userId: string
   problemId: string
-  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language: string
+  sourceCode: string
+  language: $Enums.LANGUAGE
   stdin?: string | null
   stdout?: string | null
   stderr?: string | null
@@ -392,8 +396,8 @@ export type SubmissionUncheckedCreateInput = {
 
 export type SubmissionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.EnumLANGUAGEFieldUpdateOperationsInput | $Enums.LANGUAGE
   stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -403,9 +407,9 @@ export type SubmissionUpdateInput = {
   time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  contest?: Prisma.ContestUpdateOneWithoutSubmissionNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutSubmissionNestedInput
-  problem?: Prisma.ProblemUpdateOneRequiredWithoutSubmissionNestedInput
+  contest?: Prisma.ContestUpdateOneWithoutSubmissionsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutSubmissionsNestedInput
+  problem?: Prisma.ProblemUpdateOneRequiredWithoutSubmissionsNestedInput
   testCases?: Prisma.TestCaseResultUpdateManyWithoutSubmissionNestedInput
 }
 
@@ -413,8 +417,8 @@ export type SubmissionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   problemId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.EnumLANGUAGEFieldUpdateOperationsInput | $Enums.LANGUAGE
   stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -432,8 +436,8 @@ export type SubmissionCreateManyInput = {
   id?: string
   userId: string
   problemId: string
-  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language: string
+  sourceCode: string
+  language: $Enums.LANGUAGE
   stdin?: string | null
   stdout?: string | null
   stderr?: string | null
@@ -448,8 +452,8 @@ export type SubmissionCreateManyInput = {
 
 export type SubmissionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.EnumLANGUAGEFieldUpdateOperationsInput | $Enums.LANGUAGE
   stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -465,8 +469,8 @@ export type SubmissionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   problemId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.EnumLANGUAGEFieldUpdateOperationsInput | $Enums.LANGUAGE
   stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -511,6 +515,7 @@ export type SubmissionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   problemId?: Prisma.SortOrder
+  sourceCode?: Prisma.SortOrder
   language?: Prisma.SortOrder
   stdin?: Prisma.SortOrder
   stdout?: Prisma.SortOrder
@@ -528,6 +533,7 @@ export type SubmissionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   problemId?: Prisma.SortOrder
+  sourceCode?: Prisma.SortOrder
   language?: Prisma.SortOrder
   stdin?: Prisma.SortOrder
   stdout?: Prisma.SortOrder
@@ -688,8 +694,8 @@ export type SubmissionUncheckedUpdateManyWithoutContestNestedInput = {
 
 export type SubmissionCreateWithoutUserInput = {
   id?: string
-  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language: string
+  sourceCode: string
+  language: $Enums.LANGUAGE
   stdin?: string | null
   stdout?: string | null
   stderr?: string | null
@@ -699,16 +705,16 @@ export type SubmissionCreateWithoutUserInput = {
   time?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  contest?: Prisma.ContestCreateNestedOneWithoutSubmissionInput
-  problem: Prisma.ProblemCreateNestedOneWithoutSubmissionInput
+  contest?: Prisma.ContestCreateNestedOneWithoutSubmissionsInput
+  problem: Prisma.ProblemCreateNestedOneWithoutSubmissionsInput
   testCases?: Prisma.TestCaseResultCreateNestedManyWithoutSubmissionInput
 }
 
 export type SubmissionUncheckedCreateWithoutUserInput = {
   id?: string
   problemId: string
-  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language: string
+  sourceCode: string
+  language: $Enums.LANGUAGE
   stdin?: string | null
   stdout?: string | null
   stderr?: string | null
@@ -755,8 +761,8 @@ export type SubmissionScalarWhereInput = {
   id?: Prisma.StringFilter<"Submission"> | string
   userId?: Prisma.StringFilter<"Submission"> | string
   problemId?: Prisma.StringFilter<"Submission"> | string
-  sourceCode?: Prisma.JsonFilter<"Submission">
-  language?: Prisma.StringFilter<"Submission"> | string
+  sourceCode?: Prisma.StringFilter<"Submission"> | string
+  language?: Prisma.EnumLANGUAGEFilter<"Submission"> | $Enums.LANGUAGE
   stdin?: Prisma.StringNullableFilter<"Submission"> | string | null
   stdout?: Prisma.StringNullableFilter<"Submission"> | string | null
   stderr?: Prisma.StringNullableFilter<"Submission"> | string | null
@@ -771,8 +777,8 @@ export type SubmissionScalarWhereInput = {
 
 export type SubmissionCreateWithoutProblemInput = {
   id?: string
-  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language: string
+  sourceCode: string
+  language: $Enums.LANGUAGE
   stdin?: string | null
   stdout?: string | null
   stderr?: string | null
@@ -782,16 +788,16 @@ export type SubmissionCreateWithoutProblemInput = {
   time?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  contest?: Prisma.ContestCreateNestedOneWithoutSubmissionInput
-  user: Prisma.UserCreateNestedOneWithoutSubmissionInput
+  contest?: Prisma.ContestCreateNestedOneWithoutSubmissionsInput
+  user: Prisma.UserCreateNestedOneWithoutSubmissionsInput
   testCases?: Prisma.TestCaseResultCreateNestedManyWithoutSubmissionInput
 }
 
 export type SubmissionUncheckedCreateWithoutProblemInput = {
   id?: string
   userId: string
-  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language: string
+  sourceCode: string
+  language: $Enums.LANGUAGE
   stdin?: string | null
   stdout?: string | null
   stderr?: string | null
@@ -833,8 +839,8 @@ export type SubmissionUpdateManyWithWhereWithoutProblemInput = {
 
 export type SubmissionCreateWithoutTestCasesInput = {
   id?: string
-  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language: string
+  sourceCode: string
+  language: $Enums.LANGUAGE
   stdin?: string | null
   stdout?: string | null
   stderr?: string | null
@@ -844,17 +850,17 @@ export type SubmissionCreateWithoutTestCasesInput = {
   time?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  contest?: Prisma.ContestCreateNestedOneWithoutSubmissionInput
-  user: Prisma.UserCreateNestedOneWithoutSubmissionInput
-  problem: Prisma.ProblemCreateNestedOneWithoutSubmissionInput
+  contest?: Prisma.ContestCreateNestedOneWithoutSubmissionsInput
+  user: Prisma.UserCreateNestedOneWithoutSubmissionsInput
+  problem: Prisma.ProblemCreateNestedOneWithoutSubmissionsInput
 }
 
 export type SubmissionUncheckedCreateWithoutTestCasesInput = {
   id?: string
   userId: string
   problemId: string
-  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language: string
+  sourceCode: string
+  language: $Enums.LANGUAGE
   stdin?: string | null
   stdout?: string | null
   stderr?: string | null
@@ -885,8 +891,8 @@ export type SubmissionUpdateToOneWithWhereWithoutTestCasesInput = {
 
 export type SubmissionUpdateWithoutTestCasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.EnumLANGUAGEFieldUpdateOperationsInput | $Enums.LANGUAGE
   stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -896,17 +902,17 @@ export type SubmissionUpdateWithoutTestCasesInput = {
   time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  contest?: Prisma.ContestUpdateOneWithoutSubmissionNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutSubmissionNestedInput
-  problem?: Prisma.ProblemUpdateOneRequiredWithoutSubmissionNestedInput
+  contest?: Prisma.ContestUpdateOneWithoutSubmissionsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutSubmissionsNestedInput
+  problem?: Prisma.ProblemUpdateOneRequiredWithoutSubmissionsNestedInput
 }
 
 export type SubmissionUncheckedUpdateWithoutTestCasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   problemId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.EnumLANGUAGEFieldUpdateOperationsInput | $Enums.LANGUAGE
   stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -921,8 +927,8 @@ export type SubmissionUncheckedUpdateWithoutTestCasesInput = {
 
 export type SubmissionCreateWithoutContestInput = {
   id?: string
-  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language: string
+  sourceCode: string
+  language: $Enums.LANGUAGE
   stdin?: string | null
   stdout?: string | null
   stderr?: string | null
@@ -932,8 +938,8 @@ export type SubmissionCreateWithoutContestInput = {
   time?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutSubmissionInput
-  problem: Prisma.ProblemCreateNestedOneWithoutSubmissionInput
+  user: Prisma.UserCreateNestedOneWithoutSubmissionsInput
+  problem: Prisma.ProblemCreateNestedOneWithoutSubmissionsInput
   testCases?: Prisma.TestCaseResultCreateNestedManyWithoutSubmissionInput
 }
 
@@ -941,8 +947,8 @@ export type SubmissionUncheckedCreateWithoutContestInput = {
   id?: string
   userId: string
   problemId: string
-  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language: string
+  sourceCode: string
+  language: $Enums.LANGUAGE
   stdin?: string | null
   stdout?: string | null
   stderr?: string | null
@@ -984,8 +990,8 @@ export type SubmissionUpdateManyWithWhereWithoutContestInput = {
 export type SubmissionCreateManyUserInput = {
   id?: string
   problemId: string
-  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language: string
+  sourceCode: string
+  language: $Enums.LANGUAGE
   stdin?: string | null
   stdout?: string | null
   stderr?: string | null
@@ -1000,8 +1006,8 @@ export type SubmissionCreateManyUserInput = {
 
 export type SubmissionUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.EnumLANGUAGEFieldUpdateOperationsInput | $Enums.LANGUAGE
   stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1011,16 +1017,16 @@ export type SubmissionUpdateWithoutUserInput = {
   time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  contest?: Prisma.ContestUpdateOneWithoutSubmissionNestedInput
-  problem?: Prisma.ProblemUpdateOneRequiredWithoutSubmissionNestedInput
+  contest?: Prisma.ContestUpdateOneWithoutSubmissionsNestedInput
+  problem?: Prisma.ProblemUpdateOneRequiredWithoutSubmissionsNestedInput
   testCases?: Prisma.TestCaseResultUpdateManyWithoutSubmissionNestedInput
 }
 
 export type SubmissionUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   problemId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.EnumLANGUAGEFieldUpdateOperationsInput | $Enums.LANGUAGE
   stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1037,8 +1043,8 @@ export type SubmissionUncheckedUpdateWithoutUserInput = {
 export type SubmissionUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   problemId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.EnumLANGUAGEFieldUpdateOperationsInput | $Enums.LANGUAGE
   stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1054,8 +1060,8 @@ export type SubmissionUncheckedUpdateManyWithoutUserInput = {
 export type SubmissionCreateManyProblemInput = {
   id?: string
   userId: string
-  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language: string
+  sourceCode: string
+  language: $Enums.LANGUAGE
   stdin?: string | null
   stdout?: string | null
   stderr?: string | null
@@ -1070,8 +1076,8 @@ export type SubmissionCreateManyProblemInput = {
 
 export type SubmissionUpdateWithoutProblemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.EnumLANGUAGEFieldUpdateOperationsInput | $Enums.LANGUAGE
   stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1081,16 +1087,16 @@ export type SubmissionUpdateWithoutProblemInput = {
   time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  contest?: Prisma.ContestUpdateOneWithoutSubmissionNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutSubmissionNestedInput
+  contest?: Prisma.ContestUpdateOneWithoutSubmissionsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutSubmissionsNestedInput
   testCases?: Prisma.TestCaseResultUpdateManyWithoutSubmissionNestedInput
 }
 
 export type SubmissionUncheckedUpdateWithoutProblemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.EnumLANGUAGEFieldUpdateOperationsInput | $Enums.LANGUAGE
   stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1107,8 +1113,8 @@ export type SubmissionUncheckedUpdateWithoutProblemInput = {
 export type SubmissionUncheckedUpdateManyWithoutProblemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.EnumLANGUAGEFieldUpdateOperationsInput | $Enums.LANGUAGE
   stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1125,8 +1131,8 @@ export type SubmissionCreateManyContestInput = {
   id?: string
   userId: string
   problemId: string
-  sourceCode: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language: string
+  sourceCode: string
+  language: $Enums.LANGUAGE
   stdin?: string | null
   stdout?: string | null
   stderr?: string | null
@@ -1140,8 +1146,8 @@ export type SubmissionCreateManyContestInput = {
 
 export type SubmissionUpdateWithoutContestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.EnumLANGUAGEFieldUpdateOperationsInput | $Enums.LANGUAGE
   stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1151,8 +1157,8 @@ export type SubmissionUpdateWithoutContestInput = {
   time?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutSubmissionNestedInput
-  problem?: Prisma.ProblemUpdateOneRequiredWithoutSubmissionNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutSubmissionsNestedInput
+  problem?: Prisma.ProblemUpdateOneRequiredWithoutSubmissionsNestedInput
   testCases?: Prisma.TestCaseResultUpdateManyWithoutSubmissionNestedInput
 }
 
@@ -1160,8 +1166,8 @@ export type SubmissionUncheckedUpdateWithoutContestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   problemId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.EnumLANGUAGEFieldUpdateOperationsInput | $Enums.LANGUAGE
   stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1178,8 +1184,8 @@ export type SubmissionUncheckedUpdateManyWithoutContestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   problemId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceCode?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  language?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.EnumLANGUAGEFieldUpdateOperationsInput | $Enums.LANGUAGE
   stdin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stdout?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stderr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1336,8 +1342,8 @@ export type $SubmissionPayload<ExtArgs extends runtime.Types.Extensions.Internal
     id: string
     userId: string
     problemId: string
-    sourceCode: runtime.JsonValue
-    language: string
+    sourceCode: string
+    language: $Enums.LANGUAGE
     stdin: string | null
     stdout: string | null
     stderr: string | null
@@ -1778,8 +1784,8 @@ export interface SubmissionFieldRefs {
   readonly id: Prisma.FieldRef<"Submission", 'String'>
   readonly userId: Prisma.FieldRef<"Submission", 'String'>
   readonly problemId: Prisma.FieldRef<"Submission", 'String'>
-  readonly sourceCode: Prisma.FieldRef<"Submission", 'Json'>
-  readonly language: Prisma.FieldRef<"Submission", 'String'>
+  readonly sourceCode: Prisma.FieldRef<"Submission", 'String'>
+  readonly language: Prisma.FieldRef<"Submission", 'LANGUAGE'>
   readonly stdin: Prisma.FieldRef<"Submission", 'String'>
   readonly stdout: Prisma.FieldRef<"Submission", 'String'>
   readonly stderr: Prisma.FieldRef<"Submission", 'String'>

@@ -235,7 +235,7 @@ export type ProblemSolvedCreateInput = {
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutProblemSolvedInput
+  user: Prisma.UserCreateNestedOneWithoutProblemsSolvedInput
   problem: Prisma.ProblemCreateNestedOneWithoutSolvedByInput
 }
 
@@ -251,7 +251,7 @@ export type ProblemSolvedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutProblemSolvedNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutProblemsSolvedNestedInput
   problem?: Prisma.ProblemUpdateOneRequiredWithoutSolvedByNestedInput
 }
 
@@ -463,7 +463,7 @@ export type ProblemSolvedCreateWithoutProblemInput = {
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutProblemSolvedInput
+  user: Prisma.UserCreateNestedOneWithoutProblemsSolvedInput
 }
 
 export type ProblemSolvedUncheckedCreateWithoutProblemInput = {
@@ -538,7 +538,7 @@ export type ProblemSolvedUpdateWithoutProblemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutProblemSolvedNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutProblemsSolvedNestedInput
 }
 
 export type ProblemSolvedUncheckedUpdateWithoutProblemInput = {

@@ -278,8 +278,8 @@ export type DiscussionCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deleted?: boolean
-  user: Prisma.UserCreateNestedOneWithoutDiscussionInput
-  problem?: Prisma.ProblemCreateNestedOneWithoutDiscussionInput
+  user: Prisma.UserCreateNestedOneWithoutDiscussionsInput
+  problem?: Prisma.ProblemCreateNestedOneWithoutDiscussionsInput
   parent?: Prisma.DiscussionCreateNestedOneWithoutRepliesInput
   replies?: Prisma.DiscussionCreateNestedManyWithoutParentInput
 }
@@ -302,8 +302,8 @@ export type DiscussionUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  user?: Prisma.UserUpdateOneRequiredWithoutDiscussionNestedInput
-  problem?: Prisma.ProblemUpdateOneWithoutDiscussionNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutDiscussionsNestedInput
+  problem?: Prisma.ProblemUpdateOneWithoutDiscussionsNestedInput
   parent?: Prisma.DiscussionUpdateOneWithoutRepliesNestedInput
   replies?: Prisma.DiscussionUpdateManyWithoutParentNestedInput
 }
@@ -546,7 +546,7 @@ export type DiscussionCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deleted?: boolean
-  problem?: Prisma.ProblemCreateNestedOneWithoutDiscussionInput
+  problem?: Prisma.ProblemCreateNestedOneWithoutDiscussionsInput
   parent?: Prisma.DiscussionCreateNestedOneWithoutRepliesInput
   replies?: Prisma.DiscussionCreateNestedManyWithoutParentInput
 }
@@ -608,7 +608,7 @@ export type DiscussionCreateWithoutProblemInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deleted?: boolean
-  user: Prisma.UserCreateNestedOneWithoutDiscussionInput
+  user: Prisma.UserCreateNestedOneWithoutDiscussionsInput
   parent?: Prisma.DiscussionCreateNestedOneWithoutRepliesInput
   replies?: Prisma.DiscussionCreateNestedManyWithoutParentInput
 }
@@ -656,8 +656,8 @@ export type DiscussionCreateWithoutRepliesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deleted?: boolean
-  user: Prisma.UserCreateNestedOneWithoutDiscussionInput
-  problem?: Prisma.ProblemCreateNestedOneWithoutDiscussionInput
+  user: Prisma.UserCreateNestedOneWithoutDiscussionsInput
+  problem?: Prisma.ProblemCreateNestedOneWithoutDiscussionsInput
   parent?: Prisma.DiscussionCreateNestedOneWithoutRepliesInput
 }
 
@@ -683,8 +683,8 @@ export type DiscussionCreateWithoutParentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deleted?: boolean
-  user: Prisma.UserCreateNestedOneWithoutDiscussionInput
-  problem?: Prisma.ProblemCreateNestedOneWithoutDiscussionInput
+  user: Prisma.UserCreateNestedOneWithoutDiscussionsInput
+  problem?: Prisma.ProblemCreateNestedOneWithoutDiscussionsInput
   replies?: Prisma.DiscussionCreateNestedManyWithoutParentInput
 }
 
@@ -726,8 +726,8 @@ export type DiscussionUpdateWithoutRepliesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  user?: Prisma.UserUpdateOneRequiredWithoutDiscussionNestedInput
-  problem?: Prisma.ProblemUpdateOneWithoutDiscussionNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutDiscussionsNestedInput
+  problem?: Prisma.ProblemUpdateOneWithoutDiscussionsNestedInput
   parent?: Prisma.DiscussionUpdateOneWithoutRepliesNestedInput
 }
 
@@ -774,7 +774,7 @@ export type DiscussionUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  problem?: Prisma.ProblemUpdateOneWithoutDiscussionNestedInput
+  problem?: Prisma.ProblemUpdateOneWithoutDiscussionsNestedInput
   parent?: Prisma.DiscussionUpdateOneWithoutRepliesNestedInput
   replies?: Prisma.DiscussionUpdateManyWithoutParentNestedInput
 }
@@ -816,7 +816,7 @@ export type DiscussionUpdateWithoutProblemInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  user?: Prisma.UserUpdateOneRequiredWithoutDiscussionNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutDiscussionsNestedInput
   parent?: Prisma.DiscussionUpdateOneWithoutRepliesNestedInput
   replies?: Prisma.DiscussionUpdateManyWithoutParentNestedInput
 }
@@ -858,8 +858,8 @@ export type DiscussionUpdateWithoutParentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  user?: Prisma.UserUpdateOneRequiredWithoutDiscussionNestedInput
-  problem?: Prisma.ProblemUpdateOneWithoutDiscussionNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutDiscussionsNestedInput
+  problem?: Prisma.ProblemUpdateOneWithoutDiscussionsNestedInput
   replies?: Prisma.DiscussionUpdateManyWithoutParentNestedInput
 }
 

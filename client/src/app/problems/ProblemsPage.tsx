@@ -1,5 +1,5 @@
 import { Star, Plus } from "lucide-react";
-import { testProblems } from "../../seeds/ProblemsSeeds";
+import { MockProblems } from "../../seeds/MockProblems";
 import { Modal } from "../../components/ui/Modal";
 import { useState } from "react";
 import { Tooltip } from "../../components/ui/Tooltip";
@@ -24,7 +24,7 @@ const ProblemsPage = () => {
       <div className="w-[1024px] pt-6 mx-auto">
         <h1 className="text-2xl font-bold mb-4 text-red-100">Problems</h1>
         <div className="w-full bg-[#2a0000] rounded-3xl p-2">
-          {testProblems.map((problem, index) => (
+          {MockProblems.map((problem, index) => (
             <Link
               key={problem.id}
               to={`/problems/${problem.id}`}

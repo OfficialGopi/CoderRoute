@@ -1,47 +1,101 @@
 import express from "express";
 import type { Router } from "express";
 import { ProblemController } from "./controllers";
-import { verifyAccessToken } from "../../middlewares/auth.middleware";
-import { checkRole } from "../../middlewares/role-based-access.middleware";
-import { USER_ROLE } from "../../prisma/client";
+
+import {
+  verifyAccessToken,
+  isEmailVerified,
+} from "../../middlewares/auth.middleware";
+
 function register(): Router {
   const router = express.Router();
+  const controller = new ProblemController();
 
-  const controllers = new ProblemController();
+  // ✅ PUBLIC ROUTES (Authenticated)
+  router.get(
+    "/",
+    verifyAccessToken,
+    isEmailVerified,
+    controller.getAllProblems,
+  );
+  router.get(
+    "/solved",
+    verifyAccessToken,
+    isEmailVerified,
+    controller.getAllProblemsSolvedByUser,
+  );
+  router.get(
+    "/:problemId",
+    verifyAccessToken,
+    isEmailVerified,
+    controller.getProblemById,
+  );
 
-  //PROBLEM ROUTES
-  router
-    .route("/get-all-problems")
-    .get(controllers.getAllProblems.bind(controllers));
+  // 🔒 ADMIN-ONLY ROUTES
+  router.post(
+    "/",
+    verifyAccessToken,
+    isEmailVerified,
+    controller.createProblem,
+  );
+  router.patch(
+    "/:problemId",
+    verifyAccessToken,
+    isEmailVerified,
+    controller.updateProblemDetails,
+  );
+  router.delete(
+    "/:problemId",
+    verifyAccessToken,
+    isEmailVerified,
+    controller.deleteProblem,
+  );
 
-  router
-    .route("/create-problem")
-    .post(
-      verifyAccessToken,
-      checkRole([USER_ROLE.ADMIN]),
-      controllers.createProblem.bind(controllers),
-    );
+  // 🧠 CODE SNIPPETS
+  router.patch(
+    "/:problemId/code-snippets/:codeSnippetId",
+    verifyAccessToken,
+    isEmailVerified,
+    controller.updateProblemCodeSnippet,
+  );
 
-  router
-    .route("/id/:problemId")
-    .get(controllers.getProblemById.bind(controllers))
-    .put(
-      verifyAccessToken,
-      checkRole([USER_ROLE.ADMIN]),
-      controllers.updateProblem.bind(controllers),
-    )
-    .delete(
-      verifyAccessToken,
-      checkRole([USER_ROLE.ADMIN]),
-      controllers.deleteProblem.bind(controllers),
-    );
+  // 🧠 REFERENCE SOLUTIONS
+  router.patch(
+    "/:problemId/reference-solutions/:referenceSolutionId",
+    verifyAccessToken,
+    isEmailVerified,
+    controller.updateProblemReferenceSolution,
+  );
 
-  router
-    .route("/get-all-problems-solved-by-user")
-    .get(
-      verifyAccessToken,
-      controllers.getAllProblemsSolvedByUser.bind(controllers),
-    );
+  // 🧠 BACKGROUND CODE
+  router.patch(
+    "/:problemId/background-codes/:backgroundCodeId",
+    verifyAccessToken,
+    isEmailVerified,
+    controller.updateProblemBackgroundCode,
+  );
+
+  // 🧪 TEST CASES
+  router.patch(
+    "/:problemId/testcases/:testcaseId",
+    verifyAccessToken,
+    isEmailVerified,
+    controller.updateProblemTestCases,
+  );
+
+  router.post(
+    "/:problemId/testcases",
+    verifyAccessToken,
+    isEmailVerified,
+    controller.addProblemTestCase,
+  );
+
+  router.delete(
+    "/:problemId/testcases/:testcaseId",
+    verifyAccessToken,
+    isEmailVerified,
+    controller.deleteTestCase,
+  );
 
   return router;
 }
