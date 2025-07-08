@@ -157,7 +157,7 @@ class ProblemController {
           "Failed to pool batch results",
         );
       }
-      console.dir(results, { depth: null });
+
       if (!results.data) {
         throw new ApiError(
           STATUS_CODE.INTERNAL_SERVER_ERROR,
@@ -487,23 +487,30 @@ class ProblemController {
   });
 
   public getAllProblemsSolvedByUser = AsyncHandler(async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.user;
+    const page = req.query.page ? parseInt(req.query.page as string) : 1;
+
+    if (page < 1) {
+      throw new ApiError(STATUS_CODE.BAD_REQUEST, "Invalid page number");
+    }
 
     if (!id) {
-      throw new ApiError(STATUS_CODE.BAD_REQUEST, "Problem ID is required");
+      throw new ApiError(STATUS_CODE.BAD_REQUEST, "User ID is required");
     }
 
     const solvedProblems = await db.problem.findMany({
       where: {
         solvedBy: {
           some: {
-            id: id as string,
+            userId: id as string,
           },
         },
       },
       include: {
         submission: true,
       },
+      skip: (page - 1) * 20,
+      take: 20,
     });
 
     return res

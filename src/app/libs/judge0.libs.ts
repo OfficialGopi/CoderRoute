@@ -78,7 +78,10 @@ class Judge0 {
 
   public async poolBatchResults(tokens: string[]) {
     try {
-      while (true) {
+      const maxRetries = 15;
+      let attempt = 0;
+
+      while (attempt < maxRetries) {
         const {
           data,
         }: {
@@ -115,10 +118,12 @@ class Judge0 {
             data: data.submissions,
           };
         }
-
+        attempt++;
         // Wait for 1 second before polling again
         await this.sleep(2000);
       }
+
+      throw new Error("Failed to get batch results after 15 attempts");
     } catch (error) {
       return {
         success: false,

@@ -35,7 +35,7 @@ model User {
   email    String    @unique
   avatar   String?
   role     USER_ROLE @default(USER)
-  password String
+  password String 
 
   isEmailVerified              Boolean   @default(false)
   emailVerificationToken       String?   @unique

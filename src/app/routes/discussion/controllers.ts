@@ -1,13 +1,15 @@
 import { STATUS_CODE } from "../../constants/statusCodes.constants";
 import { db } from "../../db";
+import { USER_ROLE } from "../../prisma/client";
 import { ApiError } from "../../utils/api-error";
 import { ApiResponse } from "../../utils/api-response";
 import { AsyncHandler } from "../../utils/async-handler";
 
 class DiscussionController {
   public getAllDiscussions = AsyncHandler(async (req, res) => {
-    const { problemId, parentId = null, page = 1, limit = 20 } = req.query;
-
+    const { problemId, parentId = null } = req.query;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 20;
     const whereClause: any = {
       deleted: false,
       parentId: parentId === null ? null : (parentId as string),
@@ -107,8 +109,8 @@ class DiscussionController {
     const newDiscussion = await db.discussion.create({
       data: {
         content,
-        problemId: problemId || null,
-        parentId: parentId || null,
+        problemId: problemId ?? null,
+        parentId: parentId ?? null,
         userId: req.user.id,
       },
     });
@@ -131,9 +133,22 @@ class DiscussionController {
       throw new ApiError(STATUS_CODE.UNAUTHORIZED, "Unauthorized");
     }
 
-    const existing = await db.discussion.findUnique({ where: { id } });
+    const existing = await db.discussion.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!existing) {
+      throw new ApiError(STATUS_CODE.NOT_FOUND, "Discussion not found");
+    }
+    if (req.user.role === USER_ROLE.USER && existing.userId !== req.user.id) {
+      throw new ApiError(
+        STATUS_CODE.FORBIDDEN,
+        "You cannot delete this discussion",
+      );
+    }
 
-    if (!existing || existing.userId !== req.user.id) {
+    if (!existing) {
       throw new ApiError(
         STATUS_CODE.FORBIDDEN,
         "You cannot delete this discussion",

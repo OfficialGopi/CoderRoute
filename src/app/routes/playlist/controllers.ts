@@ -154,13 +154,27 @@ class PlaylistController {
         "All problems are already added to playlist",
       );
     }
+    const existing = await db.problemInPlaylist.findMany({
+      where: {
+        playlistId,
+        problemId: { in: problemIds },
+      },
+      select: { problemId: true },
+    });
+
+    const existingIds = new Set(existing.map((e) => e.problemId));
+    const toAdd = problemIds.filter((id) => !existingIds.has(id));
+
+    if (toAdd.length === 0) {
+      throw new ApiError(
+        STATUS_CODE.BAD_REQUEST,
+        "All problems are already added to playlist",
+      );
+    }
 
     // Create records fro each problems in the playlist
     const problemsInPlaylist = await db.problemInPlaylist.createMany({
-      data: problemIds.map((problemId: string) => ({
-        playlistId,
-        problemId,
-      })),
+      data: toAdd.map((id) => ({ playlistId, problemId: id })),
     });
 
     return res

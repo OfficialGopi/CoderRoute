@@ -10,10 +10,7 @@ class AuthMiddleware {
     //Get access token from cookies or headers
     const accessToken =
       (req.cookies["access-token"] as string) ??
-      (req.headers?.Authorization as string | undefined)?.replace(
-        "Bearer ",
-        "",
-      );
+      (req.headers?.Authorization as string | "")?.replace("Bearer ", "");
 
     // If not access token then unauthorized
     if (!accessToken) {

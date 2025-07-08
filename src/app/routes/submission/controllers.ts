@@ -10,11 +10,30 @@ class SubmissionController {
       throw new ApiError(STATUS_CODE.UNAUTHORIZED, "Unauthorized");
     }
     const userId = req.user.id;
+    const page = parseInt(req.query.page as string) || 1;
+
+    if (page < 1) {
+      throw new ApiError(STATUS_CODE.BAD_REQUEST, "Invalid page number");
+    }
 
     const submissions = await db.submission.findMany({
       where: {
         userId: userId,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        problem: {
+          select: {
+            id: true,
+            title: true,
+            difficulty: true,
+          },
+        },
+      },
+      skip: (page - 1) * 50,
+      take: 50,
     });
 
     return res
@@ -39,11 +58,30 @@ class SubmissionController {
       throw new ApiError(STATUS_CODE.BAD_REQUEST, "Problem ID is required");
     }
 
+    const page = parseInt(req.query.page as string) || 1;
+    if (page < 1) {
+      throw new ApiError(STATUS_CODE.BAD_REQUEST, "Invalid page number");
+    }
+
     const submissions = await db.submission.findMany({
       where: {
         userId: userId,
         problemId: problemId,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        problem: {
+          select: {
+            id: true,
+            title: true,
+            difficulty: true,
+          },
+        },
+      },
+      skip: (page - 1) * 50,
+      take: 50,
     });
 
     return res

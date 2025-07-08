@@ -97,10 +97,16 @@ class ExecuteCodeController {
       !problemId ||
       !Array.isArray(stdin) ||
       stdin.length === 0 ||
-      !Array.isArray(expected_outputs) ||
-      expected_outputs.length !== stdin.length
+      !Array.isArray(expected_outputs)
     ) {
       throw new ApiError(STATUS_CODE.BAD_REQUEST, "Invalid Request Body");
+    }
+
+    if (expected_outputs.length !== stdin.length) {
+      throw new ApiError(
+        STATUS_CODE.BAD_REQUEST,
+        "Number of expected outputs should be equal to number of stdin",
+      );
     }
 
     if (!problem.backgroundCode) {
@@ -123,13 +129,19 @@ class ExecuteCodeController {
         `Background code not available for selected language: ${language}`,
       );
     }
-
+    const languageId = getJudge0LanguageId(language);
+    if (!languageId) {
+      throw new ApiError(
+        STATUS_CODE.BAD_REQUEST,
+        `Unsupported language: ${language}`,
+      );
+    }
     const submissions = stdin.map((input) => ({
       source_code: (bgCode!.code as string).replace(
         bgCode!.whereToWriteCode,
         sourceCode,
       ),
-      language_id: getJudge0LanguageId(language),
+      language_id: languageId,
       stdin: input,
     }));
 
@@ -155,8 +167,8 @@ class ExecuteCodeController {
     //  Analyze test case results
     let allPassed = true;
     const detailedResults = results.data?.map((result, i) => {
-      const stdout = result.stdout?.trim();
-      const expected_output = expected_outputs[i]?.trim();
+      const stdout = result.stdout?.trim() || "";
+      const expected_output = expected_outputs[i]?.trim() || "";
       const passed = stdout === expected_output;
 
       if (!passed) allPassed = false;

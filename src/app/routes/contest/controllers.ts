@@ -1,5 +1,6 @@
 import { STATUS_CODE } from "../../constants/statusCodes.constants";
 import { db } from "../../db";
+import { USER_ROLE } from "../../prisma/client";
 import { ApiError } from "../../utils/api-error";
 import { ApiResponse } from "../../utils/api-response";
 import { AsyncHandler } from "../../utils/async-handler";
@@ -117,6 +118,10 @@ class ContestController {
       throw new ApiError(STATUS_CODE.NOT_FOUND, "Contest not found");
     }
 
+    if (req.user.role === USER_ROLE.USER && req.user.id !== contest.creatorId) {
+      throw new ApiError(STATUS_CODE.FORBIDDEN, "Forbidden");
+    }
+
     await db.contest.update({
       where: { id },
       data: { deleted: true },
@@ -211,6 +216,16 @@ class ContestController {
       throw new ApiError(STATUS_CODE.UNAUTHORIZED, "Unauthorized");
     }
 
+    const contest = await db.contest.findUnique({
+      where: {
+        id: contestId,
+      },
+    });
+
+    if (!contest || contest.deleted) {
+      throw new ApiError(STATUS_CODE.NOT_FOUND, "Contest not found");
+    }
+
     const submissions = await db.submission.findMany({
       where: {
         contestId,
@@ -265,6 +280,16 @@ class ContestController {
       orderBy: { createdAt: "desc" },
     });
 
+    const contest = await db.contest.findUnique({
+      where: {
+        id: contestId,
+      },
+    });
+
+    if (!contest || contest.deleted) {
+      throw new ApiError(STATUS_CODE.NOT_FOUND, "Contest not found");
+    }
+
     const total = await db.submission.count({
       where: {
         contestId,
@@ -281,6 +306,7 @@ class ContestController {
         ),
       );
   });
+
   public updateContestScore = AsyncHandler(async (req, res) => {
     const { contestId, problemId, userId } = req.body;
     const contestProblem = await db.contestProblem.findFirst({

@@ -13,10 +13,10 @@ function register(): Router {
   const controller = new ContestController();
 
   // ✅ Get all contests with pagination, soft-deletion support
-  router.get("/", controller.getAllContests);
+  router.get("/", controller.getAllContests.bind(controller));
 
   // ✅ Get a contest by ID with problems and participations
-  router.get("/:id", controller.getContestById);
+  router.get("/:id", controller.getContestById.bind(controller));
 
   // ✅ Create a contest (requires auth)
   router.post(
