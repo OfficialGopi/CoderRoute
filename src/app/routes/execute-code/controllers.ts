@@ -5,12 +5,74 @@ import {
   getJudge0LanguageId,
   poolBatchResults,
 } from "../../libs/judge0.libs";
+import { LANGUAGE } from "../../prisma/enums";
 import { ApiError } from "../../utils/api-error";
 import { ApiResponse } from "../../utils/api-response";
 import { AsyncHandler } from "../../utils/async-handler";
 
-//TO BE DONE
+class ExecuteCodeService {
+  public async executeCodeWithGivenTestCases(
+    language: LANGUAGE,
+    sourceCode: string,
+    bgCode: { language: LANGUAGE; code: string; whereToWriteCode: string },
+    stdin: string[],
+  ) {
+    try {
+      const languageId = getJudge0LanguageId(language);
+
+      if (!languageId) {
+        throw new ApiError(
+          STATUS_CODE.BAD_REQUEST,
+          `Unsupported language: ${language}`,
+        );
+      }
+
+      const submissions = stdin.map((input) => ({
+        source_code: (bgCode!.code as string).replace(
+          bgCode.whereToWriteCode,
+          sourceCode,
+        ),
+        language_id: languageId,
+        stdin: input,
+      }));
+
+      const submitResponse = await createSubmissionBatch(submissions);
+
+      if (!submitResponse.success) {
+        throw new ApiError(
+          STATUS_CODE.INTERNAL_SERVER_ERROR,
+          submitResponse.error?.message || "Something went wrong",
+        );
+      }
+
+      const tokens = submitResponse.data?.map((token) => token.token) || [];
+      const results = await poolBatchResults(tokens);
+
+      if (!results.success || !results.data) {
+        throw new ApiError(
+          STATUS_CODE.INTERNAL_SERVER_ERROR,
+          results.error?.message || "Something went wrong",
+        );
+      }
+
+      return results;
+    } catch (error) {
+      throw new ApiError(
+        STATUS_CODE.INTERNAL_SERVER_ERROR,
+        "Internal Server Error",
+      );
+    }
+  }
+}
+
 class ExecuteCodeController {
+  private executeCodeWithGivenTestCases;
+  constructor() {
+    const services = new ExecuteCodeService();
+    this.executeCodeWithGivenTestCases =
+      services.executeCodeWithGivenTestCases.bind(services);
+  }
+
   public executeCode = AsyncHandler(async (req, res) => {
     if (!req.user || !req.user.id) {
       throw new ApiError(STATUS_CODE.UNAUTHORIZED, "Unauthorized");
@@ -26,13 +88,15 @@ class ExecuteCodeController {
       where: {
         id: problemId,
       },
+      include: {
+        testcases: true,
+        backgroundCodes: true,
+      },
     });
 
     if (!problem) {
       throw new ApiError(STATUS_CODE.NOT_FOUND, "Problem not found");
     }
-
-    let isSubmit = false;
 
     let {
       contestId,
@@ -40,16 +104,17 @@ class ExecuteCodeController {
       language,
       stdin,
       expected_outputs,
+      isSubmit,
     }: {
       contestId: string | undefined;
       sourceCode: string;
-      language: string;
+      language: LANGUAGE;
       stdin: string[] | undefined;
       expected_outputs: string[] | undefined;
+      isSubmit: boolean;
     } = req.body;
 
-    if (!stdin || !expected_outputs) {
-      isSubmit = true;
+    if (isSubmit) {
       expected_outputs = (problem.testcases as Array<{ output: string }>).map(
         ({ output }) => output,
       );
@@ -109,19 +174,14 @@ class ExecuteCodeController {
       );
     }
 
-    if (!problem.backgroundCode) {
+    if (!problem.backgroundCodes) {
       throw new ApiError(
         STATUS_CODE.BAD_REQUEST,
         "Missing backgroundCode in problem",
       );
     }
 
-    const bgCode = (
-      problem.backgroundCode as Record<
-        string,
-        { code: string; whereToWriteCode: string }
-      >
-    )[language];
+    const bgCode = problem.backgroundCodes.find((e) => e.language === language);
 
     if (!bgCode) {
       throw new ApiError(
@@ -129,43 +189,16 @@ class ExecuteCodeController {
         `Background code not available for selected language: ${language}`,
       );
     }
-    const languageId = getJudge0LanguageId(language);
-    if (!languageId) {
-      throw new ApiError(
-        STATUS_CODE.BAD_REQUEST,
-        `Unsupported language: ${language}`,
-      );
-    }
-    const submissions = stdin.map((input) => ({
-      source_code: (bgCode!.code as string).replace(
-        bgCode!.whereToWriteCode,
-        sourceCode,
-      ),
-      language_id: languageId,
-      stdin: input,
-    }));
 
-    const submitResponse = await createSubmissionBatch(submissions);
+    const results = await this.executeCodeWithGivenTestCases(
+      language,
+      sourceCode,
+      bgCode,
+      stdin,
+    );
 
-    if (!submitResponse.success) {
-      throw new ApiError(
-        STATUS_CODE.INTERNAL_SERVER_ERROR,
-        submitResponse.error?.message || "Something went wrong",
-      );
-    }
-
-    const tokens = submitResponse.data?.map((token) => token.token) || [];
-    const results = await poolBatchResults(tokens);
-
-    if (!results.success || !results.data) {
-      throw new ApiError(
-        STATUS_CODE.INTERNAL_SERVER_ERROR,
-        results.error?.message || "Something went wrong",
-      );
-    }
-
-    //  Analyze test case results
     let allPassed = true;
+    //  Analyze test case results
     const detailedResults = results.data?.map((result, i) => {
       const stdout = result.stdout?.trim() || "";
       const expected_output = expected_outputs[i]?.trim() || "";

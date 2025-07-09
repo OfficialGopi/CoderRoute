@@ -28,174 +28,181 @@ class ProblemServices {
       output: string;
     }[],
   ) {
-    if (
-      !referenceSolutions ||
-      !testcases ||
-      testcases.length === 0 ||
-      !backgroundCodes
-    ) {
-      throw new ApiError(
-        STATUS_CODE.BAD_REQUEST,
-        "Background Code , Reference solutions and test cases are required",
-      );
-    }
-    if (
-      Object.keys(referenceSolutions).length === 0 ||
-      backgroundCodes.length !== Object.values(LANGUAGE).length ||
-      referenceSolutions.length !== Object.values(LANGUAGE).length
-    ) {
-      throw new ApiError(
-        STATUS_CODE.BAD_REQUEST,
-        " All Reference solutions and background codes are required",
-      );
-    }
-
-    if (!testcases || testcases.length === 0) {
-      throw new ApiError(STATUS_CODE.BAD_REQUEST, "Test cases are required");
-    }
-
-    for (const bgCodesObj of backgroundCodes) {
-      const { language, code, whereToWriteCode } = bgCodesObj;
-
-      if (!language) {
+    try {
+      if (
+        !referenceSolutions ||
+        !testcases ||
+        testcases.length === 0 ||
+        !backgroundCodes
+      ) {
         throw new ApiError(
           STATUS_CODE.BAD_REQUEST,
-          `Language for background code is required`,
+          "Background Code , Reference solutions and test cases are required",
+        );
+      }
+      if (
+        Object.keys(referenceSolutions).length === 0 ||
+        backgroundCodes.length !== Object.values(LANGUAGE).length ||
+        referenceSolutions.length !== Object.values(LANGUAGE).length
+      ) {
+        throw new ApiError(
+          STATUS_CODE.BAD_REQUEST,
+          " All Reference solutions and background codes are required",
         );
       }
 
-      if (!code) {
-        throw new ApiError(
-          STATUS_CODE.BAD_REQUEST,
-          `Code for background code is required`,
-        );
+      if (!testcases || testcases.length === 0) {
+        throw new ApiError(STATUS_CODE.BAD_REQUEST, "Test cases are required");
       }
 
-      if (!whereToWriteCode) {
-        throw new ApiError(
-          STATUS_CODE.BAD_REQUEST,
-          `Where to write code for background code is required`,
+      for (const bgCodesObj of backgroundCodes) {
+        const { language, code, whereToWriteCode } = bgCodesObj;
+
+        if (!language) {
+          throw new ApiError(
+            STATUS_CODE.BAD_REQUEST,
+            `Language for background code is required`,
+          );
+        }
+
+        if (!code) {
+          throw new ApiError(
+            STATUS_CODE.BAD_REQUEST,
+            `Code for background code is required`,
+          );
+        }
+
+        if (!whereToWriteCode) {
+          throw new ApiError(
+            STATUS_CODE.BAD_REQUEST,
+            `Where to write code for background code is required`,
+          );
+        }
+
+        const languageId = getJudge0LanguageId(language);
+
+        if (!languageId) {
+          throw new ApiError(
+            STATUS_CODE.BAD_REQUEST,
+            `Language ${language} is not supported`,
+          );
+        }
+
+        if (!languageId) {
+          throw new ApiError(
+            STATUS_CODE.BAD_REQUEST,
+            `Language ${language} is not supported`,
+          );
+        }
+
+        const referenceSolution = referenceSolutions.find(
+          (e) => e.language === language,
         );
-      }
 
-      const languageId = getJudge0LanguageId(language);
+        if (!referenceSolution) {
+          throw new ApiError(
+            STATUS_CODE.BAD_REQUEST,
+            `Reference solution for ${language} is required`,
+          );
+        }
 
-      if (!languageId) {
-        throw new ApiError(
-          STATUS_CODE.BAD_REQUEST,
-          `Language ${language} is not supported`,
+        const solutionCode = code.replace(
+          whereToWriteCode,
+          referenceSolution.code,
         );
-      }
 
-      if (!languageId) {
-        throw new ApiError(
-          STATUS_CODE.BAD_REQUEST,
-          `Language ${language} is not supported`,
+        if (!solutionCode) {
+          throw new ApiError(
+            STATUS_CODE.BAD_REQUEST,
+            `Solution code for ${language} is required`,
+          );
+        }
+
+        // CREATE SUBMISSION FORMAT DATA
+        const submissions: {
+          language_id: number;
+          source_code: string;
+          stdin: string;
+          expected_output: string;
+        }[] = testcases.map(
+          ({ input, output }: { input: string; output: string }) => {
+            if (!input || !output) {
+              throw new ApiError(
+                STATUS_CODE.BAD_REQUEST,
+                "Input and output are required",
+              );
+            }
+
+            return {
+              source_code: solutionCode,
+              language_id: languageId,
+              stdin: input,
+              expected_output: output,
+            };
+          },
         );
-      }
 
-      const referenceSolution = referenceSolutions.find(
-        (e) => e.language === language,
-      );
+        //CREATE SUBMISSION BATCH
+        const submissionResults = await createSubmissionBatch(submissions);
 
-      if (!referenceSolution) {
-        throw new ApiError(
-          STATUS_CODE.BAD_REQUEST,
-          `Reference solution for ${language} is required`,
-        );
-      }
+        if (!submissionResults.success) {
+          throw new ApiError(
+            STATUS_CODE.INTERNAL_SERVER_ERROR,
+            "Failed to create submissions",
+          );
+        }
 
-      const solutionCode = code.replace(
-        whereToWriteCode,
-        referenceSolution.code,
-      );
+        if (!submissionResults.data) {
+          throw new ApiError(
+            STATUS_CODE.INTERNAL_SERVER_ERROR,
+            "No submission results found",
+          );
+        }
 
-      if (!solutionCode) {
-        throw new ApiError(
-          STATUS_CODE.BAD_REQUEST,
-          `Solution code for ${language} is required`,
-        );
-      }
-
-      // CREATE SUBMISSION FORMAT DATA
-      const submissions: {
-        language_id: number;
-        source_code: string;
-        stdin: string;
-        expected_output: string;
-      }[] = testcases.map(
-        ({ input, output }: { input: string; output: string }) => {
-          if (!input || !output) {
+        const tokens = submissionResults.data.map(({ token }) => {
+          if (!token) {
             throw new ApiError(
-              STATUS_CODE.BAD_REQUEST,
-              "Input and output are required",
+              STATUS_CODE.INTERNAL_SERVER_ERROR,
+              "No token found in submission result",
             );
           }
 
-          return {
-            source_code: solutionCode,
-            language_id: languageId,
-            stdin: input,
-            expected_output: output,
-          };
-        },
+          return token;
+        });
+
+        const results = await poolBatchResults(tokens);
+
+        if (!results.success) {
+          throw new ApiError(
+            STATUS_CODE.INTERNAL_SERVER_ERROR,
+            "Failed to pool batch results",
+          );
+        }
+
+        if (!results.data) {
+          throw new ApiError(
+            STATUS_CODE.INTERNAL_SERVER_ERROR,
+            "No results found",
+          );
+        }
+
+        for (let i = 0; i < results.data.length; i++) {
+          const result = results.data[i];
+
+          if (result.status.id > 3) {
+            throw new ApiError(
+              STATUS_CODE.INTERNAL_SERVER_ERROR,
+              "JUDGE0 : " + result.status.description ||
+                `${result.status.description}: ${result.stderr || "Unknown error"}`,
+            );
+          }
+        }
+      }
+    } catch (error) {
+      throw new ApiError(
+        STATUS_CODE.INTERNAL_SERVER_ERROR,
+        "Internal Server Error",
       );
-
-      //CREATE SUBMISSION BATCH
-      const submissionResults = await createSubmissionBatch(submissions);
-
-      if (!submissionResults.success) {
-        throw new ApiError(
-          STATUS_CODE.INTERNAL_SERVER_ERROR,
-          "Failed to create submissions",
-        );
-      }
-
-      if (!submissionResults.data) {
-        throw new ApiError(
-          STATUS_CODE.INTERNAL_SERVER_ERROR,
-          "No submission results found",
-        );
-      }
-
-      const tokens = submissionResults.data.map(({ token }) => {
-        if (!token) {
-          throw new ApiError(
-            STATUS_CODE.INTERNAL_SERVER_ERROR,
-            "No token found in submission result",
-          );
-        }
-
-        return token;
-      });
-
-      const results = await poolBatchResults(tokens);
-
-      if (!results.success) {
-        throw new ApiError(
-          STATUS_CODE.INTERNAL_SERVER_ERROR,
-          "Failed to pool batch results",
-        );
-      }
-
-      if (!results.data) {
-        throw new ApiError(
-          STATUS_CODE.INTERNAL_SERVER_ERROR,
-          "No results found",
-        );
-      }
-
-      for (let i = 0; i < results.data.length; i++) {
-        const result = results.data[i];
-
-        if (result.status.id > 3) {
-          throw new ApiError(
-            STATUS_CODE.INTERNAL_SERVER_ERROR,
-            "JUDGE0 : " + result.status.description ||
-              `${result.status.description}: ${result.stderr || "Unknown error"}`,
-          );
-        }
-      }
     }
   }
 }
