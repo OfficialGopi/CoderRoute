@@ -46,7 +46,7 @@ function register(): Router {
       controllers.changeCurrentPassword.bind(controllers),
     ); //CHANGE CURRENT PASSWORD
 
-  router.get("/me", controllers.me.bind(controllers)); //GET LOGGED IN USER
+  router.route("/me").get(controllers.me.bind(controllers)); //GET LOGGED IN USER
 
   return router;
 }
