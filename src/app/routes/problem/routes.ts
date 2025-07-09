@@ -12,90 +12,88 @@ function register(): Router {
   const controller = new ProblemController();
 
   // ✅ PUBLIC ROUTES (Authenticated)
-  router.get(
-    "/",
-    verifyAccessToken,
-    isEmailVerified,
-    controller.getAllProblems,
-  );
-  router.get(
-    "/solved",
-    verifyAccessToken,
-    isEmailVerified,
-    controller.getAllProblemsSolvedByUser,
-  );
-  router.get(
-    "/:problemId",
-    verifyAccessToken,
-    isEmailVerified,
-    controller.getProblemById,
-  );
+  router.route("/").get(controller.getAllProblems.bind(controller));
+
+  router
+    .route("/id/:problemId")
+    .get(controller.getProblemById.bind(controller));
+
+  router
+    .route("/solved")
+    .get(
+      verifyAccessToken,
+      isEmailVerified,
+      controller.getAllProblemsSolvedByUser.bind(controller),
+    );
 
   // 🔒 ADMIN-ONLY ROUTES
-  router.post(
-    "/",
-    verifyAccessToken,
-    isEmailVerified,
-    controller.createProblem,
-  );
-  router.patch(
-    "/:problemId",
-    verifyAccessToken,
-    isEmailVerified,
-    controller.updateProblemDetails,
-  );
-  router.delete(
-    "/:problemId",
-    verifyAccessToken,
-    isEmailVerified,
-    controller.deleteProblem,
-  );
+  router
+    .route("/")
+    .post(
+      verifyAccessToken,
+      isEmailVerified,
+      controller.createProblem.bind(controller),
+    );
+
+  router
+    .route("/id/:problemId")
+    .patch(
+      verifyAccessToken,
+      isEmailVerified,
+      controller.updateProblemDetails.bind(controller),
+    );
+
+  router
+    .route("/id/:problemId")
+    .delete(
+      verifyAccessToken,
+      isEmailVerified,
+      controller.deleteProblem.bind(controller),
+    );
 
   // 🧠 CODE SNIPPETS
-  router.patch(
-    "/:problemId/code-snippets/:codeSnippetId",
-    verifyAccessToken,
-    isEmailVerified,
-    controller.updateProblemCodeSnippet,
-  );
+  router
+    .route("/id/:problemId/code-snippets/:codeSnippetId")
+    .patch(
+      verifyAccessToken,
+      isEmailVerified,
+      controller.updateProblemCodeSnippet,
+    );
 
   // 🧠 REFERENCE SOLUTIONS
-  router.patch(
-    "/:problemId/reference-solutions/:referenceSolutionId",
-    verifyAccessToken,
-    isEmailVerified,
-    controller.updateProblemReferenceSolution,
-  );
+  router
+    .route("/id/:problemId/reference-solutions/:referenceSolutionId")
+    .patch(
+      verifyAccessToken,
+      isEmailVerified,
+      controller.updateProblemReferenceSolution,
+    );
 
   // 🧠 BACKGROUND CODE
-  router.patch(
-    "/:problemId/background-codes/:backgroundCodeId",
-    verifyAccessToken,
-    isEmailVerified,
-    controller.updateProblemBackgroundCode,
-  );
+  router
+    .route("/id/:problemId/background-codes/:backgroundCodeId")
+    .patch(
+      verifyAccessToken,
+      isEmailVerified,
+      controller.updateProblemBackgroundCode,
+    );
 
   // 🧪 TEST CASES
-  router.patch(
-    "/:problemId/testcases/:testcaseId",
-    verifyAccessToken,
-    isEmailVerified,
-    controller.updateProblemTestCases,
-  );
+  router
+    .route("/id/:problemId/testcases/:testcaseId")
+    .patch(
+      verifyAccessToken,
+      isEmailVerified,
+      controller.updateProblemTestCases,
+    );
 
-  router.post(
-    "/:problemId/testcases",
-    verifyAccessToken,
-    isEmailVerified,
-    controller.addProblemTestCase,
-  );
+  router
+    .route("/id/:problemId/testcases")
+    .post(verifyAccessToken, isEmailVerified, controller.addProblemTestCase);
 
-  router.delete(
-    "/:problemId/testcases/:testcaseId",
-    verifyAccessToken,
-    isEmailVerified,
-    controller.deleteTestCase,
-  );
+  router
+    .route("/id/:problemId/testcases/:testcaseId")
+    .delete(verifyAccessToken, isEmailVerified, controller.deleteTestCase);
 
   return router;
 }
