@@ -17,13 +17,13 @@ function register(): Router {
     .route("/refresh-access-token")
     .patch(controllers.refreshAccessToken.bind(controllers)); //REFRESH ACCESS TOKEN
 
-  // router
-  //   .route("/forgot-password-request")
-  //   .post(controllers.forgotPasswordRequest.bind(controllers));
+  router
+    .route("/forgot-password-request")
+    .post(controllers.forgotPasswordRequest.bind(controllers));
 
-  // router
-  //   .route("/reset-forgotten-password")
-  //   .post(controllers.resetForgottenPassword.bind(controllers));
+  router
+    .route("/reset-forgotten-password")
+    .post(controllers.resetForgottenPassword.bind(controllers));
 
   //USER AUTHETICAION MIDDLEWARE//
   router.use(verifyAccessToken); //CHECK USER AUTHENTICATION

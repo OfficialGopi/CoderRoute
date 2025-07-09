@@ -37,7 +37,30 @@ class AuthControllers {
     };
   };
 
-  private isEmailVerificationTokenCorrect = function (token: string): string {
+  private generateResetPasswordToken = function () {
+    const resetPasswodToken = crypto.randomBytes(20).toString("hex");
+    const hashedResetPasswordToken = crypto
+      .createHash("sha256")
+      .update(resetPasswodToken)
+      .digest("hex");
+    const passwordResetTokenExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes;
+
+    return {
+      resetPasswodToken,
+      hashedResetPasswordToken,
+      passwordResetTokenExpiry,
+    };
+  };
+
+  private hashEmailVerificationToken = function (token: string): string {
+    const hashedToken: string = crypto
+      .createHash("sha256")
+      .update(token)
+      .digest("hex");
+    return hashedToken;
+  };
+
+  private hashPasswordResetToken = function (token: string): string {
     const hashedToken: string = crypto
       .createHash("sha256")
       .update(token)
@@ -234,7 +257,7 @@ class AuthControllers {
     }
     const { token } = req.params;
 
-    const hashedToken = this.isEmailVerificationTokenCorrect(token);
+    const hashedToken = this.hashEmailVerificationToken(token);
 
     const user = await db.user.findUnique({
       where: {
@@ -349,8 +372,8 @@ class AuthControllers {
 
   public refreshAccessToken = AsyncHandler(async (req, res) => {
     const refreshToken =
-      req.cookies["refresh-token"].replace("Bearer ", "") ??
-      (req.body.refreshToken as string).replace("Bearer ", "");
+      req.cookies["refresh-token"]?.replace("Bearer ", "") ??
+      (req.body.refreshToken as string)?.replace("Bearer ", "");
 
     if (!refreshToken) {
       throw new ApiError(STATUS_CODE.UNAUTHORIZED, "Unauthorized");
@@ -535,9 +558,105 @@ class AuthControllers {
       .json(new ApiResponse(STATUS_CODE.OK, req.user, "Checked successfully"));
   });
 
-  // NOT FINISHED YET
-  public forgotPasswordRequest = AsyncHandler(async (req, res) => {});
-  public resetForgottenPassword = AsyncHandler(async (req, res) => {});
+  public forgotPasswordRequest = AsyncHandler(async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+      throw new ApiError(STATUS_CODE.BAD_REQUEST, "Email is required");
+    }
+
+    const user = await db.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      throw new ApiError(STATUS_CODE.NOT_FOUND, "User not found");
+    }
+
+    const {
+      hashedResetPasswordToken,
+      passwordResetTokenExpiry,
+      resetPasswodToken,
+    } = this.generateResetPasswordToken();
+
+    await db.user.update({
+      where: { id: user.id },
+      data: {
+        forgotPasswordToken: hashedResetPasswordToken,
+        forgotPasswordTokenExpiry: passwordResetTokenExpiry,
+      },
+    });
+
+    const transporter = createTransport();
+    const mailOptions = {
+      from: env.MAILTRAP_SENDER_EMAIL,
+      to: user.email,
+      subject: "Reset your password",
+      html: `
+      <h2>Reset Your Password</h2>
+      <p>Use the following token to reset your password:</p>
+      <a href="${env.ORIGIN}/reset-password?token=${resetPasswodToken}">Click here to reset your password</a>
+      <p>This token will expire in 15 minutes.</p>
+    `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    return res
+      .status(STATUS_CODE.OK)
+      .json(new ApiResponse(STATUS_CODE.OK, {}, "Reset token sent to email"));
+  });
+
+  public resetForgottenPassword = AsyncHandler(async (req, res) => {
+    const token = req.query.token as string;
+
+    const { newPassword, confirmNewPassword } = req.body;
+
+    if (!token || !newPassword || !confirmNewPassword) {
+      throw new ApiError(STATUS_CODE.BAD_REQUEST, "All fields are required");
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      throw new ApiError(STATUS_CODE.BAD_REQUEST, "Passwords do not match");
+    }
+
+    const hashedToken = this.hashPasswordResetToken(token);
+
+    const user = await db.user.findFirst({
+      where: {
+        forgotPasswordToken: hashedToken,
+        forgotPasswordTokenExpiry: {
+          gte: new Date(),
+        },
+      },
+    });
+
+    if (!user) {
+      throw new ApiError(
+        STATUS_CODE.BAD_REQUEST,
+        "Token is invalid or expired",
+      );
+    }
+
+    const hashedPassword = await this.generateHashedPassword(newPassword);
+
+    await db.user.update({
+      where: { id: user.id },
+      data: {
+        password: hashedPassword,
+        forgotPasswordToken: null,
+        forgotPasswordTokenExpiry: null,
+      },
+    });
+
+    await db.session.deleteMany({
+      where: { userId: user.id },
+    });
+
+    return res
+      .status(STATUS_CODE.OK)
+      .json(new ApiResponse(STATUS_CODE.OK, {}, "Password reset successful"));
+  });
 }
 
 export { AuthControllers };
