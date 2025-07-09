@@ -19,7 +19,7 @@ class FetchApi {
         | "OPTIONS" = "GET",
       body:
         | {
-            [key: string]: string;
+            [key: string]: any;
           }
         | undefined = undefined,
       headers: Record<string, string> = {},

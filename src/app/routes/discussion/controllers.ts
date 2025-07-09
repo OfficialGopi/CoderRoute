@@ -53,9 +53,9 @@ class DiscussionController {
   });
 
   public getDiscussionById = AsyncHandler(async (req, res) => {
-    const { id } = req.params;
+    const { discussionId } = req.params;
     const discussion = await db.discussion.findUnique({
-      where: { id },
+      where: { id: discussionId },
       include: {
         user: {
           select: {
@@ -127,7 +127,7 @@ class DiscussionController {
   });
 
   public deleteDiscussion = AsyncHandler(async (req, res) => {
-    const { id } = req.params;
+    const { discussionId } = req.params;
 
     if (!req.user || !req.user.id) {
       throw new ApiError(STATUS_CODE.UNAUTHORIZED, "Unauthorized");
@@ -135,12 +135,14 @@ class DiscussionController {
 
     const existing = await db.discussion.findUnique({
       where: {
-        id,
+        id: discussionId,
       },
     });
+
     if (!existing) {
       throw new ApiError(STATUS_CODE.NOT_FOUND, "Discussion not found");
     }
+
     if (req.user.role === USER_ROLE.USER && existing.userId !== req.user.id) {
       throw new ApiError(
         STATUS_CODE.FORBIDDEN,
@@ -156,7 +158,7 @@ class DiscussionController {
     }
 
     await db.discussion.update({
-      where: { id },
+      where: { id: discussionId },
       data: { deleted: true },
     });
 

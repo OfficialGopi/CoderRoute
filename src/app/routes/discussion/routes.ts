@@ -20,11 +20,13 @@ function register(): Router {
 
   router.route("/").get(controllers.getAllDiscussions.bind(controllers)); //GET ALL DISCUSSIONS
 
-  router.get("/:id", controllers.getDiscussionById.bind(controllers)); //GET DISCUSSION BY ID
+  router.get("/:discussionId", controllers.getDiscussionById.bind(controllers)); //GET DISCUSSION BY ID
 
   router.route("/").post(controllers.createDiscussion.bind(controllers)); //CREATE DISCUSSION
 
-  router.route("/:id").delete(controllers.deleteDiscussion.bind(controllers));
+  router
+    .route("/:discussionId")
+    .delete(controllers.deleteDiscussion.bind(controllers)); //DELETE DISCUSSION
 
   return router;
 }

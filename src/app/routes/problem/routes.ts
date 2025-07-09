@@ -33,7 +33,10 @@ function register(): Router {
     .get(controller.getAllProblemsSolvedByUser.bind(controller)); //GET ALL PROBLEMS SOLVED BY USER
 
   // ADMIN-ONLY ROUTES
+
+  //EMAIL VERIFICATION MIDDLEWARE//
   router.use(checkRole([USER_ROLE.ADMIN])); //CHECK ADMIN
+  //EMAIL VERIFICATION MIDDLEWARE END//
 
   router.route("/").post(controller.createProblem.bind(controller)); //CREATE PROBLEM
 
