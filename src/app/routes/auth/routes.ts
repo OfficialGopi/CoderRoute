@@ -9,54 +9,44 @@ function register(): Router {
 
   const controllers = new AuthControllers();
 
-  // SIGNUP : { name, email, username, password, confirmPassword } = req.body
-  router.route("/signup").post(controllers.signup.bind(controllers));
+  router.route("/signup").post(controllers.signup.bind(controllers)); //SIGNUP
 
-  // LOGIN : { credentials, password } = req.body
-  router.route("/login").post(controllers.login.bind(controllers));
+  router.route("/login").post(controllers.login.bind(controllers)); //LOGIN
 
-  // VERIFY EMAIL : access-token and refresh-token and  { token } = req.params;
-  router
-    .route("/verify-email/:token")
-    .get(verifyAccessToken, controllers.verifyEmail.bind(controllers));
-
-  // RESEND EMAIL VERIFICATION TOKEN : access-token and refresh-token
-  router
-    .route("/resend-email-verification-token")
-    .patch(
-      verifyAccessToken,
-      controllers.resendEmailVerification.bind(controllers),
-    );
-
-  // REFRESH ACCESS TOKEN : access-token and refresh-token and { refreshToken } = req.body
   router
     .route("/refresh-access-token")
-    .patch(controllers.refreshAccessToken.bind(controllers));
+    .patch(controllers.refreshAccessToken.bind(controllers)); //REFRESH ACCESS TOKEN
 
-  // LOGOUT : access-token and refresh-token and { refreshToken } = req.body
+  // router
+  //   .route("/forgot-password-request")
+  //   .post(controllers.forgotPasswordRequest.bind(controllers));
+
+  // router
+  //   .route("/reset-forgotten-password")
+  //   .post(controllers.resetForgottenPassword.bind(controllers));
+
+  //USER AUTHETICAION MIDDLEWARE//
+  router.use(verifyAccessToken); //CHECK USER AUTHENTICATION
+  //USER AUTHETICAION MIDDLEWARE END//
+
   router
-    .route("/logout")
-    .delete(verifyAccessToken, controllers.logout.bind(controllers));
+    .route("/verify-email/:token")
+    .get(controllers.verifyEmail.bind(controllers)); //VERIFY ACCESS TOKEN
 
-  // CHANGE CURRENT PASSWORD : access-token and refresh-token and { currentPassword, newPassword, confirmNewPassword } = req.body
+  router
+    .route("/resend-email-verification-token")
+    .patch(controllers.resendEmailVerification.bind(controllers)); //RESEND EMAIL VERIFICATION
+
+  router.route("/logout").delete(controllers.logout.bind(controllers)); //LOGOUT
+
   router
     .route("/change-current-password")
     .put(
       verifyAccessToken,
       controllers.changeCurrentPassword.bind(controllers),
-    );
+    ); //CHANGE CURRENT PASSWORD
 
-  // ME : access-token and refresh-token
-  router.get("/me", verifyAccessToken, controllers.me.bind(controllers));
-
-  // NOT FINISHED YET
-  router
-    .route("/forgot-password-request")
-    .post(controllers.forgotPasswordRequest.bind(controllers));
-
-  router
-    .route("/reset-forgotten-password")
-    .post(controllers.resetForgottenPassword.bind(controllers));
+  router.get("/me", controllers.me.bind(controllers)); //GET LOGGED IN USER
 
   return router;
 }

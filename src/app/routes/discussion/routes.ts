@@ -10,37 +10,21 @@ function register(): Router {
   const router = express.Router();
   const controllers = new DiscussionController();
 
-  // Get all discussions (supports filters: problemId, parentId, page, limit)
-  router.get(
-    "/",
-    verifyAccessToken,
-    isEmailVerified,
-    controllers.getAllDiscussions.bind(controllers),
-  );
+  //USER AUTHENTICATION MIDDLEWARE//
+  router.use(verifyAccessToken); //CHECK USER AUTHENTICATION
+  //USER AUTHENTICATION MIDDLEWARE END//
 
-  // Get a single discussion by ID
-  router.get(
-    "/:id",
-    verifyAccessToken,
-    isEmailVerified,
-    controllers.getDiscussionById.bind(controllers),
-  );
+  //EMAIL VERIFICATION MIDDLEWARE//
+  router.use(isEmailVerified); //CHECK EMAIL VERIFICATION
+  //EMAIL VERIFICATION MIDDLEWARE END//
 
-  // Create a new discussion or reply
-  router.post(
-    "/",
-    verifyAccessToken,
-    isEmailVerified,
-    controllers.createDiscussion.bind(controllers),
-  );
+  router.route("/").get(controllers.getAllDiscussions.bind(controllers)); //GET ALL DISCUSSIONS
 
-  // Soft delete a discussion
-  router.delete(
-    "/:id",
-    verifyAccessToken,
-    isEmailVerified,
-    controllers.deleteDiscussion.bind(controllers),
-  );
+  router.get("/:id", controllers.getDiscussionById.bind(controllers)); //GET DISCUSSION BY ID
+
+  router.route("/").post(controllers.createDiscussion.bind(controllers)); //CREATE DISCUSSION
+
+  router.route("/:id").delete(controllers.deleteDiscussion.bind(controllers));
 
   return router;
 }

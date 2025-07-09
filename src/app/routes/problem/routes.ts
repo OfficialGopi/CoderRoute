@@ -6,94 +6,66 @@ import {
   verifyAccessToken,
   isEmailVerified,
 } from "../../middlewares/auth.middleware";
+import { checkRole } from "../../middlewares/role-based-access.middleware";
+import { USER_ROLE } from "../../prisma/enums";
 
 function register(): Router {
   const router = express.Router();
   const controller = new ProblemController();
 
-  // ✅ PUBLIC ROUTES (Authenticated)
-  router.route("/").get(controller.getAllProblems.bind(controller));
+  // AUTHENTICATED ROUTES
+
+  //USER AUTHENTICATION MIDDLEWARE//
+  router.use(verifyAccessToken); //CHECK USER AUTHENTICATION
+  //USER AUTHENTICATION MIDDLEWARE END//
+
+  //EMAIL VERIFICATION MIDDLEWARE//
+  router.use(isEmailVerified); //CHECK EMAIL VERIFICATION
+  //EMAIL VERIFICATION MIDDLEWARE END//
+
+  // PUBLIC ROUTES (Authenticated)
+  router.route("/").get(controller.getAllProblems.bind(controller)); //GET ALL PROBLEMS
+
+  router.route("/:problemId").get(controller.getProblemById.bind(controller)); //GET PROBLEM BY ID
 
   router
-    .route("/id/:problemId")
-    .get(controller.getProblemById.bind(controller));
+    .route("/solved-problems")
+    .get(controller.getAllProblemsSolvedByUser.bind(controller)); //GET ALL PROBLEMS SOLVED BY USER
+
+  // ADMIN-ONLY ROUTES
+  router.use(checkRole([USER_ROLE.ADMIN])); //CHECK ADMIN
+
+  router.route("/").post(controller.createProblem.bind(controller)); //CREATE PROBLEM
 
   router
-    .route("/solved")
-    .get(
-      verifyAccessToken,
-      isEmailVerified,
-      controller.getAllProblemsSolvedByUser.bind(controller),
-    );
+    .route("/:problemId")
+    .patch(controller.updateProblemDetails.bind(controller)); //UPDATE PROBLEM DETAILS
 
-  // 🔒 ADMIN-ONLY ROUTES
-  router
-    .route("/")
-    .post(
-      verifyAccessToken,
-      isEmailVerified,
-      controller.createProblem.bind(controller),
-    );
+  router.route("/:problemId").delete(controller.deleteProblem.bind(controller)); //DELETE PROBLEM
 
   router
-    .route("/id/:problemId")
-    .patch(
-      verifyAccessToken,
-      isEmailVerified,
-      controller.updateProblemDetails.bind(controller),
-    );
+    .route("/:problemId/code-snippets/:codeSnippetId")
+    .patch(controller.updateProblemCodeSnippet.bind(controller)); //UPDATE PROBLEM CODE SNIPPET
 
   router
-    .route("/id/:problemId")
-    .delete(
-      verifyAccessToken,
-      isEmailVerified,
-      controller.deleteProblem.bind(controller),
-    );
-
-  // 🧠 CODE SNIPPETS
-  router
-    .route("/id/:problemId/code-snippets/:codeSnippetId")
-    .patch(
-      verifyAccessToken,
-      isEmailVerified,
-      controller.updateProblemCodeSnippet,
-    );
-
-  // 🧠 REFERENCE SOLUTIONS
-  router
-    .route("/id/:problemId/reference-solutions/:referenceSolutionId")
-    .patch(
-      verifyAccessToken,
-      isEmailVerified,
-      controller.updateProblemReferenceSolution,
-    );
-
-  // 🧠 BACKGROUND CODE
-  router
-    .route("/id/:problemId/background-codes/:backgroundCodeId")
-    .patch(
-      verifyAccessToken,
-      isEmailVerified,
-      controller.updateProblemBackgroundCode,
-    );
-
-  // 🧪 TEST CASES
-  router
-    .route("/id/:problemId/testcases/:testcaseId")
-    .patch(
-      verifyAccessToken,
-      isEmailVerified,
-      controller.updateProblemTestCases,
-    );
+    .route("/:problemId/reference-solutions/:referenceSolutionId")
+    .patch(controller.updateProblemReferenceSolution.bind(controller)); //UPDATE PROBLEM REFERENCE SOLUTION
 
   router
-    .route("/id/:problemId/testcases")
-    .post(verifyAccessToken, isEmailVerified, controller.addProblemTestCase);
+    .route("/:problemId/background-codes/:backgroundCodeId")
+    .patch(controller.updateProblemBackgroundCode.bind(controller)); //UPDATE PROBLEM BACKGROUND CODE
 
   router
-    .route("/id/:problemId/testcases/:testcaseId")
-    .delete(verifyAccessToken, isEmailVerified, controller.deleteTestCase);
+    .route("/:problemId/testcases")
+    .post(controller.addProblemTestCase.bind(controller)); //ADD PROBLEM TEST CASE
+
+  router
+    .route("/:problemId/testcases/:testcaseId")
+    .patch(controller.updateProblemTestCases.bind(controller)); //UPDATE PROBLEM TEST CASE
+
+  router
+    .route("/:problemId/testcases/:testcaseId")
+    .delete(controller.deleteTestCase.bind(controller)); //DELETE PROBLEM TEST CASE
 
   return router;
 }
