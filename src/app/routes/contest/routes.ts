@@ -12,43 +12,41 @@ function register(): Router {
   const router = express.Router();
   const controller = new ContestController();
 
-  // ✅ Get all contests with pagination, soft-deletion support
-  router.get("/", controller.getAllContests.bind(controller));
+  //USER AUTHENTICATION MIDDLEWARE//
+  router.use(verifyAccessToken); //CHECK USER AUTHENTICATION
+  //USER AUTHENTICATION MIDDLEWARE END//
 
-  // ✅ Get a contest by ID with problems and participations
-  router.get("/:id", controller.getContestById.bind(controller));
+  //EMAIL VERIFICATION MIDDLEWARE//
+  router.use(isEmailVerified); //CHECK EMAIL VERIFICATION
+  //EMAIL VERIFICATION MIDDLEWARE END//
 
-  // ✅ Create a contest (requires auth)
-  router.post(
-    "/",
-    verifyAccessToken,
-    isEmailVerified,
-    controller.createContest.bind(controller),
-  );
+  router.route("/").get(controller.getAllContests.bind(controller)); //GET ALL CONTEST
 
-  // ✅ Soft delete a contest (requires auth)
-  router.delete(
-    "/:id",
-    verifyAccessToken,
-    isEmailVerified,
-    controller.deleteContest.bind(controller),
-  );
+  router.route("/:contestId").get(controller.getContestById.bind(controller)); //GET CONTEST BY ID
 
-  // ✅ Participate in a contest (requires auth)
-  router.post(
-    "/participate",
-    verifyAccessToken,
-    isEmailVerified,
-    controller.participateInContest.bind(controller),
-  );
+  router.route("/").post(controller.createContest.bind(controller)); //CREATE CONTEST
 
-  // ✅ Get all participants in a contest
-  router.get(
-    "/:contestId/participants",
-    verifyAccessToken,
-    isEmailVerified,
-    controller.getContestParticipants.bind(controller),
-  );
+  router.route("/:contestId").delete(controller.deleteContest.bind(controller)); //DELETE CONTEST
+
+  router
+    .route("/participate")
+    .post(controller.participateInContest.bind(controller)); //PARTICIPATE IN CONTEST
+
+  router
+    .route("/:contestId/participants")
+    .get(controller.getContestParticipants.bind(controller)); //GET CONTEST PARTICIPANTS
+
+  router
+    .route("/:contestId/submissions/user")
+    .get(controller.getUserSubmissionsInContest.bind(controller)); //GET USER SUBMISSIONS IN CONTEST
+
+  router
+    .route("/:contestId/submissions/all")
+    .get(controller.getAllSubmissionsInContest.bind(controller)); //GET ALL SUBMISSIONS IN CONTEST
+
+  router
+    .route("/:contestId/score")
+    .patch(controller.updateContestScore.bind(controller)); //UPDATE CONTEST SCORE
 
   return router;
 }

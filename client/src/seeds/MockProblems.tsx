@@ -1,6 +1,6 @@
 // mock/problems.mock.js
 
-export const mockProblems = [
+export const MockProblems = [
   {
     id: "problem-1",
     title: "Two Sum",

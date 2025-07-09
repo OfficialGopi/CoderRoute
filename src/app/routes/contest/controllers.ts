@@ -36,9 +36,9 @@ class ContestController {
   });
 
   public getContestById = AsyncHandler(async (req, res) => {
-    const { id } = req.params;
+    const { contestId } = req.params;
     const contest = await db.contest.findUnique({
-      where: { id },
+      where: { id: contestId },
       include: {
         problems: true,
         participations: true,
@@ -111,8 +111,8 @@ class ContestController {
   });
 
   public deleteContest = AsyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const contest = await db.contest.findUnique({ where: { id } });
+    const { contestId } = req.params;
+    const contest = await db.contest.findUnique({ where: { id: contestId } });
 
     if (!contest) {
       throw new ApiError(STATUS_CODE.NOT_FOUND, "Contest not found");
@@ -123,7 +123,7 @@ class ContestController {
     }
 
     await db.contest.update({
-      where: { id },
+      where: { id: contestId },
       data: { deleted: true },
     });
 
@@ -308,7 +308,8 @@ class ContestController {
   });
 
   public updateContestScore = AsyncHandler(async (req, res) => {
-    const { contestId, problemId, userId } = req.body;
+    const { contestId } = req.params;
+    const { problemId, userId } = req.body;
     const contestProblem = await db.contestProblem.findFirst({
       where: {
         contestId,
