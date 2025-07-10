@@ -1,4 +1,4 @@
-import { fetchApi } from "../utils/FetchApi";
+import { fetchApi } from "../../utils/FetchApi";
 
 class DiscussionServices {
   private discussionFetch;

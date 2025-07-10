@@ -1,5 +1,5 @@
-import { fetchApi } from "../utils/FetchApi";
-import { LANGUAGE } from "../types/language.enum"; // Import your LANGUAGE enum type if available
+import { fetchApi } from "../../utils/FetchApi";
+import { LANGUAGE } from "../../types/language.enum"; // Import your LANGUAGE enum type if available
 
 class ExecuteCodeService {
   private executeCodeFetch;

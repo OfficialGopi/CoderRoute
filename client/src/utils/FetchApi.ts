@@ -1,3 +1,5 @@
+import type { TApiResponse, TErrorResponse } from "../types/fetchApi.types";
+
 class FetchApi {
   public baseUrl: string;
 
@@ -7,7 +9,7 @@ class FetchApi {
   }
 
   public init(service: string) {
-    return async (
+    return async <T, TBody = undefined>(
       url: string,
       method:
         | "GET"
@@ -17,13 +19,9 @@ class FetchApi {
         | "DELETE"
         | "HEAD"
         | "OPTIONS" = "GET",
-      body:
-        | {
-            [key: string]: any;
-          }
-        | undefined = undefined,
-      headers: Record<string, string> = {},
-    ) => {
+      body?: TBody,
+      headers?: Record<string, string>,
+    ): Promise<TApiResponse<T> | TErrorResponse> => {
       try {
         if (body && (method === "GET" || method === "HEAD")) {
           throw new Error("Request body not allowed for GET or HEAD requests.");
@@ -39,17 +37,9 @@ class FetchApi {
         };
         const res = await fetch(this.baseUrl + service + url, options);
         const data = await res.json();
-        return {
-          success: true,
-          error: undefined,
-          ...data,
-        };
-      } catch (error: any) {
-        return {
-          success: false,
-          data: undefined,
-          ...error,
-        };
+        return data as TApiResponse<T>;
+      } catch (error: unknown) {
+        return error as TErrorResponse;
       }
     };
   }

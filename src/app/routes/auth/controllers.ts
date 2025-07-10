@@ -154,39 +154,39 @@ class AuthControllers {
       <h1>Please copy the following token : </h1>
       <br/>
       <h3>${unHashedEmailVerificationToken}</h3>
-      <button onclick="copyFunc()">Copy</button>
-      <script>
-       function copyFunc(){
-       navigator.clipboard.writeText("${unHashedEmailVerificationToken}");
-  		 alert("Copied the token")}
-      </script>
       `,
     };
 
     await transporter.sendMail(mailOption);
 
-    return res
-      .status(STATUS_CODE.RESOURCE_CREATED)
-      .json(
-        new ApiResponse(
-          STATUS_CODE.RESOURCE_CREATED,
-          {},
-          "User Created Successfully",
-        ),
-      );
+    return res.status(STATUS_CODE.RESOURCE_CREATED).json(
+      new ApiResponse(
+        STATUS_CODE.RESOURCE_CREATED,
+        {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          name: user.name,
+          avatar: user.avatar,
+          isEmailVerified: user.isEmailVerified,
+          role: user.role,
+        },
+        "User Created Successfully",
+      ),
+    );
   });
 
   public login = AsyncHandler(async (req, res) => {
-    const { credentials, password } = req.body;
+    const { credential, password } = req.body;
 
     const user = await db.user.findFirst({
       where: {
         OR: [
           {
-            email: credentials,
+            email: credential,
           },
           {
-            username: credentials,
+            username: credential,
           },
         ],
       },
@@ -239,12 +239,17 @@ class AuthControllers {
       new ApiResponse(
         STATUS_CODE.OK,
         {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          name: user.name,
+          avatar: user.avatar,
+          role: user.role,
+          isEmailVerified: user.isEmailVerified,
           tokens: {
             "access-token": accessToken,
             "refresh-token": refreshToken,
           },
-          ...user,
-          password: undefined,
         },
         "User Logged In Successfully",
       ),
@@ -456,8 +461,6 @@ class AuthControllers {
             "access-token": newAccessToken,
             "refresh-token": newRefreshToken,
           },
-          ...user,
-          password: undefined,
         },
         "Tokens Refreshed",
       ),
@@ -553,9 +556,21 @@ class AuthControllers {
       throw new ApiError(STATUS_CODE.UNAUTHORIZED, "Unauthorized");
     }
 
-    return res
-      .status(STATUS_CODE.OK)
-      .json(new ApiResponse(STATUS_CODE.OK, req.user, "Checked successfully"));
+    return res.status(STATUS_CODE.OK).json(
+      new ApiResponse(
+        STATUS_CODE.OK,
+        {
+          id: req.user.id,
+          email: req.user.email,
+          username: req.user.username,
+          name: req.user.name,
+          avatar: req.user.avatar,
+          role: req.user.role,
+          isEmailVerified: req.user.isEmailVerified,
+        },
+        "Checked successfully",
+      ),
+    );
   });
 
   public forgotPasswordRequest = AsyncHandler(async (req, res) => {
