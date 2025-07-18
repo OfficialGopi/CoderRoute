@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { authServices } from "../../services/auth/services";
+import { authServices } from "../../../services/auth/services";
 import { toast } from "sonner";
-import { removeTokens, setTokens } from "../../utils/HandleTokens";
+import { removeTokens, setTokens } from "../../../utils/HandleTokens";
 import type { TAuthState } from "./types";
 
 const useAuthStore = create<TAuthState>((set) => ({

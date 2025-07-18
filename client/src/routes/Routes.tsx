@@ -1,6 +1,7 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import SuspenseLoader from "../components/loaders/SuspenseLoader";
+import { useThemeState } from "@/toolkit/ui-state-handling/ThemeChange";
 
 //LANDING PAGE
 const LandingPage = lazy(() => import("../app/LandingPage"));
@@ -77,27 +78,41 @@ const ContestStandingsPage = lazy(
 const NotFoundPage = lazy(() => import("../app/NotFoundPage"));
 
 //LAYOUTS
-const AuthenticatedLayout = lazy(
-  () => import("../components/layouts/AuthenticatedLayout"),
+const AuthenticationLayout = lazy(
+  () => import("../components/layouts/AuthenticationLayout"),
 );
-const ProblemsLayout = lazy(
-  () => import("../components/layouts/problems/ProblemsLayout"),
+const NavbarLayout = lazy(() => import("../components/layouts/NavbarLayout"));
+const InProblemNavbar = lazy(
+  () => import("../components/layouts/InProblemNavbar"),
+);
+const InProblemsLayout = lazy(
+  () => import("../components/layouts/InProblemsLayout"),
 );
 
 const Router = () => {
+  const { toggleTheme } = useThemeState();
+
+  useEffect(() => {
+    if (localStorage.getItem("theme")) {
+      toggleTheme();
+    }
+  }, []);
+
   return (
     <Suspense fallback={<SuspenseLoader />}>
       <Routes>
         {/* PUBLIC ROUTES */}
         <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/verify-email" element={<VerifyEmailPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route element={<AuthenticationLayout />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/verify-email" element={<VerifyEmailPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+        </Route>
         {/* Authenticated Routes */}
-        <Route element={<AuthenticatedLayout />}>
-          {/* PROFILE ROUTES */}
+        {/* PROFILE ROUTES */}
+        <Route element={<NavbarLayout />}>
           <Route path="/profile/:userId" element={<ProfilePage />} />
           <Route
             path="/profile/:userId/dashboard"
@@ -109,9 +124,45 @@ const Router = () => {
             element={<SettingsForPasswordPage />}
           />
 
-          {/* PROBLEMS ROUTES */}
-          <Route element={<ProblemsLayout />}>
-            <Route path="/problems" element={<ProblemsPage />} />
+          <Route path="/problems" element={<ProblemsPage />} />
+
+          {/* PLAYLIST ROUTES */}
+          <Route path="/playlists" element={<PlaylistPage />} />
+          <Route path="/playlists/create" element={<PlaylistCreatePage />} />
+          <Route
+            path="/playlists/:playlistId"
+            element={<PlaylistDetailsPage />}
+          />
+          <Route
+            path="/playlists/:playlistId/edit"
+            element={<EditPlaylistPage />}
+          />
+
+          {/* DISCUSSION ROUTES */}
+          <Route path="/discussions" element={<DiscussPage />} />
+          <Route
+            path="/discussions/:discussionId"
+            element={<DiscussionDetailsPage />}
+          />
+
+          {/* CONTEST ROUTES */}
+          <Route path="/contests" element={<ContestPage />} />
+          <Route
+            path="/contests/create-contest"
+            element={<CreateContestPage />}
+          />
+          <Route path="/contests/:contestId" element={<ContestProblemPage />} />
+          <Route
+            path="/contests/:contestId/problem/:problemId"
+            element={<ContestDetailsPage />}
+          />
+          <Route
+            path="/contests/:contestId/standings"
+            element={<ContestStandingsPage />}
+          />
+        </Route>
+        <Route element={<InProblemNavbar />}>
+          <Route element={<InProblemsLayout />}>
             <Route
               path="/problems/create-problem"
               element={<CreateProblemPage />}
@@ -133,49 +184,15 @@ const Router = () => {
               element={<ProblemSubmissionsDetailsPage />}
             />
             <Route path="/problems/solved" element={<SolvedProblemsPage />} />
+
+            <Route
+              path="/discussions/problem/:problemId"
+              element={<DiscussionOnProblemDetailsPage />}
+            />
           </Route>
-
-          {/* PLAYLIST ROUTES */}
-          <Route path="/playlists" element={<PlaylistPage />} />
-          <Route path="/playlists/create" element={<PlaylistCreatePage />} />
-          <Route
-            path="/playlists/:playlistId"
-            element={<PlaylistDetailsPage />}
-          />
-          <Route
-            path="/playlists/:playlistId/edit"
-            element={<EditPlaylistPage />}
-          />
-
-          {/* DISCUSSION ROUTES */}
-          <Route path="/discussions" element={<DiscussPage />} />
-          <Route
-            path="/discussions/:discussionId"
-            element={<DiscussionDetailsPage />}
-          />
-          <Route
-            path="/discussions/problem/:problemId"
-            element={<DiscussionOnProblemDetailsPage />}
-          />
-
-          {/* CONTEST ROUTES */}
-          <Route path="/contests" element={<ContestPage />} />
-          <Route
-            path="/contests/create-contest"
-            element={<CreateContestPage />}
-          />
-          <Route path="/contests/:contestId" element={<ContestProblemPage />} />
-          <Route
-            path="/contests/:contestId/problem/:problemId"
-            element={<ContestDetailsPage />}
-          />
-          <Route
-            path="/contests/:contestId/standings"
-            element={<ContestStandingsPage />}
-          />
-
-          {/* CATCH-ALL */}
         </Route>
+
+        {/* CATCH-ALL */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>

@@ -5,7 +5,7 @@ import type {
   TResetForgottenPasswordInput,
   TSignupInput,
   TVerifyEmailInput,
-} from "../../services/auth/types";
+} from "../../../services/auth/types";
 
 interface TAuthState {
   user: null | {
