@@ -1,13 +1,19 @@
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
 import { ShinyButton } from "@/components/magicui/shiny-button";
+import ProfileDropDown from "@/components/shared/ProfileDropDown";
+import FeatureComponent from "@/components/specific/FeatureComponent";
+import Footer from "@/components/specific/Footer";
 import MarqueeComponent from "@/components/specific/MarqueeComponent";
 import { BackgroundBeams } from "@/components/ui/background-beams";
+import { Card } from "@/components/ui/card";
 import { Compare } from "@/components/ui/compare";
 import { cn } from "@/libs/utils";
 import { ArrowRight, Code } from "lucide-react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
   const navigate = useNavigate();
 
   return (
@@ -25,7 +31,7 @@ const LandingPage = () => {
           "px-10 py-2",
           "sticky top-0 z-0",
           "flex  items-center justify-between gap-2",
-          "bg-neutral-950/70 backdrop-blur-sm relative z-10 mask-[linear-gradient(to_bottom,black_0%,black_75%,transparent_100%)]",
+          "bg-gradient-to-b from-neutral-950/70 from-70% to-100% to-neutral-950/10  backdrop-blur-sm relative z-10 mask-[linear-gradient(to_bottom,black_0%,black_75%,transparent_100%)]",
         )}
       >
         <Link to={"/"} className="flex items-center gap-1 p-2">
@@ -36,21 +42,27 @@ const LandingPage = () => {
           </div>
         </Link>
         <div className="flex items-center gap-2">
-          <ShinyButton
-            className="font-outfit-regular"
-            onClick={() => navigate("/login")}
-          >
-            Login
-          </ShinyButton>
-          <ShinyButton
-            className="font-outfit-regular"
-            onClick={() => navigate("/signup")}
-          >
-            Signup
-          </ShinyButton>
+          {!isLoggedIn ? (
+            <>
+              <ShinyButton
+                className="font-outfit-regular"
+                onClick={() => navigate("/login")}
+              >
+                Login
+              </ShinyButton>
+              <ShinyButton
+                className="font-outfit-regular"
+                onClick={() => navigate("/signup")}
+              >
+                Signup
+              </ShinyButton>
+            </>
+          ) : (
+            <ProfileDropDown />
+          )}
         </div>
       </nav>
-      <div className="py-10">
+      <div className="w-[1024px] h-[90vh] flex flex-col items-center justify-center">
         <div className="mx-auto flex items-center justify-center gap-10">
           <div className="flex flex-col gap-1">
             <h1 className="text-6xl flex flex-col gap-2 text-outfit-regular">
@@ -105,8 +117,8 @@ const LandingPage = () => {
         <MarqueeComponent />
       </div>
 
-      <div className="text-center mb-16 opacity-100">
-        <div className="flex items-center justify-center mb-6">
+      <div className="text-center mb-16 opacity-100  w-[1024px]">
+        <div className="flex items-center justify-center mb-6 mt-3">
           <div className="relative w-full max-w-[200px] h-px bg-gradient-to-r from-transparent via-[#f5ac01]/30 to-[#f5ac01]">
             <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 bg-[#f5ac01] rotate-45 rounded-sm"></div>
           </div>
@@ -120,7 +132,9 @@ const LandingPage = () => {
         <h2 className="text-4xl md:text-5xl font-bold text-gray-200 satoshi tracking-tight">
           Engineered for Excellence
         </h2>
+        <FeatureComponent />
       </div>
+      <Footer />
     </div>
   );
 };
