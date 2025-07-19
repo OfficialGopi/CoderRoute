@@ -1,12 +1,14 @@
 const mockLoggedInUser = {
-  id: "user_123456",
-  name: "Gopikanta Mondal",
-  username: "gopi_dev",
-  email: "gopi@example.com",
-  avatar:
-    "https://api.dicebear.com/7.x/initials/svg?seed=Gopi&backgroundColor=b6e3f4",
+  id: "user-uuid-1",
+  name: "Jane Doe",
+  username: "janedoe",
+  email: "jane@example.com",
+  avatar: null,
   role: "USER",
+  password: "hashed-password",
   isEmailVerified: true,
+  createdAt: new Date(),
+  updatedAt: new Date(),
 };
 
 export { mockLoggedInUser };

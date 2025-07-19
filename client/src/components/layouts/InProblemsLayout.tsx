@@ -12,6 +12,7 @@ import {
 import Modal from "../ui/modal";
 import { useThemeState } from "@/toolkit/ui-state-handling/ThemeChange";
 import { Switch } from "../ui/switch";
+import { Outlet } from "react-router-dom";
 
 const languages = [
   { value: "javascript", label: "JavaScript" },
@@ -58,10 +59,10 @@ const InProblemsLayout = () => {
     minimap: !!localStorage.getItem("editor-minimap")! || true,
   });
   return (
-    <PanelGroup direction="horizontal" className="relative z-0">
-      <Panel className="p-2" defaultSize={30} minSize={15}>
-        <div className="w-full">
-          <h1>Hello</h1>
+    <PanelGroup direction="horizontal" className="relative z-0 w-full h-full">
+      <Panel className="px-2 pb-2 h-full w-full" defaultSize={30} minSize={15}>
+        <div className="w-full h-full overflow-y-scroll">
+          <Outlet />
         </div>
       </Panel>
       <PanelResizeHandle className="bg-neutral-200 hover:bg-neutral-300 active:bg-neutral-400 dark:bg-neutral-950 dark:hover:bg-neutral-900 dark:active:bg-neutral-800 hover:visible focus-visible:ring-ring transition z-[20] w-0.5  px-0.5" />

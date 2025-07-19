@@ -21,6 +21,9 @@ const SettingsForPasswordPage = lazy(
 
 //PROBLEMS PAGE
 const ProblemsPage = lazy(() => import("../app/problems/ProblemsPage"));
+const ProblemEditorialPage = lazy(
+  () => import("../app/problems/ProblemEditorialPage"),
+);
 const CreateProblemPage = lazy(
   () => import("../app/problems/CreateProblemPage"),
 );
@@ -87,6 +90,9 @@ const InProblemNavbar = lazy(
 );
 const InProblemsLayout = lazy(
   () => import("../components/layouts/InProblemsLayout"),
+);
+const InProblemLinkOptionsLayout = lazy(
+  () => import("../components/layouts/InProblemLinkOptionsLayout"),
 );
 
 const Router = () => {
@@ -160,35 +166,41 @@ const Router = () => {
             path="/contests/:contestId/standings"
             element={<ContestStandingsPage />}
           />
+          <Route
+            path="/problems/create-problem"
+            element={<CreateProblemPage />}
+          />
         </Route>
         <Route element={<InProblemNavbar />}>
           <Route element={<InProblemsLayout />}>
-            <Route
-              path="/problems/create-problem"
-              element={<CreateProblemPage />}
-            />
-            <Route
-              path="/problems/:problemId"
-              element={<ProblemsSolvePage />}
-            />
-            <Route
-              path="/problems/:problemId/analytics"
-              element={<ProblemsAnalytics />}
-            />
-            <Route
-              path="/problems/:problemId/submissions"
-              element={<ProblemSubmissionsPage />}
-            />
-            <Route
-              path="/problems/:problemId/submissions/:submissionId"
-              element={<ProblemSubmissionsDetailsPage />}
-            />
-            <Route path="/problems/solved" element={<SolvedProblemsPage />} />
+            <Route element={<InProblemLinkOptionsLayout />}>
+              <Route
+                path="/problems/:problemId"
+                element={<ProblemsSolvePage />}
+              />
+              <Route
+                path="/problems/:problemId/editorial"
+                element={<ProblemEditorialPage />}
+              />
+              <Route
+                path="/problems/:problemId/analytics"
+                element={<ProblemsAnalytics />}
+              />
+              <Route
+                path="/problems/:problemId/submissions"
+                element={<ProblemSubmissionsPage />}
+              />
+              <Route
+                path="/problems/:problemId/submissions/:submissionId"
+                element={<ProblemSubmissionsDetailsPage />}
+              />
+              <Route path="/problems/solved" element={<SolvedProblemsPage />} />
 
-            <Route
-              path="/discussions/problem/:problemId"
-              element={<DiscussionOnProblemDetailsPage />}
-            />
+              <Route
+                path="/discussions/problem/:problemId"
+                element={<DiscussionOnProblemDetailsPage />}
+              />
+            </Route>
           </Route>
         </Route>
 
