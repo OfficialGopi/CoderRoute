@@ -73,19 +73,29 @@ const Footer = () => {
           <div className="flex  flex-col gap-3">
             <div className="flex gap-2  items-center">
               <Mail className="w-5 h-5 text-yellow-500" />
-              <a href="mailto:official.gopi@outlook.com">
+              <a
+                href="mailto:official.gopi@outlook.com"
+                className="text-neutral-300 hover:text-yellow-200 transition"
+              >
                 official.gopi@outlook.com
               </a>
             </div>
             <div className="flex gap-2  items-center">
               <Phone className="w-5 h-5 text-yellow-500" />
-              <a href="tel:+919832968001">+91 9832968001</a>
+              <a
+                href="tel:+919832968001"
+                className="text-neutral-300 hover:text-yellow-200 transition"
+              >
+                +91 9832968001
+              </a>
             </div>
             <div className="flex gap-2  items-center">
               <div>
                 <LocateIcon className="w-5 h-5 text-yellow-500" />
               </div>
-              <span>Near Chingrighata,. Kolkata, West Bengal, India</span>
+              <span className="text-neutral-300 hover:text-yellow-200 transition">
+                Near Chingrighata,. Kolkata, West Bengal, India
+              </span>
             </div>
           </div>
         </div>
